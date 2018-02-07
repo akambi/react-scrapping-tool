@@ -3,11 +3,21 @@ from .models import User
 from index import app, db
 from sqlalchemy.exc import IntegrityError
 from .utils.auth import generate_token, requires_auth, verify_token
+from protocolscrap import getProtocolScrap
 
 
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
+#service
+@app.route("/api/protocolscrapper", methods=["POST"])
+def protocol_scrapper():
+
+    HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
+    array_dict=getProtocolScrap(open(HTMLPath))
+    
+
+    return jsonify({"protocoldata":array_dict})    
 
 
 @app.route('/<path:path>', methods=['GET'])
