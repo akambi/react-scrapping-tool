@@ -42,3 +42,15 @@ export function has_github_token(token) {
 export function data_about_user(token) {
     return axios.get('/api/user', tokenConfig(token));
 }
+
+export function getProtocolMeta(protocolFile, token) {
+    const url = '/api/protocolscrapper';
+    const formData = new FormData();
+    formData.append('protocol_file', protocolFile)
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+    return axios.post(url, formData, {...tokenConfig(token), ...config});
+}

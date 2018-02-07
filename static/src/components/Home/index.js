@@ -1,8 +1,11 @@
 import React from 'react';
+import FileUploadView from '../FileUploadView';
+import ResultView from '../ResultView';
 
 export const Home = () =>
     <section>
         <div className="container text-center">
-            <h1>Hello</h1>
+            <FileUploadView/>
+            <ResultView/>
         </div>
     </section>;

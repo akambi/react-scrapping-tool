@@ -5,20 +5,31 @@ from sqlalchemy.exc import IntegrityError
 from .utils.auth import generate_token, requires_auth, verify_token
 from protocolscrap import getProtocolScrap
 
+ALLOWED_EXTENSIONS = set(['txt', 'htm', 'html'])
 
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 #end point
 @app.route("/api/protocolscrapper",  methods = ['GET', 'POST'])
 def protocol_scrapper():
-
-    f = request.files['file_name']
-    array_dict=getProtocolScrap(open(f))
-    
-
-    return jsonify({"protocoldata":array_dict})    
-
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'protocol_file' not in request.files:
+            return jsonify(error=True, message='No protocol_file part'), 400
+        file = request.files['protocol_file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            return jsonify(error=True, message='No selected file'), 400
+        if file and allowed_file(file.filename):
+            array_dict=getProtocolScrap(file)
+            return jsonify({"protocoldata":array_dict})
 
 @app.route('/<path:path>', methods=['GET'])
 def any_root_path(path):

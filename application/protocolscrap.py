@@ -96,7 +96,7 @@ def ConvertDataFrameToObject(dataframe):
 #-----------------------------------------------------------------------------------------------------------
 
     
- def getDataframeAnalyzedSectionA(dataframe):
+def getDataframeAnalyzedSectionA(dataframe):
     #array of dict
     arrayStorage=[]
     
