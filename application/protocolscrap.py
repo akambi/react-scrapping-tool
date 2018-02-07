@@ -7,13 +7,6 @@ Created on Tue Feb 06 15:33:48 2018
 from bs4 import BeautifulSoup
 import pandas as pd
 from fuzzywuzzy import fuzz
-#--------------------------------------------------------------------------------------------------
-
-def getProtocolScrap(HTMLString):
-    protocolDataFrame=getProtocolData(HTMLString)
-    analyzedDataFrame=getDataframeAnalysis(protocolDataFrame)
-    dataObject=ConvertDataframeToObject(analyzedDataFrame)
-    return dataObject
 
 #---------------------------------------------------------------------------------------------------
 def getProtocolData (HTMLString):
@@ -79,43 +72,108 @@ def getProtocolData (HTMLString):
 
 #-----------------------------------------------------------------------------------------------------------
 
-def getDataframeAnalysis(dataframe):
+def getProtocolScrap(HTMLString):
+    protocolDataFrame=getProtocolData(HTMLString)
+    analyzedDataFrame=getDataframeAnalyzed(protocolDataFrame)
+    return analyzedDataFrame
+
+#-----------------------------------------------------------------------------------------------------------
+
+def getDataframeAnalyzed(dataframe):
+    
+    analyzed_dataframe_section_a=getDataframeAnalyzedSectionA(dataframe)
+        
+    return analyzed_dataframe_section_a
+
+#-----------------------------------------------------------------------------------------------------------
+
+def ConvertDataFrameToObject(dataframe):
     
     
-    
+        
     return dataframe
 
 #-----------------------------------------------------------------------------------------------------------
-def ConvertDataframeToObject(dataframe):
+
+    
+ def getDataframeAnalyzedSectionA(dataframe):
     #array of dict
     arrayStorage=[]
     
-    #FindEudraCTNumber
+    #Find EUDRACT NUMBER
     for id,CurrentRow in dataframe.iterrows():
         #find the value of EudraCTNumber using fuzzy score
         score = fuzz.ratio("EUDRACT NUMBER",CurrentRow['RawText'].upper())
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'eudract_no','value': value,'score': score,'raw_text': value}
+            tempdict = {'id':'eudract_no','value': value.replace(" ", ""),'score': score,'raw_text': value}
             arrayStorage.append(tempdict) 
-                   
 
-    #Find StudyTitle
+    #Find STUDY TITLE
     for id,CurrentRow in dataframe.iterrows():
-    #find the value of StudyTitle using fuzzy score        
+    #find the value of StudyTitle using fuzzy score    
+        score = fuzz.ratio("STUDY TITLE",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
             tempdict = {'id':'full_title','value': value,'score': score,'raw_text': value}
+            arrayStorage.append(tempdict)      
+    
+    #Find PROTOCOL CODE
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of PROTOCOL CODE using fuzzy score    
+        score = fuzz.ratio("PROTOCOL CODE",CurrentRow['RawText'].upper())    
+        if (score > 90) :
+            value=dataframe.at[id+1,'RawText']
+            tempdict = {'id':'sponsor_protocol_no','value': value,'score': score,'raw_text': value}
             arrayStorage.append(tempdict) 
-
-    #indication      
-    #Find med_conditions
-    tempdict = {'id':'med_conditions','value': '','score': 0,'raw_text': ''}
+    
+    #Find VERSION OF THE DOCUMENT
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of VERSION OF THE DOCUMENT using fuzzy score    
+        score = fuzz.ratio("VERSION OF THE DOCUMENT",CurrentRow['RawText'].upper())    
+        if (score > 90) :
+            value=dataframe.at[id+1,'RawText']
+            tempdict = {'id':'sponsor_protocol_version','value': value,'score': score,'raw_text': value}
+            arrayStorage.append(tempdict)
+            
+            
+    #Find DATE OF THE DOCUMENT
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of VERSION OF THE DOCUMENT using fuzzy score    
+        score = fuzz.ratio("DATE OF THE DOCUMENT",CurrentRow['RawText'].upper())    
+        if (score > 90) :
+            value=dataframe.at[id+1,'RawText']
+            tempdict = {'id':'sponsor_protocol_version_date','value': value,'score': score,'raw_text': value}
+            arrayStorage.append(tempdict)     
+    #not to find in the prototcol, they're will be sent with no values                
+    #Find ISRCTN number
+    tempdict = {'id':'intern_ct_ident_isrctn','value': '','score': 0,'raw_text': ''}
     arrayStorage.append(tempdict)
-    #Find med_conditions_in_lay_langs
-    tempdict = {'id':'med_condition_in_lay_langs','value': '','score': 0,'raw_text': ''}
-    arrayStorage.append(tempdict)               
+    #Find US NCT number
+    tempdict = {'id':'intern_ct_ident_usnct','value': '','score': 0,'raw_text': ''}
+    arrayStorage.append(tempdict)
+    
+    #Find VERSION OF THE DOCUMENT
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of VERSION OF THE DOCUMENT using fuzzy score    
+        score = fuzz.ratio("UNIVERSAL TRIAL NUMBER",CurrentRow['RawText'].upper())    
+        if (score > 90) :
+            value=dataframe.at[id+1,'RawText']
+            tempdict = {'id':'intern_ct_ident_utrn','value': value,'score': score,'raw_text': value}
+            arrayStorage.append(tempdict) 
+    #not to find in the prototcol, they're will be sent with no values        
+    #Find "is this a resubmission ?"
+    tempdict = {'id':'is_resubmission','value': '','score': 0,'raw_text': ''}
+    arrayStorage.append(tempdict)
+    #Find "if yes indicate the resubmission letter"
+    tempdict = {'id':'resubmission_letter','value': '','score': 0,'raw_text': ''}
+    arrayStorage.append(tempdict)
+    #Find "is the trial part of agreed pip ?"
+    tempdict = {'id':'is_part_pip','value': '','score': 0,'raw_text': ''}
+    arrayStorage.append(tempdict)        
+    #Find PIP EMANO
+    tempdict = {'id':'pip_decision_no','value': '','score': 0,'raw_text': ''}
+    arrayStorage.append(tempdict)          
+          
         
     return arrayStorage
-    
- 

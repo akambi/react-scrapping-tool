@@ -9,12 +9,12 @@ from protocolscrap import getProtocolScrap
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
-#service
-@app.route("/api/protocolscrapper", methods=["POST"])
+#end point
+@app.route("/api/protocolscrapper",  methods = ['GET', 'POST'])
 def protocol_scrapper():
 
-    HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
-    array_dict=getProtocolScrap(open(HTMLPath))
+    f = request.files['file_name']
+    array_dict=getProtocolScrap(open(f))
     
 
     return jsonify({"protocoldata":array_dict})    
