@@ -74,29 +74,32 @@ def getProtocolData (HTMLString):
 
 def getProtocolScrap(HTMLString):
     protocolDataFrame=getProtocolData(HTMLString)
-    analyzedDataFrame=getDataframeAnalyzed(protocolDataFrame)
+    analyzedDataFrame=getDataAnalyzed(protocolDataFrame)
     return analyzedDataFrame
 
 #-----------------------------------------------------------------------------------------------------------
 
-def getDataframeAnalyzed(dataframe):
+def getDataAnalyzed(dataframe):
     
-    analyzed_dataframe_section_a=getDataframeAnalyzedSectionA(dataframe)
-        
-    return analyzed_dataframe_section_a
+    return dataframe
+
 
 #-----------------------------------------------------------------------------------------------------------
 
 def ConvertDataFrameToObject(dataframe):
     
+    analyzed_dataframe_section_a=getDataAnalyzedSectionA(dataframe)
+    analyzed_dataframe_section_b=getDataAnalyzedSectionB(dataframe)
+        
+    return pd.concat([analyzed_dataframe_section_a,analyzed_dataframe_section_b])
+    
     
         
-    return dataframe
 
 #-----------------------------------------------------------------------------------------------------------
 
     
-def getDataframeAnalyzedSectionA(dataframe):
+def getDataAnalyzedSectionA(dataframe):
     #array of dict
     arrayStorage=[]
     
@@ -106,7 +109,7 @@ def getDataframeAnalyzedSectionA(dataframe):
         score = fuzz.ratio("EUDRACT NUMBER",CurrentRow['RawText'].upper())
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'eudract_no','value': value.replace(" ", ""),'score': score,'raw_text': value}
+            tempdict = {'id':'A.2','value': value.replace(" ", ""),'score': score,'raw_text': value, 'eudractlabel':'EudraCT Number', 'section':'A'}
             arrayStorage.append(tempdict) 
 
     #Find STUDY TITLE
@@ -115,8 +118,17 @@ def getDataframeAnalyzedSectionA(dataframe):
         score = fuzz.ratio("STUDY TITLE",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'full_title','value': value,'score': score,'raw_text': value}
-            arrayStorage.append(tempdict)      
+            tempdict = {'id':'A.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'Full title of the trial', 'section':'A'}
+            arrayStorage.append(tempdict) 
+     
+    #Find NA
+    tempdict = {'id':'A.3.1','value': value,'score': 0,'raw_text': '', 'eudractlabel':'Title of the trial for lay people, in easily understood, i.e. non-technical language', 'section':'A'}
+    arrayStorage.append(tempdict)         
+   
+    #Find NA
+    tempdict = {'id':'A.3.2','value': value,'score': 0,'raw_text': '', 'eudractlabel':'Name of the abbreviated title of the trial where available', 'section':'A'}
+    arrayStorage.append(tempdict) 
+      
     
     #Find PROTOCOL CODE
     for id,CurrentRow in dataframe.iterrows():
@@ -124,7 +136,7 @@ def getDataframeAnalyzedSectionA(dataframe):
         score = fuzz.ratio("PROTOCOL CODE",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'sponsor_protocol_no','value': value,'score': score,'raw_text': value}
+            tempdict = {'id':'A.4.1','value': value,'score': score,'raw_text': value, 'eudractlabel':"Sponsor's protocol code number", 'section':'A'}
             arrayStorage.append(tempdict) 
     
     #Find VERSION OF THE DOCUMENT
@@ -133,7 +145,7 @@ def getDataframeAnalyzedSectionA(dataframe):
         score = fuzz.ratio("VERSION OF THE DOCUMENT",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'sponsor_protocol_version','value': value,'score': score,'raw_text': value}
+            tempdict = {'id':'A.4.2','value': value,'score': score,'raw_text': value, 'eudractlabel':"Sposnsor's protocol version", 'section':'A'}
             arrayStorage.append(tempdict)
             
             
@@ -143,14 +155,15 @@ def getDataframeAnalyzedSectionA(dataframe):
         score = fuzz.ratio("DATE OF THE DOCUMENT",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'sponsor_protocol_version_date','value': value,'score': score,'raw_text': value}
+            tempdict = {'id':'A.4.3','value': value,'score': score,'raw_text': value, 'eudractlabel':"Sponsor's protocol date", 'section':'A'}
             arrayStorage.append(tempdict)     
+ 
     #not to find in the prototcol, they're will be sent with no values                
     #Find ISRCTN number
-    tempdict = {'id':'intern_ct_ident_isrctn','value': '','score': 0,'raw_text': ''}
+    tempdict = {'id':'A.5.1','value': '','score': 0,'raw_text': '', 'eudractlabel':'ISRCTN number', 'section':'A'}
     arrayStorage.append(tempdict)
     #Find US NCT number
-    tempdict = {'id':'intern_ct_ident_usnct','value': '','score': 0,'raw_text': ''}
+    tempdict = {'id':'A.5.2','value': '','score': 0,'raw_text': '', 'eudractlabel':'US NCT Nnumber', 'section':'A'}
     arrayStorage.append(tempdict)
     
     #Find VERSION OF THE DOCUMENT
@@ -159,21 +172,170 @@ def getDataframeAnalyzedSectionA(dataframe):
         score = fuzz.ratio("UNIVERSAL TRIAL NUMBER",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'intern_ct_ident_utrn','value': value,'score': score,'raw_text': value}
+            tempdict = {'id':'A.5.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'', 'section':'A'}
             arrayStorage.append(tempdict) 
     #not to find in the prototcol, they're will be sent with no values        
     #Find "is this a resubmission ?"
-    tempdict = {'id':'is_resubmission','value': '','score': 0,'raw_text': ''}
+    tempdict = {'id':'A.6.1','value': '','score': 0,'raw_text': '', 'eudractlabel':'is this a resubmission ?', 'section':'A'}
     arrayStorage.append(tempdict)
     #Find "if yes indicate the resubmission letter"
-    tempdict = {'id':'resubmission_letter','value': '','score': 0,'raw_text': ''}
+    tempdict = {'id':'A.6.2','value': '','score': 0,'raw_text': '', 'eudractlabel':'if yes indicate the resubmission letter', 'section':'A'}
     arrayStorage.append(tempdict)
     #Find "is the trial part of agreed pip ?"
-    tempdict = {'id':'is_part_pip','value': '','score': 0,'raw_text': ''}
+    tempdict = {'id':'A7','value': '','score': 0,'raw_text': '', 'eudractlabel':'is the trial part of agreed Paediatric Investigation Plan ?', 'section':'A'}
     arrayStorage.append(tempdict)        
     #Find PIP EMANO
-    tempdict = {'id':'pip_decision_no','value': '','score': 0,'raw_text': ''}
+    tempdict = {'id':'A8','value': '','score': 0,'raw_text': '', 'eudractlabel':'Ema Decision number of Paediatric Investigation Plan', 'section':'A'}
     arrayStorage.append(tempdict)          
-          
+    
+    finalDataframe=pd.DataFrame(arrayStorage)        
+        
+    return finalDataframe
+
+#-----------------------------------------------------------------------------------------------------------
+
+    
+def getDataAnalyzedSectionB(dataframe):
+    #array of dict
+    arrayStorage=[]
+    
+    #Find "B.1 SPONSOR" part
+    #Find "SPONSOR ~ Name of oganisation"
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of SPONSOR using fuzzy score    
+        score = fuzz.ratio("SPONSOR",CurrentRow['RawText'].upper())    
+        if (score > 90) :
+            value=dataframe.at[id+1,'RawText']
+            tempdict = {'id':'b.1.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Name of Organisation','section':'B'}
+            arrayStorage.append(tempdict) 
+    #not to find in the prototcol, they will be given default values           
+    #Find "Given name"
+    tempdict = {'id':'b.1.2.1','value': 'Valérie','score': 100,'raw_text': '', 'eudractlabel':'Given Name','section':'B'}
+    arrayStorage.append(tempdict)
+    #Find "Middle Name"
+    tempdict = {'id':'b.1.2.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'Middle Name','section':'B'}
+    arrayStorage.append(tempdict)
+    #Find "Family name"
+    tempdict = {'id':'b.1.2.3','value': 'Fautier','score': 100,'raw_text': '', 'eudractlabel':'Family Name','section':'B'}
+    arrayStorage.append(tempdict)        
+    #Find "Street address"
+    tempdict = {'id':'b.1.3.1','value': '50 rue Carnot','score': 100,'raw_text': '', 'eudractlabel':'Street Address','section':'B'}
+    arrayStorage.append(tempdict) 
+    #Find "Town/City"
+    tempdict = {'id':'b.1.3.2','value': 'Suresnes','score': 100,'raw_text': '', 'eudractlabel':'Town/City','section':'B'}
+    arrayStorage.append(tempdict) 
+    #Find "Post code"
+    tempdict = {'id':'b.1.3.3','value': 'France','score': 100,'raw_text': '', 'eudractlabel':'Post Code','section':'B'}
+    arrayStorage.append(tempdict)  
+    #Find "Country"
+    tempdict = {'id':'b.1.3.4','value': 'France','score': 100,'raw_text': '', 'eudractlabel':'Country','section':'B'}
+    arrayStorage.append(tempdict) 
+    
+    #Find "Telephone number"
+    #Find "Country Dialing Prefix" +33
+    tempdict = {'id':'b.1.4.1','value': '+33','score': 100,'raw_text': '', 'eudractlabel':'Country Dialing Prefix','section':'B'}
+    arrayStorage.append(tempdict)        
+    #Find "Local Area Code"
+    tempdict = {'id':'b.1.4.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'Local Area Code','section':'B'}
+    arrayStorage.append(tempdict)    
+    #Find "Phone number"
+    tempdict = {'id':'b.1.4.3','value': '155727063','score': 100,'raw_text': '', 'eudractlabel':'Phone Number','section':'B'}
+    arrayStorage.append(tempdict)    
+    #Find "Extension"
+    tempdict = {'id':'b.1.4.4','value': '','score': 100,'raw_text': '', 'eudractlabel':'Extension','section':'B'}
+    arrayStorage.append(tempdict)    
+    
+    #Find "Fax number"
+    #Find "Country Dialing Prefix" +33
+    tempdict = {'id':'b.1.5.1','value': '+33','score': 100,'raw_text': '', 'eudractlabel':'Country Dialing Prefix','section':'B'}
+    arrayStorage.append(tempdict)    
+    #Find "Local Area Code"
+    tempdict = {'id':'b.1.5.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'Local Area Code','section':'B'}
+    arrayStorage.append(tempdict)    
+    #Find "Phone number"
+    tempdict = {'id':'b.1.5.3','value': '155725412','score': 100,'raw_text': '', 'eudractlabel':'Phone number','section':'B'}
+    arrayStorage.append(tempdict)    
+    #Find "Extension"
+    tempdict = {'id':'b.1.5.4','value': '','score': 100,'raw_text': '', 'eudractlabel':'Extension','section':'B'}
+    arrayStorage.append(tempdict)      
+    
+    #Find "email"
+    tempdict = {'id':'b.1.6','value': 'valerie.fautrier@servier.com','score': 100,'raw_text': '', 'eudractlabel':'E-mail','section':'B'}
+    arrayStorage.append(tempdict) 
+    
+    #-----------------------
+   
+    #Find "B.3 Status of the sponsor" part
+    #not to find in the prototcol, they will be given default values           
+    #Find "Commerial"
+    tempdict = {'id':'b.3.1','value': 'yes','score': 100,'raw_text': '', 'eudractlabel':'B.3.1 and B.3.1 Status of the sponsor','section':'B'}
+    arrayStorage.append(tempdict)
+    #Find "Non commercial,"
+    tempdict = {'id':'b.3.2','value': 'no','score': 100,'raw_text': '', 'eudractlabel':'B.3.1 and B.3.1 Status of the sponsor', 'section':'B'}
+    arrayStorage.append(tempdict)
+    
+    #-----------------------
+
+    #Find "B.4 Status of the sponsor" part
+    #not to find in the prototcol, they will be given default values           
+    #Find "Name of organisation"
+    tempdict = {'id':'b.4.1','value': 'ADIR','score': 100,'raw_text': '', 'eudractlabel':'Name of organisation', 'section':'B'}
+    arrayStorage.append(tempdict)
+    #Find "Country"
+    tempdict = {'id':'b.4.2','value': 'France','score': 100,'raw_text': '', 'eudractlabel':'Country', 'section':'B'}
+    arrayStorage.append(tempdict)
+    
+    #-----------------------
+
+    #Find "B.5 Contact point designated by the sponsor for further information" part
+    #not to find in the prototcol, they will be given default values           
+    #Find "Name of organisation"
+    tempdict = {'id':'b.5.1','value': value,'score': 100,'raw_text':'', 'eudractlabel':'Name of organisation', 'section':'B'}
+    arrayStorage.append(tempdict) 
+    #Find "Functional name of contact point"
+    tempdict = {'id':'b.1.5.2','value': 'Clinical Studies Departement','score': 100,'raw_text': '', 'eudractlabel':'Functional name of contact point', 'section':'B'}
+    arrayStorage.append(tempdict)      
+    #Find "Street address"
+    tempdict = {'id':'b.5.3.1','value': '50 rue Carnot','score': 100,'raw_text': '', 'eudractlabel':'Street Address','section':'B'}
+    arrayStorage.append(tempdict) 
+    #Find "Town/City"
+    tempdict = {'id':'b.5.3.2','value': 'Suresnes','score': 100,'raw_text': '', 'eudractlabel':'Town/City','section':'B'}
+    arrayStorage.append(tempdict) 
+    #Find "Country"
+    tempdict = {'id':'b.5.3.3','value': 'France','score': 100,'raw_text': '', 'eudractlabel':'','section':'B'}
+    arrayStorage.append(tempdict)  
+    
+    #Find "Telephone number"
+    #Find "Country Dialing Prefix" +33
+    tempdict = {'id':'b.5.4.1','value': '+33','score': 100,'raw_text': '', 'eudractlabel':'Country Dialing Prefix','section':'B'}
+    arrayStorage.append(tempdict)    
+    #Find "Local Area Code"
+    tempdict = {'id':'b.5.4.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'Local Area Code','section':'B'}
+    arrayStorage.append(tempdict)    
+    #Find "Phone number"
+    tempdict = {'id':'b.5.4.3','value': '1.55.72.70.63','score': 100,'raw_text': '', 'eudractlabel':'Phone number','section':'B'}
+    arrayStorage.append(tempdict)    
+    #Find "Extension"
+    tempdict = {'id':'b.5.4.4','value': '','score': 100,'raw_text': '', 'eudractlabel':'Extension','section':'B'}
+    arrayStorage.append(tempdict)    
+    
+    #Find "Fax number"
+    #Find "Country Dialing Prefix" +33
+    tempdict = {'id':'b.5.5.1','value': '+33','score': 100,'raw_text': '', 'eudractlabel':'Country Dialing Prefix','section':'B'}
+    arrayStorage.append(tempdict)      
+    #Find "Local Area Code"
+    tempdict = {'id':'b.5.5.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'Local Area Code','section':'B'}
+    arrayStorage.append(tempdict)      
+    #Find "Phone number"
+    tempdict = {'id':'b.5.5.3','value': '155725412','score': 100,'raw_text': '', 'eudractlabel':'Phone number','section':'B'}
+    arrayStorage.append(tempdict)      
+
+    #Find "Extension"
+    tempdict = {'id':'b.5.5.4','value': '','score': 100,'raw_text': '', 'eudractlabel':'Extension','section':'B'}
+    arrayStorage.append(tempdict)      
+    
+    #Find "email" "Functional email address rather than a personal one"
+    tempdict = {'id':'b.5.6','value': 'clinicaltrial@servier.com','score': 100,'raw_text': '', 'eudractlabel':'E-mail','section':'B'}
+    arrayStorage.append(tempdict) 
         
     return arrayStorage
