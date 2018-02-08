@@ -88,10 +88,10 @@ def getDataAnalyzed(dataframe):
 
 def ConvertDataFrameToObject(dataframe):
     
-    analyzed_dataframe_section_a=getDataAnalyzedSectionA(dataframe)
-    analyzed_dataframe_section_b=getDataAnalyzedSectionB(dataframe)
+    analyzed_data_section_a=getDataAnalyzedSectionA(dataframe)
+    analyzed_data_section_b=getDataAnalyzedSectionB(dataframe)
         
-    return pd.concat([analyzed_dataframe_section_a,analyzed_dataframe_section_b])
+    return analyzed_data_section_a+analyzed_data_section_b
     
     
         
@@ -187,10 +187,8 @@ def getDataAnalyzedSectionA(dataframe):
     #Find PIP EMANO
     tempdict = {'id':'A8','value': '','score': 0,'raw_text': '', 'eudractlabel':'Ema Decision number of Paediatric Investigation Plan', 'section':'A'}
     arrayStorage.append(tempdict)          
-    
-    finalDataframe=pd.DataFrame(arrayStorage)        
-        
-    return finalDataframe
+            
+    return arrayStorage
 
 #-----------------------------------------------------------------------------------------------------------
 
