@@ -3,13 +3,15 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+
+import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
+import Badge from 'material-ui/Badge';
 
-import * as actionCreators from '../actions/auth';
+import TextInput from '../TextInput';
+import * as actionCreators from '../../actions/auth';
 
-import { validateEmail } from '../utils/misc';
+import { validateEmail } from '../../utils/misc';
 
 function mapStateToProps(state) {
     return {
@@ -22,13 +24,19 @@ function mapDispatchToProps(dispatch) {
 }
 
 const style = {
-    marginTop: 15,
+    marginTop: 100,
     paddingBottom: 35,
     paddingTop: 0,
     width: '100%',
     textAlign: 'center',
     display: 'inline-block',
+    marginTop: 50,
+    paddingBottom: 250,
+    overflow: scroll
 };
+
+/* component styles */
+import { styles } from './styles.scss';
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class ResultView extends React.Component {
@@ -112,36 +120,39 @@ export default class ResultView extends React.Component {
 
     render() {
         return !(this.props.isFetching || this.props.loaded) ? <span/> : (
-            <div className="col-md-12" onKeyPress={(e) => this._handleKeyPress(e)}>
-                <Paper style={style}>
-                    {this.props.isFetching ? <span/> : 
-                    <div className="text-center">
-                        <h2>Metas get from protocol!</h2>
 
-                        {
-                            this.props.data && this.props.data.protocoldata.map((field) => <div key={field.id} className="col-md-12">
-                            <TextField
-                              hintText={field.id}
-                              floatingLabelText={field.id}
-                              type="text"
-                              value={field.value}
-                              errorText={this.state.email_error_text}
-                              onChange={(e) => this.changeValue(e, 'email')}
-                            />
-                        </div>)
+            <div className={`container-fluid ${styles}`}>
+                <div className="col-md-12" onKeyPress={(e) => this._handleKeyPress(e)}>
+                    <Paper style={style}>
+                        {this.props.isFetching ? <span/> : 
+                        <div className="scrollable">
+                            <h2>Metas get from protocol!</h2>
+
+                            {
+                                this.props.data && this.props.data.protocoldata.map((field) => <div key={field.id} className="col-md-12">
+                                <Badge badgeContent={field.score + '%'} color="primary">
+                                  <TextInput
+                                  section={field.id}
+                                  label={field.eudractlabel}
+                                  value={field.value}
+                                  onChange={(e) => this.changeValue(e, field.id)}
+                                  source={field.raw_text}
+                                  />
+                                </Badge>
+                            </div>)
+                            }
+                            
+                            <Button
+                              disabled={this.state.disabled}
+                              style={{ marginTop: 50 }}
+                              onClick={(e) => this.login(e)}
+                            >Submit</Button>
+
+                        </div>
                         }
-                        
-                        <RaisedButton
-                          disabled={this.state.disabled}
-                          style={{ marginTop: 50 }}
-                          label="Submit"
-                          onClick={(e) => this.login(e)}
-                        />
+                    </Paper>
 
-                    </div>
-                    }
-                </Paper>
-
+                </div>
             </div>
         );
 

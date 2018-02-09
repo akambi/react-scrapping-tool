@@ -4,7 +4,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 
 import * as actionCreators from '../actions/auth';
@@ -128,29 +128,31 @@ export default class RegisterView extends React.Component {
 
                         <div className="col-md-12">
                             <TextField
-                              hintText="Email"
-                              floatingLabelText="Email"
+                              required
+                              error={!!this.state.email_error_text}
+                              label="Email"
                               type="email"
-                              errorText={this.state.email_error_text}
+                              helperText={this.state.email_error_text}
                               onChange={(e) => this.changeValue(e, 'email')}
                             />
                         </div>
                         <div className="col-md-12">
                             <TextField
-                              hintText="Password"
-                              floatingLabelText="Password"
+                              required
+                              error={!!this.state.password_error_text}
+                              label="Password"
                               type="password"
-                              errorText={this.state.password_error_text}
+                              helperText={this.state.password_error_text}
                               onChange={(e) => this.changeValue(e, 'password')}
                             />
                         </div>
 
-                        <RaisedButton
+                        <Button
+                          variant="raised"
                           disabled={this.state.disabled}
                           style={{ marginTop: 50 }}
-                          label="Submit"
                           onClick={(e) => this.login(e)}
-                        />
+                        >Submit</Button>
 
                     </div>
                 </Paper>

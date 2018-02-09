@@ -5,10 +5,10 @@ import { Route } from 'react-router';
 
 /* containers */
 import { App } from './containers/App';
-import { HomeContainer } from './containers/HomeContainer';
+import ResultView from './components/Result';
 import LoginView from './components/LoginView';
 import RegisterView from './components/RegisterView';
-import ProtectedView from './components/ProtectedView';
+import { Home } from './components/Home';
 import Analytics from './components/Analytics';
 import NotFound from './components/NotFound';
 
@@ -18,10 +18,10 @@ import { requireNoAuthentication } from './components/notAuthenticatedComponent'
 
 export default (
     <Route path="/" component={App}>
-        <Route path="main" component={requireAuthentication(ProtectedView)} />
         <Route path="login" component={requireNoAuthentication(LoginView)} />
         <Route path="register" component={requireNoAuthentication(RegisterView)} />
-        <Route path="home" component={requireNoAuthentication(HomeContainer)} />
+        <Route path="load" component={requireAuthentication(Home)} />
+        <Route path="result" component={requireAuthentication(ResultView)} />
         <Route path="analytics" component={requireAuthentication(Analytics)} />
         <Route path="*" component={DetermineAuth(NotFound)} />
     </Route>
