@@ -7,6 +7,7 @@ Created on Tue Feb 06 15:33:48 2018
 from bs4 import BeautifulSoup
 import pandas as pd
 from fuzzywuzzy import fuzz
+import re
 
 #---------------------------------------------------------------------------------------------------
 def getProtocolData (HTMLString):
@@ -69,7 +70,6 @@ def getProtocolData (HTMLString):
     
     
     return StorageDataframe
-
 #-----------------------------------------------------------------------------------------------------------
 
 def getProtocolScrap(HTMLString):
@@ -91,9 +91,10 @@ def ConvertDataFrameToObject(dataframe):
     analyzed_array_section_a=getDataAnalyzedSectionA(dataframe)
     analyzed_array_section_b=getDataAnalyzedSectionB(dataframe)
     analyzed_array_section_c=getDataAnalyzedSectionC(dataframe)
+    analyzed_array_section_e=getDataAnalyzedSectionE(dataframe)    
 
         
-    return analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c
+    return analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c+analyzed_array_section_e
     
     
         
@@ -294,7 +295,7 @@ def getDataAnalyzedSectionB(dataframe):
     tempdict = {'id':'b.5.1','value': value,'score': 100,'raw_text':'', 'eudractlabel':'Name of organisation', 'section':'B'}
     arrayStorage.append(tempdict) 
     #Find "Functional name of contact point"
-    tempdict = {'id':'b.1.5.2','value': 'Clinical Studies Departement','score': 100,'raw_text': '', 'eudractlabel':'Functional name of contact point', 'section':'B'}
+    tempdict = {'id':'b.5.2','value': 'Clinical Studies Departement','score': 100,'raw_text': '', 'eudractlabel':'Functional name of contact point', 'section':'B'}
     arrayStorage.append(tempdict)      
     #Find "Street address"
     tempdict = {'id':'b.5.3.1','value': '50 rue Carnot','score': 100,'raw_text': '', 'eudractlabel':'Street Address','section':'B'}
@@ -363,6 +364,167 @@ def getDataAnalyzedSectionC(dataframe):
     arrayStorage.append(tempdict)
     
     return arrayStorage 
+
+    #-----------------------
+
+def getDataAnalyzedSectionE(dataframe):
+    #array of dict
+    arrayStorage=[]    
+    
+    #Find "INDICATION"
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of INDICATION using fuzzy score    
+        score = fuzz.ratio("INDICATION",CurrentRow['RawText'].upper())    
+        if (score > 90) :
+            value=dataframe.at[id+1,'RawText']
+            tempdict = {'id':'e.1.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Specify the medical condition(s) to be investigated (free text)','section':'E'}
+            arrayStorage.append(tempdict) 
+    
+    #Find ""
+    tempdict = {'id':'e.1.1.1','value': value,'score': 100,'raw_text': '', 'eudractlabel':'Medical condition in easily understood language','section':'E'}
+    arrayStorage.append(tempdict)
+    #Find ""
+    tempdict = {'id':'e.1.1.2','value':'','score': 100,'raw_text': '', 'eudractlabel':'Identify the therapeutic area','section':'E'}
+    arrayStorage.append(tempdict)
+   
+    #E1.2 medDRA information 
+    #deductible field from INDICATION
+    tempdict = {'id':'e.1.2.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'Term','section':'E'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field INDICATION
+    tempdict = {'id':'e.1.2.2','value':'','score': 100,'raw_text': '', 'eudractlabel':'Level','section':'E'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field INDICATION
+    tempdict = {'id':'e.1.2.3','value':'','score': 100,'raw_text': '', 'eudractlabel':'Classification code','section':'E'}
+    arrayStorage.append(tempdict)
+    
+    #E2 Objective of the trial 
+    #Find "PRIMARY OBJECTIVE"
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of PRIMARY OBJECTIVE using fuzzy score    
+        #score = fuzz.ratio("PRIMARY OBJECTIVE",CurrentRow['RawText'].upper()) 
+        #if score > 70 : print [score,CurrentRow['RawText'].upper()]
+        pattern=re.compile("^(\s|\\xa0)*[0-9](\.[0-9])*\.?(\s|\\xa0)*PRIMARY OBJECTIVE(\s|\\xa0)*$")
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        if (obj):
+            idCopy=id+1
+            value=''
+            while(dataframe.at[idCopy,'documentpart']!='Header'):
+                 value=value+dataframe.at[idCopy,'RawText']
+                 idCopy += 1
+            tempdict = {'id':'e.2.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Main objective of the trial','section':'E'}
+            arrayStorage.append(tempdict)
+    
+    #Find "SECONDARY OBJECTIVE"
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of SECONDARY OBJECTIVE using fuzzy score    
+        #score = fuzz.ratio("SECONDARY OBJECTIVE",CurrentRow['RawText'].upper()) 
+        #if score > 60 : print [score,CurrentRow['RawText'].upper(),dataframe.at[id+1,'RawText']]
+        pattern=re.compile("^(\s|\\xa0)*[0-9](\.[0-9])*\.?(\s|\\xa0)*SECONDARY OBJECTIVES(\s|\\xa0)*$")
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        if (obj and dataframe.at[idCopy,'documentpart']=='Header'):
+            idCopy=id+1
+            value=''
+            while(dataframe.at[idCopy,'documentpart']!='Header'):
+                 value=value+dataframe.at[idCopy,'RawText']
+                 idCopy += 1
+            tempdict = {'id':'e.2.2','value': value,'score': score,'raw_text': value, 'eudractlabel':'Secondary objectives of the trial','section':'E'}
+            arrayStorage.append(tempdict)
+            
+    #deductible field 
+    tempdict = {'id':'e.2.3','value':'','score': 100,'raw_text': '', 'eudractlabel':'Is there a sub-study?','section':'E'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.2.3.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'If Yes give the full title, date and version of each sub-study and their related objectives','section':'E'}
+    arrayStorage.append(tempdict)
+    
+    #Find "INCLUSION CRITERIA"
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of INCLUSION CRITERIA using regex 
+        pattern=re.compile("^(\s|\\xa0)*[0-9](\.[0-9])*\.?(\s|\\xa0)*INCLUSION CRITERIA(\s|\\xa0)*(:?)(\s|\\xa0)*$")
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        if (obj and dataframe.at[id,'documentpart']=='Header'):
+            print obj.group() 
+            stop_flag=dataframe.at[id,'Container']
+            idCopy=id+1
+            value=''
+            while(dataframe.at[idCopy,'Container']!=stop_flag):
+                 value=value+dataframe.at[idCopy,'RawText']
+                 idCopy += 1
+            tempdict = {'id':'e.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'Principal inclusion criteria','section':'E'}
+            arrayStorage.append(tempdict)
+     
+    #Find "NON-INCLUSION CRITERIA"
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of NON-INCLUSION CRITERIA using regex  
+        pattern=re.compile("^(\s|\\xa0)*[0-9](\.[0-9])*\.?(\s|\\xa0)*NON-INCLUSION CRITERIA(\s|\\xa0)*(:?)(\s|\\xa0)*$")
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        #if it matches the pattern and it's a header 
+        if (obj and dataframe.at[id,'documentpart']=='Header'):
+            print obj.group() 
+            stop_flag=dataframe.at[id,'Container']
+            idCopy=id+1
+            value=''
+            #get all paragraph of the header with embedded headers
+            while(dataframe.at[idCopy,'Container']!=stop_flag):
+                 value=value+dataframe.at[idCopy,'RawText']
+                 idCopy += 1
+            tempdict = {'id':'e.4','value': value,'score': score,'raw_text': value, 'eudractlabel':'Principal exclusion criteria','section':'E'}
+            arrayStorage.append(tempdict)       
+    
+    #Find "PRIMARY ENDPOINTS"
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of PRIMARY ENDPOINTS CRITERIA using regex    
+        pattern=re.compile("^(\s|\\xa0)*[0-9](\.[0-9])*\.?(\s|\\xa0)*END(\s|\\xa0)*POINTS(\s|\\xa0)*(:?)(\s|\\xa0)*$",re.IGNORECASE)
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        #if it matches the pattern and it's a header 
+        if (obj and dataframe.at[id,'documentpart']=='Header'):
+            print obj.group() 
+            stop_flag=dataframe.at[id,'Container']
+            idCopy=id+1
+            value=''
+            #get all paragraph of the header with embedded headers
+            while(dataframe.at[idCopy,'Container']!=stop_flag):
+                 value=value+dataframe.at[idCopy,'RawText']
+                 idCopy += 1
+            tempdict = {'id':'e.5.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Primary end point(s)','section':'E'}
+            arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.5.1.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'Timepoint(s) of evaluation of this end point','section':'E'}
+    arrayStorage.append(tempdict)        
+    
+    #Find "SECONDARY ENDPOINTS"
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of PRIMARY ENDPOINTS CRITERIA using regex    
+        pattern=re.compile("^(\s|\\xa0)*[0-9](\.[0-9])*\.?(\s|\\xa0)*SECONDARY ENDPOINTS(\s|\\xa0)*(:?)(\s|\\xa0)*$",re.IGNORECASE)
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        #if it matches the pattern and it's a header 
+        if (obj and dataframe.at[id,'documentpart']=='Header'):
+            print obj.group() 
+            stop_flag=dataframe.at[id,'Container']
+            idCopy=id+1
+            value=''
+            #get all paragraph of the header with embedded headers
+            while(dataframe.at[idCopy,'Container']!=stop_flag):
+                 value=value+dataframe.at[idCopy,'RawText']
+                 idCopy += 1
+            tempdict = {'id':'e.5.2','value': value,'score': score,'raw_text': value, 'eudractlabel':'Secondary end point(s))','section':'E'}
+            arrayStorage.append(tempdict)     
+     
+    #deductible field 
+    tempdict = {'id':'e.5.2.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'Timepoint(s) of evaluation of this end point','section':'E'}
+    arrayStorage.append(tempdict)      
+    
+   
+    
+    return arrayStorage
+
+
+  
 
 #test code
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
