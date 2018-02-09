@@ -3,6 +3,7 @@ import { FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA,
 import { parseJSON } from '../utils/misc';
 import { data_about_user, getProtocolMeta } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
+import { browserHistory } from 'react-router';
 
 export function receiveProtectedData(data) {
     return {
@@ -58,6 +59,7 @@ export function processProtocol(protocolFile, token) {
             .then(parseJSON)
             .then(response => {
                 dispatch(receiveProtocolMeta(protocolFile, response));
+                browserHistory.push('/result');
             })
             .catch(error => {
                 if (error.status === 403) {

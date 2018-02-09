@@ -1,5 +1,4 @@
 alembic==0.8.7
-bcrypt==3.1.0
 cffi==1.7.0
 click==6.6
 coverage==4.2
@@ -32,3 +31,4 @@ BeautifulSoup4==4.6.0
 pandas
 numpy==1.14.0
 fuzzywuzzy
+flask_bcrypt

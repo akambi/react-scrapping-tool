@@ -1,11 +1,40 @@
 import React from 'react';
 
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
 
 /* application components */
-import { Header } from '../../components/Header';
+import Header from '../../components/Header';
+import Navigation from '../../components/Navigation';
 import { Footer } from '../../components/Footer';
+import { Home } from '../../components/Home';
+
+const theme = createMuiTheme({});
+
+const styles = {
+  root: {
+    width: '100%',
+    zIndex: 1,
+    overflow: 'hidden',
+  },
+  appFrame: {
+    position: 'relative',
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+  },
+  content: {
+    width: '100%',
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: 24,
+    height: 'calc(100% - 56px)',
+    marginTop: 56,
+    [theme.breakpoints.up('sm')]: {
+      height: 'calc(100% - 64px)',
+      marginTop: 64,
+    },
+  },
+};
 
 /* global styles for app */
 import './styles/app.scss';
@@ -17,19 +46,17 @@ class App extends React.Component { // eslint-disable-line react/prefer-stateles
 
     render() {
         return (
-            <MuiThemeProvider muiTheme={getMuiTheme()}>
-                <section>
+            <MuiThemeProvider theme={theme}>
+                <div style={styles.root}>
+                <section style={styles.appFrame}>
                     <Header />
-                    <div
-                      className="container"
-                      style={{ marginTop: 10, paddingBottom: 250 }}
-                    >
+                    <Navigation />
+                    <main style={styles.content}>
                         {this.props.children}
-                    </div>
-                    <div>
-                        <Footer />
-                    </div>
+                    </main>
+                    <Footer />
                 </section>
+                </div>
             </MuiThemeProvider>
         );
     }

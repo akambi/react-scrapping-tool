@@ -3,24 +3,11 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import RaisedButton from 'material-ui/RaisedButton';
-import FontIcon from 'material-ui/FontIcon';
+import Button from 'material-ui/Button';
+import Icon from 'material-ui/Icon';
+import FileUpload from 'material-ui-icons/FileUpload';
 
-const styles = {
-  button: {
-    margin: 12,
-  },
-  fileInput: {
-    cursor: 'pointer',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-    width: '100%',
-    opacity: 0,
-  },  
-};
+import { withStyles } from 'material-ui/styles';
 
 import Paper from 'material-ui/Paper';
 import * as actionCreators from '../actions/data';
@@ -36,16 +23,39 @@ function mapDispatchToProps(dispatch) {
 }
 
 const style = {
-    marginTop: 10,
-    paddingBottom: 35,
-    paddingTop: 0,
+    marginTop: 100,
+    paddingBottom: 50,
+    paddingTop: 10,
     width: '100%',
     textAlign: 'center',
     display: 'inline-block',
 };
 
+const styles = theme => ({
+  fileInput: {
+    cursor: 'pointer',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    width: '100%',
+    opacity: 0,
+  },  
+  button: {
+    margin: theme.spacing.unit,
+    margin: 12,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+});
+
 @connect(mapStateToProps, mapDispatchToProps)
-export default class FileUploadView extends React.Component {
+class FileUploadView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -103,32 +113,30 @@ export default class FileUploadView extends React.Component {
     }
 
     render() {
+        const { classes, theme } = this.props;
+
         return (
             <div className="col-md-12" onKeyPress={(e) => this._handleKeyPress(e)}>
                 <Paper style={style}>
                     <div>
                         <div className="col-md-12">
 
-                            <RaisedButton
-                              label="Choose a HTML Protocol File"
-                              labelPosition="before"
-                              primary={true}
-                              icon={<FontIcon className="muidocs-icon-custom-github" />}
-                              style={styles.button}
-                              containerElement="label">
-                              <input type="file" style={styles.fileInput}
-                               onChange={(e) => this.onChangeFile(e)}/>
-                            </RaisedButton>
+                            <Button className={classes.button}
+                              variant="raised"
+                              color="default">
+                              <input type="file" className={classes.fileInput}
+                               onChange={(e) => this.onChangeFile(e)}/>Choose a HTML Protocol File
+                                <FileUpload className={classes.rightIcon} />
+                            </Button>
 
-                            <RaisedButton
+                            <Button className={classes.button}
+                              variant="raised"
                               disabled={this.state.disabled}
                               style={{ marginTop: 50 }}
-                              label="Upload"
-                              onClick={(e) => this.upload(e)}/>
+                              onClick={(e) => this.upload(e)}>Upload</Button>
                         </div>
                     </div>
                 </Paper>
-
             </div>
         );
 
@@ -138,3 +146,5 @@ export default class FileUploadView extends React.Component {
 FileUploadView.propTypes = {
     processProtocol: React.PropTypes.func,
 };
+
+export default withStyles(styles, { withTheme: true })(FileUploadView);

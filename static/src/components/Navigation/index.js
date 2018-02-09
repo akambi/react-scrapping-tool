@@ -19,6 +19,7 @@ import AccountCircle from 'material-ui-icons/AccountCircle';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
+import { sectionListItems } from './sections';
 
 import * as actionCreators from '../../actions/auth';
 
@@ -118,7 +119,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-class Header extends Component {
+class Navigation extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -159,66 +160,28 @@ class Header extends Component {
         const { classes, theme } = this.props;
 
         return (
-                    <AppBar position="fixed" className={classNames(classes.header, classes.appBar, this.state.open && classes.appBarShift)}>
-                        <Toolbar disableGutters={!this.state.open}>
-                          <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={this.handleDrawerOpen}
-                            className={classNames(classes.menuButton, this.state.open && classes.hide)}
-                          >
-                            <MenuIcon />
-                          </IconButton>
-
-                        <Typography variant="title" color="inherit" className={classes.flex} style={{ lineHeight: 'normal' }}>
-                            <div>
-                                <div style={{ marginTop: 10 }}>CAPS</div>
-                                <div style={{ fontSize: 'small', fontWeight: 300 }}>Clinical protocol Scrapper</div>
-                            </div>
-                        </Typography>
-
-                        <div>
-                            {
-                                !this.props.isAuthenticated ?
-                                    <div>
-                                        <Button
-                                          onClick={() => this.dispatchNewRoute('/login')}
-                                          icon={<AccountCircle />}
-                                          color="secondary"
-                                        >Login</Button>
-                                        <Button
-                                          onClick={() => this.dispatchNewRoute('/register')}
-                                          icon={<Icon className="material-icons"></Icon>}
-                                          color="secondary"
-                                        >Register</Button>
-                                    </div>
-                                    :
-                                    <div>
-                                        <Button
-                                         onClick={() => this.dispatchNewRoute('/')}
-                                        color="secondary"
-                                         icon={<Icon className="material-icons">home</Icon>}>
-                                            Load
-                                         </Button>
-                                        <Button
-                                          onClick={() => this.dispatchNewRoute('/analytics')}
-                                          color="secondary"
-                                          icon={<Icon className="material-icons" />}
-                                        >Analytics</Button>
-                                        <Button
-                                          onClick={(e) => this.logout(e)}
-                                          color="secondary"
-                                        ><Icon className="material-icons" />Logout</Button>
-                                    </div>
-                                }                        
-                        </div>                              
-                    </Toolbar>
-                  </AppBar>
+          <Drawer
+              variant="permanent"
+              classes={{
+                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+              }}
+              open={this.state.open}
+            >                
+              <div className={classes.drawerInner}>
+                <div className={classes.drawerHeader}>
+                  <IconButton onClick={this.handleDrawerClose}>
+                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                  </IconButton>
+                </div>
+                <Divider />
+                <List className={classes.list}>{sectionListItems}</List>
+              </div>
+          </Drawer>
         );
     }
 }
 
-Header.propTypes = {
+Navigation.propTypes = {
     logoutAndRedirect: React.PropTypes.func,
     isAuthenticated: React.PropTypes.bool,
     userName: React.PropTypes.string,
@@ -226,4 +189,4 @@ Header.propTypes = {
     data: React.PropTypes.object,
 };
 
-export default withStyles(styles, { withTheme: true })(Header);
+export default withStyles(styles, { withTheme: true })(Navigation);

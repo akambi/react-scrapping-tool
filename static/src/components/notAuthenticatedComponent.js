@@ -38,12 +38,12 @@ export function requireNoAuthentication(Component) {
 
         checkAuth(props = this.props) {
             if (props.isAuthenticated) {
-                browserHistory.push('/main');
+                browserHistory.push('/load');
 
             } else {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    fetch('/api/is_token_valid', {
+                    fetch('/caps_api/is_token_valid', {
                         method: 'post',
                         credentials: 'include',
                         headers: {
@@ -55,7 +55,7 @@ export function requireNoAuthentication(Component) {
                         .then(res => {
                             if (res.status === 200) {
                                 this.props.loginUserSuccess(token);
-                                browserHistory.push('/main');
+                                browserHistory.push('/load');
 
                             } else {
                                 this.setState({
