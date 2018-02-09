@@ -81,17 +81,19 @@ def getProtocolScrap(HTMLString):
 
 def getDataAnalyzed(dataframe):
     
-    return dataframe
+    return ConvertDataFrameToObject(dataframe)
 
 
 #-----------------------------------------------------------------------------------------------------------
 
 def ConvertDataFrameToObject(dataframe):
     
-    analyzed_data_section_a=getDataAnalyzedSectionA(dataframe)
-    analyzed_data_section_b=getDataAnalyzedSectionB(dataframe)
+    analyzed_array_section_a=getDataAnalyzedSectionA(dataframe)
+    analyzed_array_section_b=getDataAnalyzedSectionB(dataframe)
+    analyzed_array_section_c=getDataAnalyzedSectionC(dataframe)
+
         
-    return analyzed_data_section_a+analyzed_data_section_b
+    return analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c
     
     
         
@@ -172,7 +174,7 @@ def getDataAnalyzedSectionA(dataframe):
         score = fuzz.ratio("UNIVERSAL TRIAL NUMBER",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'A.5.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'', 'section':'A'}
+            tempdict = {'id':'A.5.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'WHO Universal Trail Number (UTN)', 'section':'A'}
             arrayStorage.append(tempdict) 
     #not to find in the prototcol, they're will be sent with no values        
     #Find "is this a resubmission ?"
@@ -187,7 +189,8 @@ def getDataAnalyzedSectionA(dataframe):
     #Find PIP EMANO
     tempdict = {'id':'A8','value': '','score': 0,'raw_text': '', 'eudractlabel':'Ema Decision number of Paediatric Investigation Plan', 'section':'A'}
     arrayStorage.append(tempdict)          
-            
+    
+        
     return arrayStorage
 
 #-----------------------------------------------------------------------------------------------------------
@@ -223,7 +226,7 @@ def getDataAnalyzedSectionB(dataframe):
     tempdict = {'id':'b.1.3.2','value': 'Suresnes','score': 100,'raw_text': '', 'eudractlabel':'Town/City','section':'B'}
     arrayStorage.append(tempdict) 
     #Find "Post code"
-    tempdict = {'id':'b.1.3.3','value': 'France','score': 100,'raw_text': '', 'eudractlabel':'Post Code','section':'B'}
+    tempdict = {'id':'b.1.3.3','value': '92284','score': 100,'raw_text': '', 'eudractlabel':'Postal Code','section':'B'}
     arrayStorage.append(tempdict)  
     #Find "Country"
     tempdict = {'id':'b.1.3.4','value': 'France','score': 100,'raw_text': '', 'eudractlabel':'Country','section':'B'}
@@ -300,8 +303,11 @@ def getDataAnalyzedSectionB(dataframe):
     tempdict = {'id':'b.5.3.2','value': 'Suresnes','score': 100,'raw_text': '', 'eudractlabel':'Town/City','section':'B'}
     arrayStorage.append(tempdict) 
     #Find "Country"
-    tempdict = {'id':'b.5.3.3','value': 'France','score': 100,'raw_text': '', 'eudractlabel':'','section':'B'}
+    tempdict = {'id':'b.5.3.3','value': '92284','score': 100,'raw_text': '', 'eudractlabel':'Postal Code','section':'B'}
     arrayStorage.append(tempdict)  
+     #Find "Country"
+    tempdict = {'id':'b.5.3.4','value': 'France','score': 100,'raw_text': '', 'eudractlabel':'Country','section':'B'}
+    arrayStorage.append(tempdict)
     
     #Find "Telephone number"
     #Find "Country Dialing Prefix" +33
@@ -335,5 +341,29 @@ def getDataAnalyzedSectionB(dataframe):
     #Find "email" "Functional email address rather than a personal one"
     tempdict = {'id':'b.5.6','value': 'clinicaltrial@servier.com','score': 100,'raw_text': '', 'eudractlabel':'E-mail','section':'B'}
     arrayStorage.append(tempdict) 
-        
+            
     return arrayStorage
+
+    #-----------------------
+
+
+def getDataAnalyzedSectionC(dataframe):
+    #array of dict
+    arrayStorage=[]
+    #find "C1 request for the competent authority" part
+    #not to find in the prototcol, they will be given default values           
+    #Find "Given name"
+    tempdict = {'id':'c.1.5.1','value': 'yes','score': 100,'raw_text': '', 'eudractlabel':'Do you want a copy of the CTA form data saved on EudraCT as an XML file ? ','section':'C'}
+    arrayStorage.append(tempdict)
+    #Find "Middle Name"
+    tempdict = {'id':'c.1.5.1.1','value': 'clilicaltrials@servier.com','score': 100,'raw_text': '', 'eudractlabel':'If Yes provide the e-mail address(es) to which it should be sent (up to five addresses)','section':'C'}
+    arrayStorage.append(tempdict)
+    #Find "Family name"
+    tempdict = {'id':'c.1.5.1.2','value': 'yes','score': 100,'raw_text': '', 'eudractlabel':'Do you want to recieve this via password protected link(s)','section':'C'}
+    arrayStorage.append(tempdict)
+    
+    return arrayStorage 
+
+#test code
+#HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
+#ps_dataframe=pd.DataFrame(getProtocolScrap(open(HTMLPath)))
