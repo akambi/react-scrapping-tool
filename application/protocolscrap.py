@@ -293,8 +293,8 @@ def getDataAnalyzedSectionB(dataframe):
     #Find "Name of organisation"
     tempdict = {'id':'b.5.1','value': value,'score': 100,'raw_text':'', 'eudractlabel':'Name of organisation', 'section':'B'}
     arrayStorage.append(tempdict) 
-    #Find "Functional name of contact point"
-    tempdict = {'id':'b.1.5.2','value': 'Clinical Studies Departement','score': 100,'raw_text': '', 'eudractlabel':'Functional name of contact point', 'section':'B'}
+    #Find "Functional name b.1.5.2of contact point"
+    tempdict = {'id':'b.5.2','value': 'Clinical Studies Departement','score': 100,'raw_text': '', 'eudractlabel':'Functional name of contact point', 'section':'B'}
     arrayStorage.append(tempdict)      
     #Find "Street address"
     tempdict = {'id':'b.5.3.1','value': '50 rue Carnot','score': 100,'raw_text': '', 'eudractlabel':'Street Address','section':'B'}
