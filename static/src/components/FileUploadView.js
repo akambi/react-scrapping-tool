@@ -45,6 +45,7 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
     margin: 12,
+    marginTop: 50,
   },
   leftIcon: {
     marginRight: theme.spacing.unit,
@@ -131,8 +132,8 @@ class FileUploadView extends React.Component {
 
                             <Button className={classes.button}
                               variant="raised"
+                              color="primary"
                               disabled={this.state.disabled}
-                              style={{ marginTop: 50 }}
                               onClick={(e) => this.upload(e)}>Upload</Button>
                         </div>
                     </div>

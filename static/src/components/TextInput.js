@@ -6,6 +6,8 @@ import TextField from 'material-ui/TextField';
 import { FormControl } from 'material-ui/Form';
 import purple from 'material-ui/colors/purple';
 import SnackBar from './SnackBar';
+import ContentCopy from 'material-ui-icons/ContentCopy';
+import IconButton from 'material-ui/IconButton';
 
 const styles = theme => ({
   container: {
@@ -45,10 +47,20 @@ const styles = theme => ({
   textFieldFormLabel: {
     fontSize: 18,
   },
+  button: {
+    margin: theme.spacing.unit,
+  },
 });
 
 function TextInput(props) {
   const { classes, section, label, value, onChange, source } = props;
+
+  let textInput = null;
+
+  function copyToClipboard(e) {
+      textInput.select()
+      document.execCommand('copy')
+  }
 
   return (
     <div className={classes.container}>
@@ -71,6 +83,7 @@ function TextInput(props) {
       <TextField
         label={label}
         value={value}
+        inputRef={(input) => { textInput = input; }}
         InputProps={{
           disableUnderline: true,
           classes: {
@@ -84,6 +97,12 @@ function TextInput(props) {
         }}
       />
       <SnackBar message={source}/>
+      {/* only displaying the button if the copy command exists */
+        document.queryCommandSupported('copy') &&
+        <IconButton className={classes.button} aria-label="Copy to clipboard" onClick={copyToClipboard}>
+          <ContentCopy />
+        </IconButton>
+      }
     </div>
   );
 }

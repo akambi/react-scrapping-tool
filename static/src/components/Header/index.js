@@ -19,8 +19,15 @@ import AccountCircle from 'material-ui-icons/AccountCircle';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
+import SvgIcon from 'material-ui/SvgIcon';
 
 import * as actionCreators from '../../actions/auth';
+
+const HomeIcon = props => (
+  <SvgIcon {...props}>
+    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+  </SvgIcon>
+);
 
 const drawerWidth = 240;
 
@@ -101,7 +108,13 @@ const styles = theme => ({
       marginTop: 64,
     },
   },
-  header: { top: 0 }
+  header: { top: 0 },
+  flex: {
+    flex: 1,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
 });
 
 function mapStateToProps(state) {
@@ -159,7 +172,7 @@ class Header extends Component {
         const { classes, theme } = this.props;
 
         return (
-                    <AppBar position="fixed" className={classNames(classes.header, classes.appBar, this.state.open && classes.appBarShift)}>
+                    <AppBar color="primary" position="fixed" className={classNames(classes.header, classes.appBar, this.state.open && classes.appBarShift)}>
                         <Toolbar disableGutters={!this.state.open}>
                           <IconButton
                             color="inherit"
@@ -183,31 +196,24 @@ class Header extends Component {
                                     <div>
                                         <Button
                                           onClick={() => this.dispatchNewRoute('/login')}
-                                          icon={<AccountCircle />}
-                                          color="secondary"
-                                        >Login</Button>
+                                          color="inherit"
+                                        >Login <AccountCircle className={classes.leftIcon}/></Button>
                                         <Button
                                           onClick={() => this.dispatchNewRoute('/register')}
                                           icon={<Icon className="material-icons"></Icon>}
-                                          color="secondary"
+                                          color="inherit"
                                         >Register</Button>
                                     </div>
                                     :
                                     <div>
                                         <Button
                                          onClick={() => this.dispatchNewRoute('/')}
-                                        color="secondary"
-                                         icon={<Icon className="material-icons">home</Icon>}>
-                                            Load
+                                         color="inherit">
+                                            <HomeIcon className={classes.leftIcon}/> Load
                                          </Button>
                                         <Button
-                                          onClick={() => this.dispatchNewRoute('/analytics')}
-                                          color="secondary"
-                                          icon={<Icon className="material-icons" />}
-                                        >Analytics</Button>
-                                        <Button
                                           onClick={(e) => this.logout(e)}
-                                          color="secondary"
+                                          color="inherit"
                                         ><Icon className="material-icons" />Logout</Button>
                                     </div>
                                 }                        
