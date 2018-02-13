@@ -379,25 +379,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             tempdict = {'id':'e.1.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Specify the medical condition(s) to be investigated (free text)','section':'E', 'type':'multiline'}
             arrayStorage.append(tempdict) 
     
-    #Find ""
-    tempdict = {'id':'e.1.1.1','value': value,'score': 100,'raw_text': '', 'eudractlabel':'Medical condition in easily understood language','section':'E', 'type':'multiline'}
-    arrayStorage.append(tempdict)
-    #Find ""
-    tempdict = {'id':'e.1.1.2','value':'','score': 100,'raw_text': '', 'eudractlabel':'Identify the therapeutic area','section':'E', 'type':'text'}
-    arrayStorage.append(tempdict)
-   
-    #E1.2 medDRA information 
-    #deductible field from INDICATION
-    tempdict = {'id':'e.1.2.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'Term','section':'E', 'type':'text'}
-    arrayStorage.append(tempdict)
     
-    #deductible field INDICATION
-    tempdict = {'id':'e.1.2.2','value':'','score': 100,'raw_text': '', 'eudractlabel':'Level','section':'E', 'type':'text'}
-    arrayStorage.append(tempdict)
-    
-    #deductible field INDICATION
-    tempdict = {'id':'e.1.2.3','value':'','score': 100,'raw_text': '', 'eudractlabel':'Classification code','section':'E', 'type':'text'}
-    arrayStorage.append(tempdict)
     
     #E2 Objective of the trial 
     #Find "PRIMARY OBJECTIVE"
@@ -723,13 +705,30 @@ def search_keywords(keywords_list,dataframe):
             return 'Yes'
     return 'No'   
 
-        
-         
-  
-
+# Function to load meddra PTs in memory (Warning : location is hard coded, to fix in a next release) 
+#def getMatchedPTS(StringToCode):
+#    """Take the string to code and check if one or more PT matches with fuzzy search"""
+#    MedDRAPTDataFrame = pd.read_csv('C:\Users\zjaadi\caps\CAPS\application\meddra\pt.asc',sep='$',header=None)
+#    MedDRASOCDataFrame = pd.read_csv('C:\Users\zjaadi\caps\CAPS\application\meddra\soc.asc',sep='$',header=None)
+#    MedDRAVersion = "18.1"
+#    StringToCode = StringToCode.upper()
+#    MatchContainer = []
+#    for id,CurrentPT in MedDRAPTDataFrame.iterrows():
+#        score = fuzz.token_set_ratio(StringToCode,CurrentPT[1].upper()) 
+#        if (score > 90) : 
+#            print score,CurrentPT[1]
+#            #find the SOC label
+#            currentSOCLabel = str(list(MedDRASOCDataFrame[MedDRASOCDataFrame[0] == CurrentPT[3]][1])[0]) #aargh! probably not pythonic
+#            CurrentMatch = " PTLABEL= "+CurrentPT[1]+",PTCOD= "+int(CurrentPT[0])+", SOCCOD= "+int(CurrentPT[3])+", SOCLABEL="+currentSOCLabel+", SCORE="+score+", MedDRAVERSION= "+MedDRAVersion
+#            MatchContainer.append(CurrentMatch)
+#    return ' '.join(MatchContainer)
+#
+#         
+#  
+#
 #test code
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
-HTMLPath = "C:\Users\zjaadi\Desktop\CL2-95005-002_TASCO1_Amended Protocol_INT_ Final Version CLEAN_25-01-2017.htm"
-ps_dataframe=pd.DataFrame(getProtocolScrap(open(HTMLPath)))
-dataframe=getProtocolData(open(HTMLPath))
+#HTMLPath = "C:\Users\zjaadi\Desktop\CL2-95005-002_TASCO1_Amended Protocol_INT_ Final Version CLEAN_25-01-2017.htm"
+#ps_dataframe=pd.DataFrame(getProtocolScrap(open(HTMLPath)))
+#dataframe=getProtocolData(open(HTMLPath))
 
