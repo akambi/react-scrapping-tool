@@ -23,7 +23,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const style = {
-    marginTop: 100,
+    /*marginTop: 100,*/
     paddingBottom: 50,
     paddingTop: 10,
     width: '100%',
@@ -121,7 +121,6 @@ class FileUploadView extends React.Component {
                 <Paper style={style}>
                     <div>
                         <div className="col-md-12">
-
                             <Button className={classes.button}
                               variant="raised"
                               color="default">
