@@ -1,6 +1,6 @@
 /* eslint camelcase: 0, no-underscore-dangle: 0 */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -8,6 +8,7 @@ import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Badge from 'material-ui/Badge';
 
+import { withStyles } from 'material-ui/styles';
 import TextInput from '../TextInput';
 import * as actionCreators from '../../actions/auth';
 
@@ -15,7 +16,7 @@ import { validateEmail } from '../../utils/misc';
 
 function mapStateToProps(state) {
     return {
-        ...state.data.protocol_metas
+        ...state.data.protocol_metas, section: state.data.selectedSection
     };
 }
 
@@ -34,11 +35,26 @@ const style = {
     overflow: scroll
 };
 
+const cstyles = {
+  badgeRed: {
+    backgroundColor: 'red'
+  },
+  badgeGreen: {
+    backgroundColor: 'green'
+  },
+  badgeOrange: {
+    backgroundColor: 'orange'
+  },
+  label: {
+    textTransform: 'capitalize',
+  },
+};
+
 /* component styles */
 import { styles } from './styles.scss';
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class ResultView extends React.Component {
+class ResultView extends Component {
 
     constructor(props) {
         super(props);
@@ -118,6 +134,7 @@ export default class ResultView extends React.Component {
     }
 
     render() {
+
         return !(this.props.isFetching || this.props.loaded) ? <span ><img src="./img/tenor.gif" alt="image du loader" /></span> : (
 
             <div className={`container-fluid ${styles}`}>
@@ -128,8 +145,14 @@ export default class ResultView extends React.Component {
                             <h2>Metas get from protocol!</h2>
 
                             {
-                                this.props.data && this.props.data.protocoldata.map((field) => <div key={field.id} className="col-md-12">
-                                <Badge badgeContent={field.score + '%'} color="primary">
+                                this.props.data &&
+                                this.props.data.protocoldata.filter(field => field.section === this.props.section)
+                                .map((field) => <div key={field.id} className="col-md-12">
+                                <Badge badgeContent={field.score + '%'}
+                                classes={{
+                                    badge: (field.score < 40 ? this.props.classes.badgeRed : 
+                                    (field.score < 95 ? this.props.classes.badgeOrange : this.props.classes.badgeGreen))
+                                }}>
                                   <TextInput
                                   section={field.id}
                                   label={field.eudractlabel}
@@ -164,4 +187,8 @@ ResultView.propTypes = {
     data: React.PropTypes.object,
     isFetching: React.PropTypes.bool,
     loaded: React.PropTypes.bool,
+    classes: React.PropTypes.object.isRequired,
+    section: React.PropTypes.string,
 };
+
+export default withStyles(cstyles, { withTheme: true })(ResultView);

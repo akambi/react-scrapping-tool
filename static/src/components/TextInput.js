@@ -7,7 +7,7 @@ import { FormControl } from 'material-ui/Form';
 import purple from 'material-ui/colors/purple';
 import SnackBar from './SnackBar';
 import ContentCopy from 'material-ui-icons/ContentCopy';
-import IconButton from 'material-ui/IconButton';
+import Button from 'material-ui/Button';
 
 const styles = theme => ({
   container: {
@@ -99,9 +99,9 @@ function TextInput(props) {
       <SnackBar message={source}/>
       {/* only displaying the button if the copy command exists */
         document.queryCommandSupported('copy') &&
-        <IconButton className={classes.button} aria-label="Copy to clipboard" onClick={copyToClipboard}>
+        <Button variant="fab" aria-label="add" className={classes.button} aria-label="Copy to clipboard" onClick={copyToClipboard}>
           <ContentCopy />
-        </IconButton>
+        </Button>
       }
     </div>
   );

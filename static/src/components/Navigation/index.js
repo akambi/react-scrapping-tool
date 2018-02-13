@@ -1,67 +1,25 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import Button from 'material-ui/Button';
-import Icon from 'material-ui/Icon';
-import LeftNav from 'material-ui/Drawer';
 import Drawer from 'material-ui/Drawer';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
 import List from 'material-ui/List';
-import Typography from 'material-ui/Typography';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
-import AccountCircle from 'material-ui-icons/AccountCircle';
-import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import { sectionListItems } from './sections';
 
-import * as actionCreators from '../../actions/auth';
+import { logoutAndRedirect } from '../../actions/auth';
+import { openMenu, closeMenu, selectSection } from '../../actions/data';
 
-const drawerWidth = 240;
+import { drawerWidth } from '../../constants/index';
+
+const actionCreators = { logoutAndRedirect, openMenu, closeMenu, selectSection };
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-    height: 430,
-    marginTop: theme.spacing.unit * 3,
-    zIndex: 1,
-    overflow: 'hidden',
-  },
-  appFrame: {
-    position: 'relative',
-    display: 'flex',
-    width: '100%',
-    height: '100%',
-  },
-  appBar: {
-    position: 'absolute',
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
-  },
   drawerPaper: {
     position: 'relative',
     height: '100%',
@@ -72,7 +30,7 @@ const styles = theme => ({
     }),
   },
   drawerPaperClose: {
-    width: 240,
+    width: 66,
     overflowX: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -90,27 +48,17 @@ const styles = theme => ({
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
-  content: {
-    width: '100%',
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: 24,
-    height: 'calc(100% - 56px)',
-    marginTop: 56,
-    [theme.breakpoints.up('sm')]: {
-      height: 'calc(100% - 64px)',
-      marginTop: 64,
-    },
-  },
-  header: { top: 0 }
 });
 
 function mapStateToProps(state) {
+    let sections = [];
+    if (state.data.protocol_metas && state.data.protocol_metas.data) {
+      sections = [...new Set(state.data.protocol_metas.data.protocoldata.map(item => item.section))]
+    }
+
     return {
-        token: state.auth.token,
-        data: state.data,
-        userName: state.auth.userName,
-        isAuthenticated: state.auth.isAuthenticated,
+        isNavMenuOpened: state.data.openedMenu,
+        sections: sections,
     };
 }
 
@@ -122,38 +70,28 @@ function mapDispatchToProps(dispatch) {
 class Navigation extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            open: false,
-        };
-
     }
 
-    dispatchNewRoute(route) {
-        browserHistory.push(route);
-        this.setState({ open: false });
+    ComponentDidMount() {
+        if (this.props.sections.length) {
+          this.props.selectSection(this.props.sections[0]);
+        }
     }
 
-    handleDrawerOpen = () => {
-        this.setState({ open: true });
-    };
-
+    ComponentUpdateProps() {
+        if (this.props.sections.length) {
+          this.props.selectSection(this.props.sections[0]);
+        }
+    }
 
     handleDrawerClose = () => {
-        this.setState({ open: false });
+        this.props.closeMenu();
     };
 
     logout(e) {
         e.preventDefault();
         this.props.logoutAndRedirect();
-        this.setState({
-            open: false,
-        });
-    }
-
-    openNav() {
-        this.setState({
-            open: true,
-        });
+        this.handleDrawerClose();
     }
 
     render() {
@@ -163,9 +101,9 @@ class Navigation extends Component {
           <Drawer
               variant="permanent"
               classes={{
-                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+                paper: classNames(classes.drawerPaper, !this.props.isNavMenuOpened && classes.drawerPaperClose),
               }}
-              open={this.state.open}
+              open={this.props.isNavMenuOpened}
             >                
               <div className={classes.drawerInner}>
                 <div className={classes.drawerHeader}>
@@ -174,7 +112,7 @@ class Navigation extends Component {
                   </IconButton>
                 </div>
                 <Divider />
-                <List className={classes.list}>{sectionListItems}</List>
+                <List className={classes.list}>{sectionListItems(this.props.sections, this.props.selectSection)}</List>
               </div>
           </Drawer>
         );
@@ -183,10 +121,8 @@ class Navigation extends Component {
 
 Navigation.propTypes = {
     logoutAndRedirect: React.PropTypes.func,
-    isAuthenticated: React.PropTypes.bool,
-    userName: React.PropTypes.string,
-    token: React.PropTypes.string,
-    data: React.PropTypes.object,
+    isNavMenuOpened: React.PropTypes.bool,
+    sections: React.PropTypes.array
 };
 
 export default withStyles(styles, { withTheme: true })(Navigation);

@@ -42,6 +42,11 @@ const styles = {
 import './styles/app.scss';
 
 class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+    constructor(props) {
+        super(props)
+    }
+
     static propTypes = {
         children: React.PropTypes.node,
     };
@@ -51,8 +56,8 @@ class App extends React.Component { // eslint-disable-line react/prefer-stateles
             <MuiThemeProvider theme={theme}>
                 <div style={styles.root}>
                 <section style={styles.appFrame}>
-                    <Header />
-                    <Navigation />
+                    <Header/>
+                    <Navigation/>
                     <main style={styles.content}>
                         {this.props.children}
                     </main>

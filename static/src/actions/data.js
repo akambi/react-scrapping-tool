@@ -1,5 +1,5 @@
 import { FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA,
- REQUEST_PROTOCOL_META, RECEIVE_PROTOCOL_META  } from '../constants/index';
+ REQUEST_PROTOCOL_META, RECEIVE_PROTOCOL_META, OPEN_MENU, CLOSE_MENU, SELECT_SECTION  } from '../constants/index';
 import { parseJSON } from '../utils/misc';
 import { data_about_user, getProtocolMeta } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
@@ -66,5 +66,26 @@ export function processProtocol(protocolFile, token) {
                     dispatch(logoutAndRedirect(error));
                 }
             });
+    };
+}
+
+export function openMenu() {
+    return {
+        type: OPEN_MENU,
+    };
+}
+
+export function closeMenu() {
+    return {
+        type: CLOSE_MENU,
+    };
+}
+
+export function selectSection(section) {
+    return {
+        type: SELECT_SECTION,
+        payload: {
+            section,
+        },
     };
 }
