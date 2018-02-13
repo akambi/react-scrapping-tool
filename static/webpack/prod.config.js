@@ -1,10 +1,11 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+require('babel-polyfill');
 
 module.exports = {
     devtool: 'source-map',
 
-    entry: ['bootstrap-loader/extractStyles'],
+    entry: ['babel-polyfill', 'bootstrap-loader/extractStyles'],
 
     output: {
         publicPath: 'dist/',

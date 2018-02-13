@@ -7,8 +7,6 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import Button from 'material-ui/Button';
 import Icon from 'material-ui/Icon';
-import LeftNav from 'material-ui/Drawer';
-import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import List from 'material-ui/List';
@@ -93,12 +91,16 @@ const styles = theme => ({
 });
 
 function mapStateToProps(state) {
+    let sections = [];
+    if (state.data.protocol_metas && state.data.protocol_metas.data) {
+      sections = [...new Set(state.data.protocol_metas.data.protocoldata.map(item => item.section))]
+    }
+
     return {
         token: state.auth.token,
-        data: state.data,
-        userName: state.auth.userName,
         isAuthenticated: state.auth.isAuthenticated,
         isNavMenuOpened: state.data.openedMenu,
+        sections: sections,
     };
 }
 
@@ -133,14 +135,14 @@ class Header extends Component {
         return (
                     <AppBar color="primary" position="fixed" className={classNames(classes.header, classes.appBar, this.props.isNavMenuOpened && classes.appBarShift)}>
                         <Toolbar disableGutters={!this.props.isNavMenuOpened}>
-                          <IconButton
+                          {this.props.sections && this.props.sections.length ? <IconButton
                             color="inherit"
                             aria-label="open drawer"
                             onClick={(e) => this.openNav(e)}
                             className={classNames(classes.menuButton, this.props.isNavMenuOpened && classes.hide)}
                           >
                             <MenuIcon />
-                          </IconButton>
+                          </IconButton> : <span className={classNames(classes.menuButton)}/>}
 
                         <Typography variant="title" color="inherit" className={classes.flex} style={{ lineHeight: 'normal' }}>
                             <div>
@@ -188,7 +190,6 @@ Header.propTypes = {
     isAuthenticated: React.PropTypes.bool,
     userName: React.PropTypes.string,
     token: React.PropTypes.string,
-    data: React.PropTypes.object,
 };
 
 export default withStyles(styles, { withTheme: true })(Header);

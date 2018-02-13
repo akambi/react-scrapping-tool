@@ -72,13 +72,15 @@ class Navigation extends Component {
         super(props);
     }
 
-    ComponentDidMount() {
+    componentDidMount() {
+      console.log(this.props.sections, this.props.sections[0]);
         if (this.props.sections.length) {
           this.props.selectSection(this.props.sections[0]);
         }
     }
 
-    ComponentUpdateProps() {
+    comporrnentWillReceiveProps() {
+      console.log(this.props.sections);
         if (this.props.sections.length) {
           this.props.selectSection(this.props.sections[0]);
         }
@@ -98,6 +100,7 @@ class Navigation extends Component {
         const { classes, theme } = this.props;
 
         return (
+          this.props.sections && this.props.sections.length ? 
           <Drawer
               variant="permanent"
               classes={{
@@ -114,7 +117,7 @@ class Navigation extends Component {
                 <Divider />
                 <List className={classes.list}>{sectionListItems(this.props.sections, this.props.selectSection)}</List>
               </div>
-          </Drawer>
+          </Drawer> : <span/>
         );
     }
 }
