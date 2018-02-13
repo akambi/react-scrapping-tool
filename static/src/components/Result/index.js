@@ -118,7 +118,7 @@ export default class ResultView extends React.Component {
     }
 
     render() {
-        return !(this.props.isFetching || this.props.loaded) ? <span/> : (
+        return !(this.props.isFetching || this.props.loaded) ? <span ><img src="./img/tenor.gif" alt="image du loader" /></span> : (
 
             <div className={`container-fluid ${styles}`}>
                 <div className="col-md-12" onKeyPress={(e) => this._handleKeyPress(e)}>
