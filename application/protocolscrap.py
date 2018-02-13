@@ -386,9 +386,9 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     for id,CurrentRow in dataframe.iterrows():
     #find the value of PRIMARY OBJECTIVE using fuzzy score    
         #score = fuzz.ratio("PRIMARY OBJECTIVE",CurrentRow['RawText'].upper()) 
-        #if score > 70 : print [score,CurrentRow['RawText'].upper()]
+        #if score > 40 : print [score,CurrentRow['RawText'].upper()]
         #print 'before'
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*PRIMARY OBJECTIVE(.|\n)*$",re.IGNORECASE)
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*PRIMARY(.|\n)*OBJECTIVE(.|\n)*$",re.IGNORECASE)
         obj=pattern.match(CurrentRow['RawText'].upper())
         if (obj and dataframe.at[id,'documentpart']=='Header'):
             #print 'after'
@@ -407,7 +407,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     #find the value of SECONDARY OBJECTIVE using fuzzy score    
         #score = fuzz.ratio("SECONDARY OBJECTIVE",CurrentRow['RawText'].upper()) 
         #if score > 60 : print [score,CurrentRow['RawText'].upper(),dataframe.at[id+1,'RawText']]
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*SECONDARY OBJECTIVE(.|\n)*$")
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*SECONDARY(.|\n)*OBJECTIVE(.|\n)*$")
         obj=pattern.match(CurrentRow['RawText'].upper())
         if (obj and dataframe.at[id,'documentpart']=='Header'):
             #print 'after'
@@ -432,7 +432,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     #Find "INCLUSION CRITERIA"
     for id,CurrentRow in dataframe.iterrows():
     #find the value of INCLUSION CRITERIA using regex 
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*INCLUSION CRITERIA(.|\n)*$")
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*INCLUSION(.|\n)*CRITERIA(.|\n)*$")
         obj=pattern.match(CurrentRow['RawText'].upper())
         if (obj and dataframe.at[id,'documentpart']=='Header'):
             #print 'after'
@@ -449,7 +449,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     #Find "NON-INCLUSION CRITERIA"
     for id,CurrentRow in dataframe.iterrows():
     #find the value of NON-INCLUSION CRITERIA using regex  
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*NON-INCLUSION CRITERIA(.)*$")
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*NON-INCLUSION(.|\n)*CRITERIA(.)*$")
         obj=pattern.match(CurrentRow['RawText'].upper())
         #if it matches the pattern and it's a header 
         if (obj and dataframe.at[id,'documentpart']=='Header'):
@@ -468,7 +468,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     #Find "PRIMARY ENDPOINTS"
     for id,CurrentRow in dataframe.iterrows():
     #find the value of PRIMARY ENDPOINTS CRITERIA using regex    
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*END(.)*POINT(.)*$",re.IGNORECASE)
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*END(.|\n)*POINT(.)*$",re.IGNORECASE)
         obj=pattern.match(CurrentRow['RawText'].upper())
         #if it matches the pattern and it's a header 
         if (obj and dataframe.at[id,'documentpart']=='Header'):
@@ -491,7 +491,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     #Find "SECONDARY ENDPOINTS"
     for id,CurrentRow in dataframe.iterrows():
     #find the value of PRIMARY ENDPOINTS CRITERIA using regex    
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*SECONDARY ENDPOINT(.)*$",re.IGNORECASE)
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*SECONDARY(.|\n)*ENDPOINT(.)*$",re.IGNORECASE)
         obj=pattern.match(CurrentRow['RawText'].upper())
         #if it matches the pattern and it's a header 
         if (obj and dataframe.at[id,'documentpart']=='Header'):
@@ -691,11 +691,31 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     
 def search_keywords(keywords_list,dataframe):
     
-    full_title=dataframe[dataframe['id']=='A.3'].iloc[0]['value']
-    main_objective=dataframe[dataframe['id']=='e.2.1'].iloc[0]['value']
-    primary_endpoint=dataframe[dataframe['id']=='e.5.1'].iloc[0]['value']
-    inclusion_criteria=dataframe[dataframe['id']=='e.3'].iloc[0]['value']
-    exclusion_criteria=dataframe[dataframe['id']=='e.4'].iloc[0]['value']
+    full_title=''
+    main_objective=''
+    primary_endpoint=''
+    inclusion_criteria=''
+    exclusion_criteria=''
+    
+    df_full_title=dataframe[dataframe['id']=='A.3']
+    if not df_full_title.empty:
+       full_title=df_full_title.iloc[0]['value']
+    
+    df_main_objective=dataframe[dataframe['id']=='e.2.1']
+    if not df_main_objective.empty:
+       main_objective=df_main_objective.iloc[0]['value']
+   
+    df_primary_endpoint=dataframe[dataframe['id']=='e.5.1']
+    if not df_primary_endpoint.empty:
+       primary_endpoint=df_primary_endpoint.iloc[0]['value']
+    
+    df_inclusion_criteria=dataframe[dataframe['id']=='e.3']
+    if not df_inclusion_criteria.empty:
+       inclusion_criteria=df_inclusion_criteria.iloc[0]['value']
+    
+    df_exclusion_criteria=dataframe[dataframe['id']=='e.4']
+    if not df_exclusion_criteria.empty:
+       exclusion_criteria=df_exclusion_criteria.iloc[0]['value']
     
     text=full_title+" "+main_objective+" "+primary_endpoint+" "+inclusion_criteria+" "+exclusion_criteria
     text=text.upper()
@@ -729,6 +749,13 @@ def search_keywords(keywords_list,dataframe):
 #test code
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL2-95005-002_TASCO1_Amended Protocol_INT_ Final Version CLEAN_25-01-2017.htm"
+#HTMLPath = "C:\Users\zjaadi\Desktop\CL1-62798-001_Amended study protocol 21_September_2017 final version.htm"
+#HTMLPath = "C:\Users\zjaadi\Desktop\CL1-81694-003_Protocol final version 19JUN2017 e-ctd_.htm"
+#HTMLPath = "C:\Users\zjaadi\Desktop\CL2-RTCCAR-001_protocol final version 30052017.htm"
+
+
+
+
 #ps_dataframe=pd.DataFrame(getProtocolScrap(open(HTMLPath)))
 #dataframe=getProtocolData(open(HTMLPath))
 
