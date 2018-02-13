@@ -24,14 +24,13 @@ function mapDispatchToProps(dispatch) {
 }
 
 const style = {
-    marginTop: 100,
     paddingBottom: 35,
     paddingTop: 0,
     width: '100%',
     textAlign: 'center',
     display: 'inline-block',
     marginTop: 50,
-    paddingBottom: 250,
+    marginBottom: 50,
     overflow: scroll
 };
 
@@ -141,8 +140,9 @@ export default class ResultView extends React.Component {
                                 </Badge>
                             </div>)
                             }
-                            
+
                             <Button
+                              variant="raised"
                               disabled={this.state.disabled}
                               style={{ marginTop: 50 }}
                               onClick={(e) => this.login(e)}
