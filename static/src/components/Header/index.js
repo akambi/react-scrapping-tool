@@ -21,15 +21,18 @@ import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import SvgIcon from 'material-ui/SvgIcon';
 
-import * as actionCreators from '../../actions/auth';
+import { logoutAndRedirect } from '../../actions/auth';
+import { openMenu, closeMenu } from '../../actions/data';
+
+import { drawerWidth } from '../../constants/index';
+
+const actionCreators = { logoutAndRedirect, openMenu, closeMenu };
 
 const HomeIcon = props => (
   <SvgIcon {...props}>
     <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
   </SvgIcon>
 );
-
-const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
@@ -68,34 +71,6 @@ const styles = theme => ({
   hide: {
     display: 'none',
   },
-  drawerPaper: {
-    position: 'relative',
-    height: '100%',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    width: 60,
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  drawerInner: {
-    // Make the items inside not wrap when transitioning:
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
   content: {
     width: '100%',
     flexGrow: 1,
@@ -123,6 +98,7 @@ function mapStateToProps(state) {
         data: state.data,
         userName: state.auth.userName,
         isAuthenticated: state.auth.isAuthenticated,
+        isNavMenuOpened: state.data.openedMenu,
     };
 }
 
@@ -134,58 +110,41 @@ function mapDispatchToProps(dispatch) {
 class Header extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            open: false,
-        };
-
     }
 
     dispatchNewRoute(route) {
         browserHistory.push(route);
-        this.setState({ open: false });
+        this.props.closeMenu();
     }
-
-    handleDrawerOpen = () => {
-        this.setState({ open: true });
-    };
-
-
-    handleDrawerClose = () => {
-        this.setState({ open: false });
-    };
 
     logout(e) {
         e.preventDefault();
         this.props.logoutAndRedirect();
-        this.setState({
-            open: false,
-        });
+        this.props.closeMenu();
     }
 
-    openNav() {
-        this.setState({
-            open: true,
-        });
+    openNav(e) {
+        this.props.openMenu();
     }
 
     render() {
         const { classes, theme } = this.props;
 
         return (
-                    <AppBar color="primary" position="fixed" className={classNames(classes.header, classes.appBar, this.state.open && classes.appBarShift)}>
-                        <Toolbar disableGutters={!this.state.open}>
+                    <AppBar color="primary" position="fixed" className={classNames(classes.header, classes.appBar, this.props.isNavMenuOpened && classes.appBarShift)}>
+                        <Toolbar disableGutters={!this.props.isNavMenuOpened}>
                           <IconButton
                             color="inherit"
                             aria-label="open drawer"
-                            onClick={this.handleDrawerOpen}
-                            className={classNames(classes.menuButton, this.state.open && classes.hide)}
+                            onClick={(e) => this.openNav(e)}
+                            className={classNames(classes.menuButton, this.props.isNavMenuOpened && classes.hide)}
                           >
                             <MenuIcon />
                           </IconButton>
 
                         <Typography variant="title" color="inherit" className={classes.flex} style={{ lineHeight: 'normal' }}>
                             <div>
-                                <div style={{ marginTop: 10 }}>CAPS</div>
+                                <div style={{ marginTop: 10 }}>CAPS vj7.1</div>
                                 <div style={{ fontSize: 'small', fontWeight: 300 }}>Clinical protocol Scrapper</div>
                             </div>
                         </Typography>
