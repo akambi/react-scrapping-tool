@@ -15,11 +15,6 @@ import ExpandMore from 'material-ui-icons/ExpandMore';
 import StarBorder from 'material-ui-icons/StarBorder';
 import Avatar from 'material-ui/Avatar';
 
-
-export const clickOnSection = (section, callBack) => {
-  callBack(section);
-};
-
 const styles = theme => ({
   root: {
     width: '100%',
@@ -29,48 +24,52 @@ const styles = theme => ({
   nested: {
     paddingLeft: theme.spacing.unit * 4,
   },
+  avatar: {
+  },
+  selectedavatar: {
+    backgroundColor: 'green'
+  },
 });
 
 class NestedList extends React.Component {
-  state = { open: true };
+  state = { sections: [] };
 
-  handleClick = () => {
-    this.setState({ open: !this.state.open });
+  handleClick = (index) => {
+    console.log(this.state);
+    let sectionState = { open: !(this.state.sections[index] || { open: false }).open };
+    let newSections = [...this.state.sections ];
+    newSections[index] = sectionState
+    this.setState({ ...this.state, ...{ sections: newSections }});
+  };
+
+  clickOnSection = (section, index, callBack) => {
+    this.handleClick(index)
+    callBack(section);
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, sections, subSections, selectedSection, callBack } = this.props;
 
     return (
       <div className={classes.root}>
-
-      <List component="nav" subheader={<ListSubheader component="div">Sections</ListSubheader>}>
-       {["A","B"].map((section, index) =><ListItem button key={"listitem" + index}
-          onClick={() => clickOnSection(section, callBack)}>
-          <Avatar>{section}</Avatar>
-          <ListItemText primary={"Section "+ section} />
-        </ListItem>)}
-
-
-       
-          <ListItem button onClick={this.handleClick}>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText inset primary="Inbox" />
-            {this.state.open ? <ExpandLess /> : <ExpandMore />}
+        <List component="nav" subheader={<ListSubheader component="div">Sections</ListSubheader>}>
+         {sections.map((section, index) => <div key={"listitem" + index}><ListItem button
+            onClick={() => this.clickOnSection(section, index, callBack)}>
+            <Avatar classes={{
+              root: (selectedSection === section) ? classes.selectedavatar : classes.avatar
+            }}>{section}</Avatar>
+            <ListItemText inset primary={"Section "+ section} />
+              {this.state.sections && this.state.sections[index] && this.state.sections[index].open ? <ExpandLess/> : <ExpandMore/>}
           </ListItem>
-          <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
-                <ListItemIcon>
-                  <StarBorder />
-                </ListItemIcon>
-                <ListItemText inset primary="Starred" />
-              </ListItem>
-            </List>
-          </Collapse>
-
+          {subSections[section] ? <Collapse in={this.state.sections && this.state.sections[index] && this.state.sections[index].open} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {subSections[section].map((subSection, index) => <ListItem button className={classes.nested}>
+                  <ListItemText inset primary={subSection}/>
+                </ListItem>)}
+              </List>
+            </Collapse> : <span/>}
+            </div>
+          )}
         </List>
       </div>
     );
