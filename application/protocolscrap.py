@@ -174,9 +174,13 @@ def getDataAnalyzedSectionA(dataframe):
         score = fuzz.ratio("UNIVERSAL TRIAL NUMBER",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
+            RawValue = value
             #Check if contains UTN : if yes keep it, else put nothing
-            #print(value)
-            tempdict = {'id':'A.5.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'WHO Universal Trail Number (UTN)', 'section':'A', 'type':'text'}
+            if ("UTN" in value) : pass
+            else : 
+                value = ""
+                score = 40
+            tempdict = {'id':'A.5.3','value': value,'score': score,'raw_text': RawValue, 'eudractlabel':'WHO Universal Trail Number (UTN)', 'section':'A', 'type':'text'}
             arrayStorage.append(tempdict) 
     #not to find in the prototcol, they're will be sent with no values        
     #Find "is this a resubmission ?"
@@ -218,7 +222,7 @@ def getDataAnalyzedSectionB(dataframe):
     tempdict = {'id':'b.1.2.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'Middle Name','section':'B', 'type':'text'}
     arrayStorage.append(tempdict)
     #Find "Family name"
-    tempdict = {'id':'b.1.2.3','value': 'Fautier','score': 100,'raw_text': '', 'eudractlabel':'Family Name','section':'B', 'type':'text'}
+    tempdict = {'id':'b.1.2.3','value': 'Fautrier','score': 100,'raw_text': '', 'eudractlabel':'Family Name','section':'B', 'type':'text'}
     arrayStorage.append(tempdict)        
     #Find "Street address"
     tempdict = {'id':'b.1.3.1','value': '50 rue Carnot','score': 100,'raw_text': '', 'eudractlabel':'Street Address','section':'B', 'type':'text'}
