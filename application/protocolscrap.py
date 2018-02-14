@@ -93,7 +93,7 @@ def ConvertDataFrameToObject(dataframe):
     analyzed_array_section_b=getDataAnalyzedSectionB(dataframe)
     analyzed_array_section_c=getDataAnalyzedSectionC(dataframe)
     analyzed_array_section_e=getDataAnalyzedSectionE(dataframe,analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c)    
-    analyzed_array_section_f=getDataAnalyzedSectionF
+    analyzed_array_section_f=getDataAnalyzedSectionF(dataframe)
         
     return analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c+analyzed_array_section_e+analyzed_array_section_f
     
