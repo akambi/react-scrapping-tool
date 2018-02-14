@@ -80,13 +80,13 @@ function TextInput(props) {
                                 classes={{
                                     badge: (score < 40 ? classes.badgeRed : 
                                     (score < 95 ? classes.badgeOrange : classes.badgeGreen))
-                                }} color="inherit">
+                                }}>
 
           <InputLabel htmlFor={'field' + section}
             shrink={true}
             classes={{
               root: classes.textFieldFormLabel,
-            }}>{section} {label}</InputLabel>
+            }}>{section.toUpperCase()} {label}</InputLabel>
 
           <Input
             id={'field' + section} value={value}

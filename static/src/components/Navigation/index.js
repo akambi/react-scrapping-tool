@@ -72,16 +72,8 @@ class Navigation extends Component {
         super(props);
     }
 
-    componentDidMount() {
-      console.log(this.props.sections, this.props.sections[0]);
-        if (this.props.sections.length) {
-          this.props.selectSection(this.props.sections[0]);
-        }
-    }
-
-    comporrnentWillReceiveProps() {
-      console.log(this.props.sections);
-        if (this.props.sections.length) {
+    componentWillReceiveProps(nextProps) {
+        if (this.props.sections.length && nextProps.sections[0] != this.props.sections[0]) {
           this.props.selectSection(this.props.sections[0]);
         }
     }

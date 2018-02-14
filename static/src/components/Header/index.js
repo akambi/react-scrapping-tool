@@ -17,6 +17,7 @@ import AccountCircle from 'material-ui-icons/AccountCircle';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
+import FileUploadIcon from 'material-ui-icons/FileUpload';
 import SvgIcon from 'material-ui/SvgIcon';
 
 import { logoutAndRedirect } from '../../actions/auth';
@@ -167,6 +168,12 @@ class Header extends Component {
                                     </div>
                                     :
                                     <div>
+                                        {
+                                            this.props.sections && this.props.sections.length ? <Button
+                                         color="inherit" disabled={true}>
+                                            <FileUploadIcon className={classes.leftIcon}/> Export XML
+                                         </Button> : <span/>
+                                        }
                                         <Button
                                          onClick={() => this.dispatchNewRoute('/')}
                                          color="inherit">

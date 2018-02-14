@@ -1,11 +1,12 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 require('babel-polyfill');
+require('whatwg-fetch');
 
 module.exports = {
     devtool: 'source-map',
 
-    entry: ['babel-polyfill', 'bootstrap-loader/extractStyles'],
+    entry: ['babel-polyfill', 'whatwg-fetch', 'bootstrap-loader/extractStyles'],
 
     output: {
         publicPath: 'dist/',
