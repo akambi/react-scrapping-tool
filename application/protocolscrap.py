@@ -92,9 +92,9 @@ def ConvertDataFrameToObject(dataframe):
     analyzed_array_section_b=getDataAnalyzedSectionB(dataframe)
     analyzed_array_section_c=getDataAnalyzedSectionC(dataframe)
     analyzed_array_section_e=getDataAnalyzedSectionE(dataframe,analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c)    
-
+    analyzed_array_section_f=getDataAnalyzedSectionF
         
-    return analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c+analyzed_array_section_e
+    return analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c+analyzed_array_section_e+analyzed_array_section_f
     
     
         
@@ -693,17 +693,15 @@ def getDataAnalyzedSectionF(dataframe):
      """ retrieve data from Section F """
      #array of dict to store dictionnaries
      arrayStorage=[]
-     #F1.1 Find "Age Range"*************
+     
+     
+     #F1 AGE RANGE
+     rawtext=''
      for id,CurrentRow in dataframe.iterrows():
          #setup variables
-         score = 0 
-         value="NotFound"
-         rawtext="NotFound"
-         
-         #find the Age Range information
+         score = 0          
          pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*DEMOGRAPHIC(.|\n)*CHARACTERISTIC(.|\n)*$")
          obj=pattern.match(CurrentRow['RawText'].upper())
-         rawtext = CurrentRow['RawText']
          if (obj and dataframe.at[id,'documentpart']=='Header'):
                 stop_flag=dataframe.at[id,'Container']
                 idCopy=id+1
@@ -712,60 +710,87 @@ def getDataAnalyzedSectionF(dataframe):
                      value=value+dataframe.at[idCopy,'RawText']
                      idCopy += 1
                      rawtext = value
-                #Replace special unicode characters to avoid >= \u2265 or <= \u2264
-                value = value.replace(u"\u2265", ">=")
-                value = value.replace(u"\u2264", "<=")
-                #Check if an age seems to be present.    
-                #patternAge=re.compile("[0-9]+(.)*YEARS",re.IGNORECASE)
-                #obj = patternAge.search(value)
-                #if (obj) : 
-                #    value = obj.group()
-                #    score = 50                
-                #Store results for F.1
-                tempdict = {'id':'f.1','value': value,'score': score,'raw_text': rawtext, 'eudractlabel':'Age Range','section':'F', 'type':'text'}
-                arrayStorage.append(tempdict)
+     tempdict = {'id':'f.1.1','value': '','score': score,'raw_text': rawtext, 'eudractlabel':'Are the trial subjects under 18?','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+                
+     tempdict = {'id':'f.1.2','value': '','score': score,'raw_text': rawtext, 'eudractlabel':'Adults (18-64 years)','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+               
+     tempdict = {'id':'f.1.2.1','value': '','score': score,'raw_text': rawtext, 'eudractlabel':'Number of subjects for this age range','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+               
+     tempdict = {'id':'f.1.3','value': '','score': score,'raw_text': rawtext, 'eudractlabel':'Elderly (>=65 years)','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+               
+     tempdict = {'id':'f.1.3.1','value': '','score': score,'raw_text': rawtext, 'eudractlabel':'Number of subjects for this age range','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
 
-     #F1.2 "Gender "*************
-     for id,CurrentRow in dataframe.iterrows():
-         #setup variables
-         score = 0 
-         value="NotFound"
-         rawtext="NotFound"
-         
-         #find the Age Range information
-         pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*DEMOGRAPHIC(.|\n)*CHARACTERISTIC(.|\n)*$")
-         obj=pattern.match(CurrentRow['RawText'].upper())
-         rawtext = CurrentRow['RawText']
-         if (obj and dataframe.at[id,'documentpart']=='Header'):
-                stop_flag=dataframe.at[id,'Container']
-                idCopy=id+1
-                value=''
-                while(dataframe.at[idCopy,'Container']!=stop_flag):
-                     value=value+dataframe.at[idCopy,'RawText']
-                     idCopy += 1
-                     rawtext = value
-                #Check if Female status seems 
-                if ("FEMALE" in value.upper()) : 
-                    value_female = "Yes"
-                    score = 80
-                else : 
-                    value_female = "Not Found"
-                    score = 40                    
-                #Store results for F.2.1
-                tempdict = {'id':'f.2.1','value': value_female,'score': score,'raw_text': rawtext, 'eudractlabel':'Female','section':'F', 'type':'text'}
-                arrayStorage.append(tempdict)
+     #F2 GENDER 
+     if ("FEMALE" in value.upper()) : 
+        value_female = "Yes"
+        score = 80
+     else : 
+        value_female = "Not Found"
+        score = 40                    
+    
+     tempdict = {'id':'f.2.1','value': value_female,'score': score,'raw_text': rawtext, 'eudractlabel':'Female','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
 
-                #Check if Male status seems to be present
-                if ("MALE" in value.upper()) : 
-                    value_male = "Yes"
-                    score = 80
-                else : 
-                    value_male = "Not Found"
-                    score = 40                    
-                #Store results for F.2.1
-                tempdict = {'id':'f.2.2','value': value_male,'score': score,'raw_text': rawtext, 'eudractlabel':'Male','section':'F', 'type':'text'}
-                arrayStorage.append(tempdict)
-
+     if ("MALE" in value.upper()) : 
+        value_male = "Yes"
+        score = 80
+     else : 
+        value_male = "Not Found"
+        score = 40                    
+     tempdict = {'id':'f.2.2','value': value_male,'score': score,'raw_text': rawtext, 'eudractlabel':'Male','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+      
+     #F3 Group of trial subjects        
+     
+     tempdict = {'id':'f.3.1','value': '' ,'score': 0 ,'raw_text': '', 'eudractlabel':'Healthy volunteers','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     tempdict = {'id':'f.3.2','value': '' ,'score': 0 ,'raw_text': '', 'eudractlabel':'Patients','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #vide rouge 
+     tempdict = {'id':'f.3.3','value': '' ,'score': 50,'raw_text': '', 'eudractlabel':'Specific vulnerable populations','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #No orange
+     tempdict = {'id':'f.3.3.1','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':'women of childbearing potential not using contraception','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #Yes orange
+     tempdict = {'id':'f.3.3.2','value': 'Yes' ,'score': 50,'raw_text': '', 'eudractlabel':'women of child-bearing potential using contraception','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #No orange
+     tempdict = {'id':'f.3.3.3','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':' pregnant women','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #No orange
+     tempdict = {'id':'f.3.3.4','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':'nursing women','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #vide rouge 
+     tempdict = {'id':'f.3.3.5','value': '' ,'score': 0,'raw_text': '', 'eudractlabel':'emergency situation','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #vide rouge 
+     tempdict = {'id':'f.3.3.6','value': '' ,'score': 0,'raw_text': '', 'eudractlabel':'subjects incapable of giving consent personally','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     tempdict = {'id':'f.3.3.6.1','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':"If 'Yes', specify",'section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #No orange
+     tempdict = {'id':'f.3.3.7','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':'Others','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     tempdict = {'id':'f.3.3.7.1','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':"If 'others', specify the specific vulnerable populations",'section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
      
      return arrayStorage 
 
@@ -838,6 +863,6 @@ HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-
 
 
 
-#dataframe=pd.DataFrame(getProtocolData(open(HTMLPath)))
-#ps_dataframe=pd.DataFrame(getDataAnalyzedSectionF(dataframe))
+dataframe=pd.DataFrame(getProtocolData(open(HTMLPath)))
+ps_dataframe=pd.DataFrame(getDataAnalyzedSectionF(dataframe))
 
