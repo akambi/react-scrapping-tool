@@ -689,6 +689,93 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
 
  #-----------------------------------------------------------------------------------------------------------
     
+def getDataAnalyzedSectionF(dataframe):
+     """ retrieve data from Section F """
+     #array of dict to store dictionnaries
+     arrayStorage=[]
+     
+     #F1.1 Find "Age Range"*************
+     for id,CurrentRow in dataframe.iterrows():
+         #setup variables
+         score = 0 
+         value="NotFound"
+         rawtext="NotFound"
+         
+         #find the Age Range information
+         pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*DEMOGRAPHIC(.|\n)*CHARACTERISTIC(.|\n)*$")
+         obj=pattern.match(CurrentRow['RawText'].upper())
+         rawtext = CurrentRow['RawText']
+         if (obj and dataframe.at[id,'documentpart']=='Header'):
+                stop_flag=dataframe.at[id,'Container']
+                idCopy=id+1
+                value=''
+                while(dataframe.at[idCopy,'Container']!=stop_flag):
+                     value=value+dataframe.at[idCopy,'RawText']
+                     idCopy += 1
+                     rawtext = value
+                #Replace special unicode characters to avoid >= \u2265 or <= \u2264
+                value = value.replace(u"\u2265", ">=")
+                value = value.replace(u"\u2264", "<=")
+                #Check if an age seems to be present.    
+                #patternAge=re.compile("[0-9]+(.)*YEARS",re.IGNORECASE)
+                #obj = patternAge.search(value)
+                #if (obj) : 
+                #    value = obj.group()
+                #    score = 50                
+                #Store results for F.1
+                tempdict = {'id':'f.1','value': value,'score': score,'raw_text': rawtext, 'eudractlabel':'Age Range','section':'F', 'type':'text'}
+                arrayStorage.append(tempdict)
+
+     #F1.2 "Gender "*************
+     for id,CurrentRow in dataframe.iterrows():
+         #setup variables
+         score = 0 
+         value="NotFound"
+         rawtext="NotFound"
+         
+         #find the Age Range information
+         pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*DEMOGRAPHIC(.|\n)*CHARACTERISTIC(.|\n)*$")
+         obj=pattern.match(CurrentRow['RawText'].upper())
+         rawtext = CurrentRow['RawText']
+         if (obj and dataframe.at[id,'documentpart']=='Header'):
+                stop_flag=dataframe.at[id,'Container']
+                idCopy=id+1
+                value=''
+                while(dataframe.at[idCopy,'Container']!=stop_flag):
+                     value=value+dataframe.at[idCopy,'RawText']
+                     idCopy += 1
+                     rawtext = value
+                #Check if Female status seems 
+                patternFemale=re.compile("FEMALE",re.IGNORECASE)
+                objFemale = patternFemale.search(value)
+                if (objFemale) : 
+                    value = "Yes"
+                    score = 80
+                else : 
+                    value = "Not Found"
+                    score = 40                    
+                #Store results for F.2.1
+                tempdict = {'id':'f.2.1','value': value,'score': score,'raw_text': rawtext, 'eudractlabel':'Female','section':'F', 'type':'text'}
+                arrayStorage.append(tempdict)
+
+                #Check if Male status seems to be present 
+                patternMale=re.compile("MALE",re.IGNORECASE)
+                objMale = patternMale.search(value)
+                if (objMale) : 
+                    value = "Yes"
+                    score = 80
+                else : 
+                    value = "Not Found"
+                    score = 40                    
+                #Store results for F.2.1
+                tempdict = {'id':'f.2.2','value': value,'score': score,'raw_text': rawtext, 'eudractlabel':'Male','section':'F', 'type':'text'}
+                arrayStorage.append(tempdict)
+
+     
+     return arrayStorage 
+
+    #-----------------------
+    
 def search_keywords(keywords_list,dataframe):
     
     full_title=''
