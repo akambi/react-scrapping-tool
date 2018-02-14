@@ -141,7 +141,7 @@ class ResultView extends Component {
                             {
                                 this.props.data &&
                                 this.props.data.protocoldata.filter(field => field.section === this.props.section)
-                                .map((field) => <div key={field.id} className="col-md-12">
+                                .map((field, index) => <div key={field.id + index} className="col-md-12">
                                   <TextInput
                                   section={field.id}
                                   label={field.eudractlabel}
@@ -153,14 +153,6 @@ class ResultView extends Component {
                                   />
                             </div>)
                             }
-
-                            <Button
-                              variant="raised"
-                              disabled={this.state.disabled}
-                              style={{ marginTop: 50 }}
-                              onClick={(e) => this.login(e)}
-                            >Submit</Button>
-
                         </div>
                         }
                     </Paper>

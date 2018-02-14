@@ -80,7 +80,7 @@ function TextInput(props) {
                                 classes={{
                                     badge: (score < 40 ? classes.badgeRed : 
                                     (score < 95 ? classes.badgeOrange : classes.badgeGreen))
-                                }} color="inherit">
+                                }}>
 
           <InputLabel htmlFor={'field' + section}
             shrink={true}

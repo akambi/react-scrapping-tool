@@ -170,7 +170,7 @@ class Header extends Component {
                                     <div>
                                         {
                                             this.props.sections && this.props.sections.length ? <Button
-                                         color="inherit">
+                                         color="inherit" disabled={true}>
                                             <FileUploadIcon className={classes.leftIcon}/> Export XML
                                          </Button> : <span/>
                                         }
