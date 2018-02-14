@@ -62,56 +62,71 @@ const styles = theme => ({
   },
 });
 
-function TextInput(props) {
-  const { classes, section, type, label, 
-        value, onChange, score, source } = props;
+class TextInput extends React.Component {
+  state = {
+    value: '',
+  };
 
-  let textInput = null;
+  constructor(props) {
+    super(props);
+    this.textInput = null;
+  }
 
-  function copyToClipboard(e) {
-      textInput.select()
+  handleChange = event => {
+    this.setState({ value: event.target.value });
+  };
+
+  copyToClipboard = (event) => {
+      this.textInput.select()
       document.execCommand('copy')
   }
 
-  return (
-    <div className={classes.container}>
-      <FormControl fullWidth className={classes.formControl}>
-                                <Badge badgeContent={score + '%'}
-                                classes={{
-                                    badge: (score < 40 ? classes.badgeRed : 
-                                    (score < 95 ? classes.badgeOrange : classes.badgeGreen))
-                                }}>
+  render() {
 
-          <InputLabel htmlFor={'field' + section}
-            shrink={true}
-            classes={{
-              root: classes.textFieldFormLabel,
-            }}>{section.toUpperCase()} {label}</InputLabel>
+    const { classes, section, type, label, 
+          value, onChange, score, source } = this.props;
 
-          <Input
-            id={'field' + section} value={value}
-            inputRef={(input) => { textInput = input; }}
-            disableUnderline={true}
-            fullWidth={true}
-            multiline={type === 'text' ? false : true }
-            classes={{
-              formControl: classes.textFieldInput,
-            }}
-          />
+    return (
+      <div className={classes.container}>
+        <FormControl fullWidth className={classes.formControl}>
+                                  <Badge badgeContent={score + '%'}
+                                  classes={{
+                                      badge: (score < 40 ? classes.badgeRed : 
+                                      (score < 95 ? classes.badgeOrange : classes.badgeGreen))
+                                  }}>
 
-                                </Badge>
-      </FormControl>
-      <SnackBar message={source}/>
-      {/* only displaying the button if the copy command exists */
-        document.queryCommandSupported('copy') &&
-        <Button variant="flat" mini={true} size="small" aria-label="add"
-          aria-label="Copy to clipboard" onClick={copyToClipboard}>
-          <ContentCopy />
-          Copy
-        </Button>
-      }
-    </div>
-  );
+            <InputLabel htmlFor={'field' + section}
+              shrink={true}
+              classes={{
+                root: classes.textFieldFormLabel,
+              }}>{section.toUpperCase()} {label}</InputLabel>
+
+            <Input
+              id={'field' + section} value={value}
+              inputRef={(input) => { this.textInput = input; }}
+              disableUnderline={true}
+              fullWidth={true}
+              onChange={onChange}
+              multiline={type === 'text' ? false : true }
+              classes={{
+                formControl: classes.textFieldInput,
+              }}
+            />
+
+                                  </Badge>
+        </FormControl>
+        <SnackBar message={source}/>
+        {/* only displaying the button if the copy command exists */
+          document.queryCommandSupported('copy') &&
+          <Button variant="flat" mini={true} size="small" aria-label="add"
+            aria-label="Copy to clipboard" onClick={this.copyToClipboard}>
+            <ContentCopy />
+            Copy
+          </Button>
+        }
+      </div>
+    );
+  }
 }
 
 TextInput.propTypes = {
