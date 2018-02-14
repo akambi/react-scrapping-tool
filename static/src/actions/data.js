@@ -55,11 +55,11 @@ export function requestProtocolMeta() {
 export function processProtocol(protocolFile, token) {
     return (dispatch) => {
         dispatch(requestProtocolMeta());
+        browserHistory.push('/result');
         getProtocolMeta(protocolFile, token)
             .then(parseJSON)
             .then(response => {
                 dispatch(receiveProtocolMeta(protocolFile, response));
-                browserHistory.push('/result');
             })
             .catch(error => {
                 if (error.status === 403) {

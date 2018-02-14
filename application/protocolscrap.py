@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from fuzzywuzzy import fuzz
 import re
+import dateutil.parser
 
 #---------------------------------------------------------------------------------------------------
 def getProtocolData (HTMLString):
@@ -130,7 +131,6 @@ def getDataAnalyzedSectionA(dataframe):
     #Find NA
     tempdict = {'id':'A.3.2','value': '' ,'score': 0,'raw_text': '', 'eudractlabel':'Name of the abbreviated title of the trial where available', 'section':'A', 'type':'text'}
     arrayStorage.append(tempdict) 
-      
     
     #Find PROTOCOL CODE
     for id,CurrentRow in dataframe.iterrows():
@@ -147,9 +147,8 @@ def getDataAnalyzedSectionA(dataframe):
         score = fuzz.ratio("VERSION OF THE DOCUMENT",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'A.4.2','value': value,'score': score,'raw_text': value, 'eudractlabel':"Sposnsor's protocol version", 'section':'A', 'type':'text'}
+            tempdict = {'id':'A.4.2','value': "Final",'score': score,'raw_text': value, 'eudractlabel':"Sposnsor's protocol version", 'section':'A', 'type':'text'}
             arrayStorage.append(tempdict)
-            
             
     #Find DATE OF THE DOCUMENT
     for id,CurrentRow in dataframe.iterrows():
@@ -157,7 +156,8 @@ def getDataAnalyzedSectionA(dataframe):
         score = fuzz.ratio("DATE OF THE DOCUMENT",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'A.4.3','value': value,'score': score,'raw_text': value, 'eudractlabel':"Sponsor's protocol date", 'section':'A', 'type':'text'}
+            CurrentDate = dateutil.parser.parse(value)
+            tempdict = {'id':'A.4.3','value': CurrentDate.strftime('%Y-%m-%d'),'score': score,'raw_text': value, 'eudractlabel':"Sponsor's protocol date", 'section':'A', 'type':'text'}
             arrayStorage.append(tempdict)     
  
     #not to find in the prototcol, they're will be sent with no values                
@@ -174,6 +174,8 @@ def getDataAnalyzedSectionA(dataframe):
         score = fuzz.ratio("UNIVERSAL TRIAL NUMBER",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
+            #Check if contains UTN : if yes keep it, else put nothing
+            #print(value)
             tempdict = {'id':'A.5.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'WHO Universal Trail Number (UTN)', 'section':'A', 'type':'text'}
             arrayStorage.append(tempdict) 
     #not to find in the prototcol, they're will be sent with no values        
@@ -184,18 +186,17 @@ def getDataAnalyzedSectionA(dataframe):
     tempdict = {'id':'A.6.2','value': '','score': 0,'raw_text': '', 'eudractlabel':'if yes indicate the resubmission letter', 'section':'A', 'type':'text'}
     arrayStorage.append(tempdict)
     #Find "is the trial part of agreed pip ?"
-    tempdict = {'id':'A7','value': '','score': 0,'raw_text': '', 'eudractlabel':'is the trial part of agreed Paediatric Investigation Plan ?', 'section':'A', 'type':'text'}
+    tempdict = {'id':'A.7','value': '','score': 0,'raw_text': '', 'eudractlabel':'is the trial part of agreed Paediatric Investigation Plan ?', 'section':'A', 'type':'text'}
     arrayStorage.append(tempdict)        
     #Find PIP EMANO
-    tempdict = {'id':'A8','value': '','score': 0,'raw_text': '', 'eudractlabel':'Ema Decision number of Paediatric Investigation Plan', 'section':'A', 'type':'text'}
+    tempdict = {'id':'A.8','value': '','score': 0,'raw_text': '', 'eudractlabel':'Ema Decision number of Paediatric Investigation Plan', 'section':'A', 'type':'text'}
     arrayStorage.append(tempdict)          
-    
         
     return arrayStorage
 
 #-----------------------------------------------------------------------------------------------------------
 
-    
+
 def getDataAnalyzedSectionB(dataframe):
     #array of dict
     arrayStorage=[]
