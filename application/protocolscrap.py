@@ -693,7 +693,6 @@ def getDataAnalyzedSectionF(dataframe):
      """ retrieve data from Section F """
      #array of dict to store dictionnaries
      arrayStorage=[]
-     
      #F1.1 Find "Age Range"*************
      for id,CurrentRow in dataframe.iterrows():
          #setup variables
@@ -746,29 +745,25 @@ def getDataAnalyzedSectionF(dataframe):
                      idCopy += 1
                      rawtext = value
                 #Check if Female status seems 
-                patternFemale=re.compile("FEMALE",re.IGNORECASE)
-                objFemale = patternFemale.search(value)
-                if (objFemale) : 
-                    value = "Yes"
+                if ("FEMALE" in value.upper()) : 
+                    value_female = "Yes"
                     score = 80
                 else : 
-                    value = "Not Found"
+                    value_female = "Not Found"
                     score = 40                    
                 #Store results for F.2.1
-                tempdict = {'id':'f.2.1','value': value,'score': score,'raw_text': rawtext, 'eudractlabel':'Female','section':'F', 'type':'text'}
+                tempdict = {'id':'f.2.1','value': value_female,'score': score,'raw_text': rawtext, 'eudractlabel':'Female','section':'F', 'type':'text'}
                 arrayStorage.append(tempdict)
 
-                #Check if Male status seems to be present 
-                patternMale=re.compile("MALE",re.IGNORECASE)
-                objMale = patternMale.search(value)
-                if (objMale) : 
-                    value = "Yes"
+                #Check if Male status seems to be present
+                if ("MALE" in value.upper()) : 
+                    value_male = "Yes"
                     score = 80
                 else : 
-                    value = "Not Found"
+                    value_male = "Not Found"
                     score = 40                    
                 #Store results for F.2.1
-                tempdict = {'id':'f.2.2','value': value,'score': score,'raw_text': rawtext, 'eudractlabel':'Male','section':'F', 'type':'text'}
+                tempdict = {'id':'f.2.2','value': value_male,'score': score,'raw_text': rawtext, 'eudractlabel':'Male','section':'F', 'type':'text'}
                 arrayStorage.append(tempdict)
 
      
@@ -834,7 +829,7 @@ def search_keywords(keywords_list,dataframe):
 #  
 #
 #test code
-#HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
+HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL2-95005-002_TASCO1_Amended Protocol_INT_ Final Version CLEAN_25-01-2017.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-62798-001_Amended study protocol 21_September_2017 final version.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-81694-003_Protocol final version 19JUN2017 e-ctd_.htm"
@@ -843,6 +838,6 @@ def search_keywords(keywords_list,dataframe):
 
 
 
-#ps_dataframe=pd.DataFrame(getProtocolScrap(open(HTMLPath)))
-#dataframe=getProtocolData(open(HTMLPath))
+#dataframe=pd.DataFrame(getProtocolData(open(HTMLPath)))
+#ps_dataframe=pd.DataFrame(getDataAnalyzedSectionF(dataframe))
 
