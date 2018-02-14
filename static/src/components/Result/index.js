@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
-import Badge from 'material-ui/Badge';
 
 import { withStyles } from 'material-ui/styles';
 import TextInput from '../TextInput';
@@ -36,15 +35,6 @@ const style = {
 };
 
 const cstyles = {
-  badgeRed: {
-    backgroundColor: 'red'
-  },
-  badgeGreen: {
-    backgroundColor: 'green'
-  },
-  badgeOrange: {
-    backgroundColor: 'orange'
-  },
   label: {
     textTransform: 'capitalize',
   },
@@ -134,33 +124,27 @@ class ResultView extends Component {
     }
 
     render() {
-
         return !(this.props.isFetching || this.props.loaded) ? <span ><img src="./img/tenor.gif" alt="image du loader" /></span> : (
 
             <div className={`container-fluid ${styles}`}>
                 <div className="col-md-12" onKeyPress={(e) => this._handleKeyPress(e)}>
                     <Paper style={style}>
                         {this.props.isFetching ? <span/> : 
-                        <div className="scrollable">
-                            <h2>Metas get from protocol!</h2>
-
+                        <div>
+                            <h3>Protocol - {this.props.name.replace(/\.[^/.]+$/, "")}</h3>
                             {
                                 this.props.data &&
                                 this.props.data.protocoldata.filter(field => field.section === this.props.section)
                                 .map((field) => <div key={field.id} className="col-md-12">
-                                <Badge badgeContent={field.score + '%'}
-                                classes={{
-                                    badge: (field.score < 40 ? this.props.classes.badgeRed : 
-                                    (field.score < 95 ? this.props.classes.badgeOrange : this.props.classes.badgeGreen))
-                                }}>
                                   <TextInput
                                   section={field.id}
                                   label={field.eudractlabel}
                                   value={field.value}
+                                  type={field.type}
+                                  score={field.score}
                                   onChange={(e) => this.changeValue(e, field.id)}
                                   source={field.raw_text}
                                   />
-                                </Badge>
                             </div>)
                             }
 

@@ -8,6 +8,7 @@ import purple from 'material-ui/colors/purple';
 import SnackBar from './SnackBar';
 import ContentCopy from 'material-ui-icons/ContentCopy';
 import Button from 'material-ui/Button';
+import Badge from 'material-ui/Badge';
 
 const styles = theme => ({
   container: {
@@ -16,9 +17,6 @@ const styles = theme => ({
   },
   formControl: {
     margin: theme.spacing.unit,
-  },
-  inputLabelFocused: {
-    color: purple[500],
   },
   inputInkbar: {
     '&:after': {
@@ -50,10 +48,23 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
   },
+  badgeRed: {
+    color: 'white',
+    backgroundColor: 'red'
+  },
+  badgeGreen: {
+    color: 'white',
+    backgroundColor: 'green'
+  },
+  badgeOrange: {
+    color: 'white',
+    backgroundColor: 'orange'
+  },
 });
 
 function TextInput(props) {
-  const { classes, section, label, value, onChange, source } = props;
+  const { classes, section, type, label, 
+        value, onChange, score, source } = props;
 
   let textInput = null;
 
@@ -64,43 +75,39 @@ function TextInput(props) {
 
   return (
     <div className={classes.container}>
-      <FormControl className={classes.formControl}>
-        <InputLabel
-          FormControlClasses={{
-            focused: classes.inputLabelFocused,
-          }}
-          htmlFor="custom-color-input"
-        >
-          {section}
-        </InputLabel>
-        <Input
-          classes={{
-            inkbar: classes.inputInkbar,
-          }}
-          id="custom-color-input"
-        />
+      <FormControl fullWidth className={classes.formControl}>
+                                <Badge badgeContent={score + '%'}
+                                classes={{
+                                    badge: (score < 40 ? classes.badgeRed : 
+                                    (score < 95 ? classes.badgeOrange : classes.badgeGreen))
+                                }} color="inherit">
+
+          <InputLabel htmlFor={'field' + section}
+            shrink={true}
+            classes={{
+              root: classes.textFieldFormLabel,
+            }}>{section} {label}</InputLabel>
+
+          <Input
+            id={'field' + section} value={value}
+            inputRef={(input) => { textInput = input; }}
+            disableUnderline={true}
+            fullWidth={true}
+            multiline={type === 'text' ? false : true }
+            classes={{
+              formControl: classes.textFieldInput,
+            }}
+          />
+
+                                </Badge>
       </FormControl>
-      <TextField
-        label={label}
-        value={value}
-        inputRef={(input) => { textInput = input; }}
-        InputProps={{
-          disableUnderline: true,
-          classes: {
-            root: classes.textFieldRoot,
-            input: classes.textFieldInput,
-          },
-        }}
-        InputLabelProps={{
-          shrink: true,
-          className: classes.textFieldFormLabel,
-        }}
-      />
       <SnackBar message={source}/>
       {/* only displaying the button if the copy command exists */
         document.queryCommandSupported('copy') &&
-        <Button variant="fab" aria-label="add" className={classes.button} aria-label="Copy to clipboard" onClick={copyToClipboard}>
+        <Button variant="flat" mini={true} size="small" aria-label="add"
+          aria-label="Copy to clipboard" onClick={copyToClipboard}>
           <ContentCopy />
+          Copy
         </Button>
       }
     </div>
@@ -110,7 +117,9 @@ function TextInput(props) {
 TextInput.propTypes = {
   section: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
   value: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
