@@ -10,6 +10,7 @@ import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import TextInput from '../TextInput';
 import * as actionCreators from '../../actions/auth';
+import { CircularProgress } from 'material-ui/Progress';
 
 import { validateEmail } from '../../utils/misc';
 
@@ -34,11 +35,14 @@ const style = {
     overflow: scroll
 };
 
-const cstyles = {
-  label: {
-    textTransform: 'capitalize',
-  },
-};
+const cstyles = theme => ({
+  progress: {
+    margin: `-${theme.spacing.unit * 3}px 0 0 -${theme.spacing.unit * 3}px`,
+    position: 'absolute',
+    left: '50%',
+    top: '50%' 
+  },  
+});
 
 /* component styles */
 import { styles } from './styles.scss';
@@ -124,7 +128,9 @@ class ResultView extends Component {
     }
 
     render() {
-        return !(this.props.isFetching || this.props.loaded) ? <span ><img src="./img/tenor.gif" alt="image du loader" /></span> : (
+        const { classes } = this.props;
+
+        return this.props.isFetching ? <CircularProgress className={classes.progress} size={50} />  : !this.props.loaded ? <span/> : (
 
             <div className={`container-fluid ${styles}`}>
                 <div className="col-md-12" onKeyPress={(e) => this._handleKeyPress(e)}>

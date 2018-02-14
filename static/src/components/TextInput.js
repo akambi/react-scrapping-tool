@@ -86,7 +86,7 @@ function TextInput(props) {
             shrink={true}
             classes={{
               root: classes.textFieldFormLabel,
-            }}>{section} {label}</InputLabel>
+            }}>{section.toUpperCase()} {label}</InputLabel>
 
           <Input
             id={'field' + section} value={value}
