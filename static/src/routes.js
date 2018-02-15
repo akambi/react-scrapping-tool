@@ -23,6 +23,6 @@ export default (
         <Route path="load" component={requireAuthentication(Home)} />
         <Route path="result" component={requireAuthentication(ResultView)} />
         <Route path="analytics" component={requireAuthentication(Analytics)} />
-        <Route path="*" component={DetermineAuth(NotFound)} />
+        <Route path="*" component={DetermineAuth(Home)} />
     </Route>
 );

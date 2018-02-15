@@ -44,7 +44,17 @@ const cstyles = theme => ({
     position: 'absolute',
     left: '50%',
     top: '50%' 
-  },  
+  },
+  bodybackground: {
+    backgroundColor: '#FFFFFF',
+    opacity: opts.opacity,
+    width: document.body.outerWidth,
+    height: document.body.outerHeight,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 99999,
+  }
 });
 
 /* component styles */
@@ -139,13 +149,7 @@ class ResultView extends Component {
     render() {
         const { classes } = this.props;
 
-
-        console.log(this.props.subSection, this.props.data &&
-                                this.props.data.protocoldata.filter(field => field.section === this.props.section), this.props.data &&
-                                this.props.data.protocoldata.filter(field => field.section === this.props.section)
-                                .filter(field => ((this.props.subSection === null) || (field.subSection === this.props.subSection))));
-
-        return this.props.isFetching ? <CircularProgress className={classes.progress} size={50} />  : !this.props.loaded ? <span/> : (
+        return this.props.isFetching ? <div className={classes.bodybackground}><CircularProgress className={classes.progress} size={50} /></div>  : !this.props.loaded ? <span/> : (
 
             <div className={`container-fluid ${styles}`}>
                 <div className="col-md-12" onKeyPress={(e) => this._handleKeyPress(e)}>
