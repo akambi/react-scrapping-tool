@@ -406,6 +406,13 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             idCopy=id+1
             value=''
             while(dataframe.at[idCopy,'Container']!=stop_flag):
+                 #if its a header : h1, h2 etc 
+                 if hasNumbers(dataframe.at[idCopy,'Container']):
+                        current_header_level=dataframe.at[idCopy,'Container'][1]
+                        stop_flag_header_level=stop_flag[1]
+                        #print [current_header_level,stop_flag_header_level]
+                        if int(current_header_level)<int(stop_flag_header_level):
+                           break
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
             tempdict = {'id':'e.2.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Main objective of the trial','section':'E', 'type':'multiline'}
@@ -425,6 +432,13 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             idCopy=id+1
             value=''
             while(dataframe.at[idCopy,'Container']!=stop_flag):
+                 #if its a header : h1, h2 etc 
+                 if hasNumbers(dataframe.at[idCopy,'Container']):
+                        current_header_level=dataframe.at[idCopy,'Container'][1]
+                        stop_flag_header_level=stop_flag[1]
+                        #print [current_header_level,stop_flag_header_level]
+                        if int(current_header_level)<int(stop_flag_header_level):
+                           break
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
             tempdict = {'id':'e.2.2','value': value,'score': score,'raw_text': value, 'eudractlabel':'Secondary objectives of the trial','section':'E', 'type':'multiline'}
@@ -450,6 +464,15 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             idCopy=id+1
             value=''
             while(dataframe.at[idCopy,'Container']!=stop_flag):
+                 
+                #if its a header : h1, h2 etc 
+                 if hasNumbers(dataframe.at[idCopy,'Container']):
+                        current_header_level=dataframe.at[idCopy,'Container'][1]
+                        stop_flag_header_level=stop_flag[1]
+                        #print [current_header_level,stop_flag_header_level]
+                        if int(current_header_level)<int(stop_flag_header_level):
+                           break
+                       
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
             tempdict = {'id':'e.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'Principal inclusion criteria','section':'E', 'type':'multiline'}
@@ -469,6 +492,15 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             value=''
             #get all paragraph of the header with embedded headers
             while(dataframe.at[idCopy,'Container']!=stop_flag):
+                
+                 #if its a header : h1, h2 etc 
+                 if hasNumbers(dataframe.at[idCopy,'Container']):
+                        current_header_level=dataframe.at[idCopy,'Container'][1]
+                        stop_flag_header_level=stop_flag[1]
+                        #print [current_header_level,stop_flag_header_level]
+                        if int(current_header_level)<int(stop_flag_header_level):
+                           break
+                       
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
             tempdict = {'id':'e.4','value': value,'score': score,'raw_text': value, 'eudractlabel':'Principal exclusion criteria','section':'E', 'type':'multiline'}
@@ -488,6 +520,13 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             value=''
             #get all paragraph of the header with embedded headers
             while(dataframe.at[idCopy,'Container']!=stop_flag):
+                 #if its a header : h1, h2 etc 
+                 if hasNumbers(dataframe.at[idCopy,'Container']):
+                        current_header_level=dataframe.at[idCopy,'Container'][1]
+                        stop_flag_header_level=stop_flag[1]
+                        #print [current_header_level,stop_flag_header_level]
+                        if int(current_header_level)<int(stop_flag_header_level):
+                           break
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
             tempdict = {'id':'e.5.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Primary end point(s)','section':'E', 'type':'multiline'}
@@ -511,8 +550,18 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             value=''
             #get all paragraph of the header with embedded headers
             while(dataframe.at[idCopy,'Container']!=stop_flag):
+                 
+                #if its a header : h1, h2 etc 
+                 if hasNumbers(dataframe.at[idCopy,'Container']):
+                        current_header_level=dataframe.at[idCopy,'Container'][1]
+                        stop_flag_header_level=stop_flag[1]
+                        #print [current_header_level,stop_flag_header_level]
+                        if int(current_header_level)<int(stop_flag_header_level):
+                           break
+                       
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
+                 
             tempdict = {'id':'e.5.2','value': value,'score': score,'raw_text': value, 'eudractlabel':'Secondary end point(s))','section':'E', 'type':'multiline'}
             arrayStorage.append(tempdict)     
      
@@ -716,6 +765,15 @@ def getDataAnalyzedSectionF(dataframe):
                 idCopy=id+1
                 value=''
                 while(dataframe.at[idCopy,'Container']!=stop_flag):
+                     
+                    #if its a header : h1, h2 etc 
+                     if hasNumbers(dataframe.at[idCopy,'Container']):
+                        current_header_level=dataframe.at[idCopy,'Container'][1]
+                        stop_flag_header_level=stop_flag[1]
+                        #print [current_header_level,stop_flag_header_level]
+                        if int(current_header_level)<int(stop_flag_header_level):
+                           break
+                       
                      value=value+dataframe.at[idCopy,'RawText']
                      idCopy += 1
                      rawtext = value
@@ -828,6 +886,14 @@ def getDataAnalyzedSectionF(dataframe):
                 stop_flag=dataframe.at[id,'Container']
                 idCopy=id+1
                 while(dataframe.at[idCopy,'Container']!=stop_flag):
+                     
+                    #if its a header : h1, h2 etc 
+                     if hasNumbers(dataframe.at[idCopy,'Container']):
+                        current_header_level=dataframe.at[idCopy,'Container'][1]
+                        stop_flag_header_level=stop_flag[1]
+                        if int(current_header_level)<int(stop_flag_header_level):
+                           break 
+                       
                      value=value+dataframe.at[idCopy,'RawText']
                      idCopy += 1
                      rawtext = value
@@ -854,8 +920,9 @@ def getDataAnalyzedSectionF(dataframe):
                 stop_flag=dataframe.at[id,'Container']
                 idCopy=id+1
                 while(dataframe.at[idCopy,'Container']!=stop_flag):
+                    
                     #if its a header : h1, h2 etc 
-                    if len(dataframe.at[idCopy,'Container'])>1:
+                    if hasNumbers(dataframe.at[idCopy,'Container']):
                         current_header_level=dataframe.at[idCopy,'Container'][1]
                         stop_flag_header_level=stop_flag[1]
                         #print [current_header_level,stop_flag_header_level]
@@ -900,6 +967,10 @@ def search_keywords(keywords_list,dataframe):
             return 'Yes',text
     return 'No',text   
 
+  #-----------------------
+def hasNumbers(inputString):
+  return any(char.isdigit() for char in inputString)
+
 # Function to load meddra PTs in memory (Warning : location is hard coded, to fix in a next release) 
 #def getMatchedPTS(StringToCode):
 #    """Take the string to code and check if one or more PT matches with fuzzy search"""
@@ -922,7 +993,7 @@ def search_keywords(keywords_list,dataframe):
 #  
 #
 #test code
-#HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
+HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL2-95005-002_TASCO1_Amended Protocol_INT_ Final Version CLEAN_25-01-2017.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-62798-001_Amended study protocol 21_September_2017 final version.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-81694-003_Protocol final version 19JUN2017 e-ctd_.htm"
@@ -931,6 +1002,6 @@ def search_keywords(keywords_list,dataframe):
 
 
 
-#dataframe=pd.DataFrame(getProtocolData(open(HTMLPath)))
-#ps_dataframe=pd.DataFrame(getDataAnalyzedSectionF(dataframe))
+dataframe=pd.DataFrame(getProtocolData(open(HTMLPath)))
+ps_dataframe=pd.DataFrame(getDataAnalyzedSectionF(dataframe))
 
