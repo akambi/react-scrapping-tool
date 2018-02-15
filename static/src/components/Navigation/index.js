@@ -10,7 +10,7 @@ import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
-import { sectionListItems } from './sections';
+import SectionListItems from './sections';
 
 import { logoutAndRedirect } from '../../actions/auth';
 import { openMenu, closeMenu, selectSection } from '../../actions/data';
@@ -51,14 +51,11 @@ const styles = theme => ({
 });
 
 function mapStateToProps(state) {
-    let sections = [];
-    if (state.data.protocol_metas && state.data.protocol_metas.data) {
-      sections = [...new Set(state.data.protocol_metas.data.protocoldata.map(item => item.section))]
-    }
-
     return {
         isNavMenuOpened: state.data.openedMenu,
-        sections: sections,
+        sections: state.data.sections,
+        subSections: state.data.subSections,
+        selectedSection: state.data.selectedSection,
     };
 }
 
@@ -70,12 +67,6 @@ function mapDispatchToProps(dispatch) {
 class Navigation extends Component {
     constructor(props) {
         super(props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (this.props.sections.length && nextProps.sections[0] != this.props.sections[0]) {
-          this.props.selectSection(this.props.sections[0]);
-        }
     }
 
     handleDrawerClose = () => {
@@ -107,7 +98,10 @@ class Navigation extends Component {
                   </IconButton>
                 </div>
                 <Divider />
-                <List className={classes.list}>{sectionListItems(this.props.sections, this.props.selectSection)}</List>
+                <List className={classes.list}>
+                  <SectionListItems sections={this.props.sections} selectedSection={this.props.selectedSection}
+                   subSections={this.props.subSections} callBack={this.props.selectSection}/>
+                </List>
               </div>
           </Drawer> : <span/>
         );
@@ -117,7 +111,8 @@ class Navigation extends Component {
 Navigation.propTypes = {
     logoutAndRedirect: React.PropTypes.func,
     isNavMenuOpened: React.PropTypes.bool,
-    sections: React.PropTypes.array
+    sections: React.PropTypes.array,
+    selectedSection: React.PropTypes.string,
 };
 
 export default withStyles(styles, { withTheme: true })(Navigation);
