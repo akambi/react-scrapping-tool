@@ -54,3 +54,9 @@ export function getProtocolMeta(protocolFile, token) {
     }
     return axios.post(url, formData, {...tokenConfig(token), ...config});
 }
+
+
+export function exportProtocolData(protocolData, token) {
+    const url = '/caps_api/xmlgenerator';
+    return axios.post(url, protocolData, {...tokenConfig(token)});
+}

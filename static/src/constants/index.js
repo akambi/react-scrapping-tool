@@ -19,5 +19,8 @@ export const CLOSE_MENU = 'CLOSE_MENU';
 
 export const SELECT_SECTION = 'SELECT_SECTION';
 
+export const REQUEST_EXPORT_XML = 'REQUEST_EXPORT_XML';
+export const RECEIVE_EXPORT_XML = 'RECEIVE_EXPORT_XML';
+
 // others constants
 export const drawerWidth = 240;

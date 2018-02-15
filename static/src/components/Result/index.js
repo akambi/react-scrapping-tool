@@ -10,16 +10,14 @@ import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import TextInput from '../TextInput';
 import * as actionCreators from '../../actions/auth';
-import { CircularProgress } from 'material-ui/Progress';
-
-import { validateEmail } from '../../utils/misc';
+import LoaderView from '../Loader';
 import { browserHistory } from 'react-router';
 
 function mapStateToProps(state) {
     return {
         ...state.data.protocol_metas,
         section: state.data.selectedSection,
-        subSection: state.data.selectedSubSection
+        subSection: state.data.selectedSubSection,
     };
 }
 
@@ -39,22 +37,6 @@ const style = {
 };
 
 const cstyles = theme => ({
-  progress: {
-    margin: `-${theme.spacing.unit * 3}px 0 0 -${theme.spacing.unit * 3}px`,
-    position: 'absolute',
-    left: '50%',
-    top: '50%' 
-  },
-  bodybackground: {
-    backgroundColor: '#FCFCFC',
-    opacity: 0.3,
-    width: window.innerWidth,
-    height: window.innerHeight,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: 99999,
-  }
 });
 
 /* component styles */
@@ -80,79 +62,17 @@ class ResultView extends Component {
         }
     }
 
-    isDisabled() {
-        let email_is_valid = false;
-        let password_is_valid = false;
-
-        if (this.state.email === '') {
-            this.setState({
-                email_error_text: null,
-            });
-        } else if (validateEmail(this.state.email)) {
-            email_is_valid = true;
-            this.setState({
-                email_error_text: null,
-            });
-
-        } else {
-            this.setState({
-                email_error_text: 'Sorry, this is not a valid email',
-            });
-        }
-
-        if (this.state.password === '' || !this.state.password) {
-            this.setState({
-                password_error_text: null,
-            });
-        } else if (this.state.password.length >= 6) {
-            password_is_valid = true;
-            this.setState({
-                password_error_text: null,
-            });
-        } else {
-            this.setState({
-                password_error_text: 'Your password must be at least 6 characters',
-            });
-
-        }
-
-        if (email_is_valid && password_is_valid) {
-            this.setState({
-                disabled: false,
-            });
-        }
-
-    }
-
     changeValue(e, type) {
-        const value = e.target.value;
-        const next_state = {};
-        next_state[type] = value;
-        this.setState(next_state, () => {
-            this.isDisabled();
-        });
-    }
-
-    _handleKeyPress(e) {
-        if (e.key === 'Enter') {
-            if (!this.state.disabled) {
-                this.login(e);
-            }
-        }
-    }
-
-    login(e) {
-        e.preventDefault();
-        this.props.registerUser(this.state.email, this.state.password, this.state.redirectTo);
+//        triggerAction(type, e.target.value);
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, isFetching } = this.props;
 
-        return this.props.isFetching ? <div className={classes.bodybackground}><CircularProgress className={classes.progress} size={50} /></div>  : !this.props.loaded ? <span/> : (
+        return this.props.isFetching ? <LoaderView isFetching={this.props.isFetching}/>  : !this.props.loaded ? <span/> : (
 
             <div className={`container-fluid ${styles}`}>
-                <div className="col-md-12" onKeyPress={(e) => this._handleKeyPress(e)}>
+                <div className="col-md-12">
                     <Paper style={style}>
                         {this.props.isFetching ? <span/> : 
                         <div>

@@ -40,7 +40,6 @@ class NestedList extends React.Component {
   state = { sections: [] };
 
   handleClick = (index) => {
-    console.log(this.state);
     let sectionState = { open: !(this.state.sections[index] || { open: false }).open };
     let newSections = [...this.state.sections ];
     newSections[index] = sectionState

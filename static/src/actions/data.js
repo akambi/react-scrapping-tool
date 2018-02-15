@@ -1,7 +1,8 @@
 import { FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA,
- REQUEST_PROTOCOL_META, RECEIVE_PROTOCOL_META, OPEN_MENU, CLOSE_MENU, SELECT_SECTION  } from '../constants/index';
+ REQUEST_PROTOCOL_META, RECEIVE_PROTOCOL_META, OPEN_MENU, CLOSE_MENU,
+ SELECT_SECTION, REQUEST_EXPORT_XML, RECEIVE_EXPORT_XML } from '../constants/index';
 import { parseJSON } from '../utils/misc';
-import { data_about_user, getProtocolMeta } from '../utils/http_functions';
+import { data_about_user, getProtocolMeta, exportProtocolData } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
 import { browserHistory } from 'react-router';
 
@@ -65,6 +66,39 @@ export function processProtocol(protocolFile, token) {
                 dispatch(receiveProtocolMeta(protocolFile, response));
             })
             .catch(error => {
+                if (error.status === 403) {
+                    dispatch(logoutAndRedirect(error));
+                }
+            });
+    };
+}
+
+export function receiveExportXML(protocolFile, data) {
+    return {
+        type: RECEIVE_EXPORT_XML,
+        payload: {
+            name: protocolFile.name,
+            data,
+        },
+    };
+}
+
+export function requestExportXML() {
+    return {
+        type: REQUEST_EXPORT_XML,
+    };
+}
+
+export function exportProtocolToXML(protocolData, token) {
+    return (dispatch) => {
+        dispatch(requestExportXML());
+        exportProtocolData(protocolData, token)
+            .then(parseJSON)
+            .then(response => {
+                dispatch(receiveExportXML(response));
+            })
+            .catch(error => {
+                dispatch(receiveExportXML({}));
                 if (error.status === 403) {
                     dispatch(logoutAndRedirect(error));
                 }

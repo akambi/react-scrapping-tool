@@ -19,13 +19,14 @@ import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import FileUploadIcon from 'material-ui-icons/FileUpload';
 import SvgIcon from 'material-ui/SvgIcon';
+import LoaderView from '../Loader';
 
 import { logoutAndRedirect } from '../../actions/auth';
-import { openMenu, closeMenu } from '../../actions/data';
+import { openMenu, closeMenu, exportProtocolToXML } from '../../actions/data';
 
 import { drawerWidth } from '../../constants/index';
 
-const actionCreators = { logoutAndRedirect, openMenu, closeMenu };
+const actionCreators = { logoutAndRedirect, openMenu, closeMenu, exportProtocolToXML };
 
 const HomeIcon = props => (
   <SvgIcon {...props}>
@@ -93,15 +94,19 @@ const styles = theme => ({
 
 function mapStateToProps(state) {
     let sections = [];
+    let protocolData = null;
     if (state.data.protocol_metas && state.data.protocol_metas.data) {
       sections = [...new Set(state.data.protocol_metas.data.protocoldata.map(item => item.section))]
+      protocolData = state.data.protocol_metas.data
     }
 
     return {
         token: state.auth.token,
         isAuthenticated: state.auth.isAuthenticated,
         isNavMenuOpened: state.data.openedMenu,
-        sections: sections,
+        isFetchingExport: state.data.isFetchingExport,
+        sections,
+        protocolData,
     };
 }
 
@@ -130,6 +135,11 @@ class Header extends Component {
         this.props.openMenu();
     }
 
+    upload(e) {
+        e.preventDefault();
+        this.props.exportProtocolToXML(this.props.protocolData, this.props.token);
+    }
+
     render() {
         const { classes, theme } = this.props;
 
@@ -147,7 +157,7 @@ class Header extends Component {
 
                         <Typography variant="title" color="inherit" className={classes.flex} style={{ lineHeight: 'normal' }}>
                             <div>
-                                <div style={{ marginTop: 10 }}>CAPS vj9.1</div>
+                                <div style={{ marginTop: 10 }}>CAPS vj9.2</div>
                                 <div style={{ fontSize: 'small', fontWeight: 300 }}>Clinical protocol Scrapper</div>
                             </div>
                         </Typography>
@@ -170,7 +180,7 @@ class Header extends Component {
                                     <div>
                                         {
                                             this.props.sections && this.props.sections.length ? <Button
-                                         color="inherit" disabled={true}>
+                                         color="inherit" onClick={(e) => this.upload(e)}>
                                             <FileUploadIcon className={classes.leftIcon}/> Export XML
                                          </Button> : <span/>
                                         }
@@ -183,6 +193,7 @@ class Header extends Component {
                                           onClick={(e) => this.logout(e)}
                                           color="inherit"
                                         ><Icon className="material-icons" />Logout</Button>
+                                        <LoaderView isFetching={this.props.isFetchingExport}/>
                                     </div>
                                 }                        
                         </div>                              
@@ -195,8 +206,10 @@ class Header extends Component {
 Header.propTypes = {
     logoutAndRedirect: React.PropTypes.func,
     isAuthenticated: React.PropTypes.bool,
+    isFetchingExport: React.PropTypes.bool,
     userName: React.PropTypes.string,
     token: React.PropTypes.string,
+    exportProtocolToXML: React.PropTypes.func,
 };
 
 export default withStyles(styles, { withTheme: true })(Header);

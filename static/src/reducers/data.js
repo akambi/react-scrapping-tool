@@ -1,5 +1,6 @@
 import { RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST,
-    RECEIVE_PROTOCOL_META, REQUEST_PROTOCOL_META, OPEN_MENU, CLOSE_MENU, SELECT_SECTION } from '../constants';
+    RECEIVE_PROTOCOL_META, REQUEST_PROTOCOL_META, OPEN_MENU, CLOSE_MENU,
+    SELECT_SECTION, REQUEST_EXPORT_XML, RECEIVE_EXPORT_XML } from '../constants';
 import { createReducer } from '../utils/misc';
 
 const initialState = {
@@ -66,4 +67,7 @@ export default createReducer(initialState, {
             selectedSection: payload.section,
             selectedSubSection: payload.subSection,
         }}),
+    [REQUEST_EXPORT_XML]: (state, payload) =>
+        ({ ...state, ...{ isFetchingExport: true }}),
+    [RECEIVE_EXPORT_XML]: (state, payload) => ({ ...state, ...{ isFetchingExport: false } }),
 });
