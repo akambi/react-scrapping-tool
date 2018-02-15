@@ -46,15 +46,18 @@ export function receiveProtocolMeta(protocolFile, data) {
     };
 }
 
-export function requestProtocolMeta() {
+export function requestProtocolMeta(protocolFile) {
     return {
         type: REQUEST_PROTOCOL_META,
+        payload: {
+            name: protocolFile.name,
+        },
     };
 }
 
 export function processProtocol(protocolFile, token) {
     return (dispatch) => {
-        dispatch(requestProtocolMeta());
+        dispatch(requestProtocolMeta(protocolFile));
         browserHistory.push('/result');
         getProtocolMeta(protocolFile, token)
             .then(parseJSON)
@@ -81,11 +84,12 @@ export function closeMenu() {
     };
 }
 
-export function selectSection(section) {
+export function selectSection(section, subSection) {
     return {
         type: SELECT_SECTION,
         payload: {
             section,
+            subSection,
         },
     };
 }

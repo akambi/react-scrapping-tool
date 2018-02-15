@@ -26,16 +26,14 @@ export function requireAuthentication(Component) {
             };
         }
 
-        componentWillReceiveProps(nextProps) {
-            this.checkAuth(nextProps);
+        componentDidMount() {
+            this.checkAuthFromLocalStorage();
         }
 
-        checkAuth(props = this.props) {
+        checkAuthFromLocalStorage(props = this.props) {
             if (!props.isAuthenticated) {
                 const token = localStorage.getItem('token');
-                if (!token) {
-                    browserHistory.push('/login');
-                } else {
+                if (token) {
                     fetch('/caps_api/is_token_valid', {
                         method: 'post',
                         credentials: 'include',
@@ -57,6 +55,19 @@ export function requireAuthentication(Component) {
                             }
                         });
 
+                }
+            }
+        }
+
+        componentWillReceiveProps(nextProps) {
+            this.checkAuth(nextProps);
+        }
+
+        checkAuth(props = this.props) {
+            if (!props.isAuthenticated) {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    browserHistory.push('/login');
                 }
             } else {
                 this.setState({

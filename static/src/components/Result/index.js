@@ -13,10 +13,13 @@ import * as actionCreators from '../../actions/auth';
 import { CircularProgress } from 'material-ui/Progress';
 
 import { validateEmail } from '../../utils/misc';
+import { browserHistory } from 'react-router';
 
 function mapStateToProps(state) {
     return {
-        ...state.data.protocol_metas, section: state.data.selectedSection
+        ...state.data.protocol_metas,
+        section: state.data.selectedSection,
+        subSection: state.data.selectedSubSection
     };
 }
 
@@ -41,7 +44,17 @@ const cstyles = theme => ({
     position: 'absolute',
     left: '50%',
     top: '50%' 
-  },  
+  },
+  bodybackground: {
+    backgroundColor: '#FCFCFC',
+    opacity: 0.3,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 99999,
+  }
 });
 
 /* component styles */
@@ -59,6 +72,12 @@ class ResultView extends Component {
             password_error_text: null,
             disabled: true,
         };
+    }
+
+    componentWillMount() {
+        if (!this.props.name) {
+            browserHistory.push('/load');
+        }
     }
 
     isDisabled() {
@@ -130,7 +149,7 @@ class ResultView extends Component {
     render() {
         const { classes } = this.props;
 
-        return this.props.isFetching ? <CircularProgress className={classes.progress} size={50} />  : !this.props.loaded ? <span/> : (
+        return this.props.isFetching ? <div className={classes.bodybackground}><CircularProgress className={classes.progress} size={50} /></div>  : !this.props.loaded ? <span/> : (
 
             <div className={`container-fluid ${styles}`}>
                 <div className="col-md-12" onKeyPress={(e) => this._handleKeyPress(e)}>
@@ -141,6 +160,7 @@ class ResultView extends Component {
                             {
                                 this.props.data &&
                                 this.props.data.protocoldata.filter(field => field.section === this.props.section)
+                                .filter(field => ((this.props.subSection === null) || (field.subSection === this.props.subSection)))
                                 .map((field, index) => <div key={field.id + index} className="col-md-12">
                                   <TextInput
                                   section={field.id}
