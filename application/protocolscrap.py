@@ -969,7 +969,7 @@ def search_keywords(keywords_list,dataframe):
     text=text.upper()
     
     for keyword in keywords_list:
-        if keyword.upper() in text:
+        if keyword.upper() in text.upper():
             return 'Yes',text
     return 'No',text   
 
