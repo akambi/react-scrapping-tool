@@ -967,9 +967,13 @@ def search_keywords(keywords_list,dataframe):
         
     text=full_title+" "+main_objective+" "+primary_endpoint
     text=text.upper()
+    #text = re.sub('[\s+]', '', text)
+    text = re.sub('[^\sA-Za-z]', ' ', text)
     
     for keyword in keywords_list:
-        if keyword.upper() in text.upper():
+        #print(keyword,fuzz.token_set_ratio(keyword,text))
+        if (fuzz.token_set_ratio(keyword,text) == 100):
+        #if keyword.upper() in text.upper():
             return 'Yes',text
     return 'No',text   
 
