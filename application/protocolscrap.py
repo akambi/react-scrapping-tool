@@ -181,7 +181,7 @@ def getDataAnalyzedSectionA(dataframe):
             value=dataframe.at[id+1,'RawText']
             RawValue = value
             #Check if contains UTN : if yes keep it, else put nothing
-            if ("UTN" in value) : pass
+            if ("U" in value) : pass
             else : 
                 value = ""
                 score = 40
@@ -365,7 +365,7 @@ def getDataAnalyzedSectionC(dataframe):
     tempdict = {'id':'c.1.5.1','value': 'yes','score': 100,'raw_text': '', 'eudractlabel':'Do you want a copy of the CTA form data saved on EudraCT as an XML file ? ','section':'C', 'type':'text'}
     arrayStorage.append(tempdict)
     #Find "Middle Name"
-    tempdict = {'id':'c.1.5.1.1','value': 'clilicaltrials@servier.com','score': 100,'raw_text': '', 'eudractlabel':'If Yes provide the e-mail address(es) to which it should be sent (up to five addresses)','section':'C', 'type':'text'}
+    tempdict = {'id':'c.1.5.1.1','value': 'clinicaltrials@servier.com','score': 100,'raw_text': '', 'eudractlabel':'If Yes provide the e-mail address(es) to which it should be sent (up to five addresses)','section':'C', 'type':'text'}
     arrayStorage.append(tempdict)
     #Find "Family name"
     tempdict = {'id':'c.1.5.1.2','value': 'yes','score': 100,'raw_text': '', 'eudractlabel':'Do you want to recieve this via password protected link(s)','section':'C', 'type':'text'}
@@ -408,7 +408,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             while(dataframe.at[idCopy,'Container']!=stop_flag):
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
-            tempdict = {'id':'e.2.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Main objective of the trial','section':'E', 'type':'multiline'}
+            tempdict = {'id':'e.2.1','value': value,'score': 50,'raw_text': value, 'eudractlabel':'Main objective of the trial','section':'E', 'type':'multiline'}
             arrayStorage.append(tempdict)
             break #break to stop collecting data. helps to avoid double fields
     
@@ -428,7 +428,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             while(dataframe.at[idCopy,'Container']!=stop_flag):
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
-            tempdict = {'id':'e.2.2','value': value,'score': score,'raw_text': value, 'eudractlabel':'Secondary objectives of the trial','section':'E', 'type':'multiline'}
+            tempdict = {'id':'e.2.2','value': value,'score': 50,'raw_text': value, 'eudractlabel':'Secondary objectives of the trial','section':'E', 'type':'multiline'}
             arrayStorage.append(tempdict)
             break #break to stop collecting data. helps to avoid double fields
             
@@ -500,7 +500,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             break #break to stop collecting data. helps to avoid double fields
     
     #deductible field 
-    tempdict = {'id':'e.5.1.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'Timepoint(s) of evaluation of this end point','section':'E', 'type':'text'}
+    tempdict = {'id':'e.5.1.1','value':'','score': 0,'raw_text': '', 'eudractlabel':'Timepoint(s) of evaluation of this end point','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)        
     
     #Find "SECONDARY ENDPOINTS"
@@ -524,7 +524,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             break #break to stop collecting data. helps to avoid double fields
      
     #deductible field 
-    tempdict = {'id':'e.5.2.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'Timepoint(s) of evaluation of this end point','section':'E', 'type':'multiline'}
+    tempdict = {'id':'e.5.2.1','value':'','score': 0,'raw_text': '', 'eudractlabel':'Timepoint(s) of evaluation of this end point','section':'E', 'type':'multiline'}
     arrayStorage.append(tempdict)  
     
     #E.6 SCOPE OF THE TRIAL   
@@ -596,7 +596,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     
     #E.7 TRIAL TYPE AND PHASE 
     #deductible field 
-    exist,raw_text=search_keywords(['pharmacokinetics','phase i','phase 1','phase 1b','single dose'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['pharmacokinetics','phase I','phase 1','phase 1b','phase Ib','single dose'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
     tempdict = {'id':'e.7.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Human pharmacology (Phase I)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
@@ -610,19 +610,18 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     tempdict = {'id':'e.7.1.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Bioequivalence Study','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
-    
     #deductible field 
-    exist,raw_text=search_keywords(['therapeutic exploratory','phase ii','phase 2','iia','iib','assess the efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['therapeutic exploratory','phase II','phase 2','IIa','IIb','assess the efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
     tempdict = {'id':'e.7.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapeutic exploratory (Phase II)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['therapeutic confirmatory','phase iii','phase 3'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['therapeutic confirmatory','phase III','phase 3'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
     tempdict = {'id':'e.7.3','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapeutic confirmatory (Phase III)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist,raw_text=search_keywords(['therapeutic use','phase vi','phase 4'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['therapeutic use','phase IV','phase 4'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
     tempdict = {'id':'e.7.4','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapeutic use (Phase IV)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
@@ -801,14 +800,14 @@ def getDataAnalyzedSectionF(dataframe):
      tempdict = {'id':'f.3.3.6','value': '' ,'score': 0,'raw_text': '', 'eudractlabel':'subjects incapable of giving consent personally','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
-     tempdict = {'id':'f.3.3.6.1','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':"If 'Yes', specify",'section':'F', 'type':'text'}
+     tempdict = {'id':'f.3.3.6.1','value': '' ,'score': 0,'raw_text': '', 'eudractlabel':"If 'Yes', specify",'section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
      #No orange
-     tempdict = {'id':'f.3.3.7','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':'Others','section':'F', 'type':'text'}
+     tempdict = {'id':'f.3.3.7','value': '' ,'score': 0,'raw_text': '', 'eudractlabel':'Others','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
-     tempdict = {'id':'f.3.3.7.1','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':"If 'others', specify the specific vulnerable populations",'section':'F', 'type':'text'}
+     tempdict = {'id':'f.3.3.7.1','value': '' ,'score': 0,'raw_text': '', 'eudractlabel':"If 'others', specify the specific vulnerable populations",'section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
      #F4 Planned number of subjects to be included
