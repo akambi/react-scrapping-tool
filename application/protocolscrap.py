@@ -93,7 +93,7 @@ def ConvertDataFrameToObject(dataframe):
     analyzed_array_section_b=getDataAnalyzedSectionB(dataframe)
     analyzed_array_section_c=getDataAnalyzedSectionC(dataframe)
     analyzed_array_section_e=getDataAnalyzedSectionE(dataframe,analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c)    
-    analyzed_array_section_f=getDataAnalyzedSectionF
+    analyzed_array_section_f=getDataAnalyzedSectionF(dataframe)
         
     return analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c+analyzed_array_section_e+analyzed_array_section_f
     
@@ -433,7 +433,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     #Find "INCLUSION CRITERIA"
     for id,CurrentRow in dataframe.iterrows():
     #find the value of INCLUSION CRITERIA using regex 
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*INCLUSION(.|\n)*CRITERIA(.|\n)*$")
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*INCLUSION(.|\n)*CRITERIA(.|\n)*$")
         obj=pattern.match(CurrentRow['RawText'].upper())
         if (obj and dataframe.at[id,'documentpart']=='Header'):
             #print 'after'
@@ -450,7 +450,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     #Find "NON-INCLUSION CRITERIA"
     for id,CurrentRow in dataframe.iterrows():
     #find the value of NON-INCLUSION CRITERIA using regex  
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*NON-INCLUSION(.|\n)*CRITERIA(.)*$")
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*NON-INCLUSION(.|\n)*CRITERIA(.|\n)*$")
         obj=pattern.match(CurrentRow['RawText'].upper())
         #if it matches the pattern and it's a header 
         if (obj and dataframe.at[id,'documentpart']=='Header'):
@@ -469,7 +469,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     #Find "PRIMARY ENDPOINTS"
     for id,CurrentRow in dataframe.iterrows():
     #find the value of PRIMARY ENDPOINTS CRITERIA using regex    
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*END(.|\n)*POINT(.)*$",re.IGNORECASE)
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*END(.|\n)*POINT(.|\n)*$",re.IGNORECASE)
         obj=pattern.match(CurrentRow['RawText'].upper())
         #if it matches the pattern and it's a header 
         if (obj and dataframe.at[id,'documentpart']=='Header'):
@@ -492,7 +492,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     #Find "SECONDARY ENDPOINTS"
     for id,CurrentRow in dataframe.iterrows():
     #find the value of PRIMARY ENDPOINTS CRITERIA using regex    
-        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*SECONDARY(.|\n)*ENDPOINT(.)*$",re.IGNORECASE)
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*SECONDARY(.|\n)*ENDPOINT(.|\n)*$",re.IGNORECASE)
         obj=pattern.match(CurrentRow['RawText'].upper())
         #if it matches the pattern and it's a header 
         if (obj and dataframe.at[id,'documentpart']=='Header'):
@@ -701,7 +701,7 @@ def getDataAnalyzedSectionF(dataframe):
      for id,CurrentRow in dataframe.iterrows():
          #setup variables
          score = 0          
-         pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(\s|\\xa0|\n)*DEMOGRAPHIC(.|\n)*CHARACTERISTIC(.|\n)*$")
+         pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*DEMOGRAPHIC(.|\n)*CHARACTERISTIC(.|\n)*$")
          obj=pattern.match(CurrentRow['RawText'].upper())
          if (obj and dataframe.at[id,'documentpart']=='Header'):
                 stop_flag=dataframe.at[id,'Container']
@@ -747,11 +747,15 @@ def getDataAnalyzedSectionF(dataframe):
      arrayStorage.append(tempdict)
       
      #F3 Group of trial subjects        
-     
+     #to find 
      tempdict = {'id':'f.3.1','value': '' ,'score': 0 ,'raw_text': '', 'eudractlabel':'Healthy volunteers','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
-     tempdict = {'id':'f.3.2','value': '' ,'score': 0 ,'raw_text': '', 'eudractlabel':'Patients','section':'F', 'type':'text'}
+     #to find
+     rawtext=''
+     value=''
+     
+     tempdict = {'id':'f.3.2','value': '' ,'score': 0 ,'raw_text': rawtext, 'eudractlabel':'Patients','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
      #vide rouge 
@@ -792,6 +796,71 @@ def getDataAnalyzedSectionF(dataframe):
      tempdict = {'id':'f.3.3.7.1','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':"If 'others', specify the specific vulnerable populations",'section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
+     #F4 Planned number of subjects to be included
+     
+     tempdict = {'id':'f.4.1','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':'In the member state','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     tempdict = {'id':'f.4.2','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':'For a multinational trial','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #vide rouge
+     tempdict = {'id':'f.4.2.1','value': 'No' ,'score': 50,'raw_text': '', 'eudractlabel':'In the EEA','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     #to find
+     rawtext=''
+     value=''
+     for id,CurrentRow in dataframe.iterrows():
+         #setup variables
+         score = 0          
+         pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*STUDY(.|\n)*DESIGN(.|\n)*$",re.IGNORECASE)
+         obj=pattern.match(CurrentRow['RawText'].upper())
+         if (obj and dataframe.at[id,'documentpart']=='Header'):
+                stop_flag=dataframe.at[id,'Container']
+                idCopy=id+1
+                while(dataframe.at[idCopy,'Container']!=stop_flag):
+                     value=value+dataframe.at[idCopy,'RawText']
+                     idCopy += 1
+                     rawtext = value
+     #search number of patients         
+     obj=re.search("[0-9]+(\s*)patient(s)?",value.lower())
+     sub_value=''
+     if obj : sub_value=obj.group()
+     sub_value=re.sub('[^0-9]+','',sub_value)
+     tempdict = {'id':'f.4.2.2','value': sub_value ,'score': 0 ,'raw_text': rawtext, 'eudractlabel':'In the whole clinical trial','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
+     
+     
+     #F5 Planned number of subjects to be included
+
+     #to find 
+     rawtext=''
+     value=''
+     for id,CurrentRow in dataframe.iterrows():
+         #setup variables
+         pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*ARRANGEMENT(.|\n)*DISCONTINUATION(.|\n)*IMP(.|\n)*$",re.IGNORECASE)
+         obj=pattern.match(CurrentRow['RawText'].upper())
+         if (obj and dataframe.at[id,'documentpart']=='Header'):
+                
+                stop_flag=dataframe.at[id,'Container']
+                idCopy=id+1
+                while(dataframe.at[idCopy,'Container']!=stop_flag):
+                    #if its a header : h1, h2 etc 
+                    if len(dataframe.at[idCopy,'Container'])>1:
+                        current_header_level=dataframe.at[idCopy,'Container'][1]
+                        stop_flag_header_level=stop_flag[1]
+                        #print [current_header_level,stop_flag_header_level]
+                        if int(current_header_level)<int(stop_flag_header_level):
+                           break 
+                     
+                    value=value+dataframe.at[idCopy,'RawText']
+                    idCopy += 1
+                    rawtext = value
+                break     
+     print value                     
+     tempdict = {'id':'f.5','value':  value ,'score': 50,'raw_text': rawtext, 'eudractlabel':'Plans for treatment or care after the subject has ended the participation in the trial (if it is different from the expected normal treatment of that condition)','section':'F', 'type':'text'}
+     arrayStorage.append(tempdict)
      
      return arrayStorage 
 
