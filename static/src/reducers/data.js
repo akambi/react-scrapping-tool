@@ -8,6 +8,7 @@ const initialState = {
     loaded: false,
     openedMenu: false,
     selectedSection: null,
+    selectedSubSection: null,
 };
 
 export default createReducer(initialState, {
@@ -22,16 +23,23 @@ export default createReducer(initialState, {
             isFetching: true,
         }}),
     [RECEIVE_PROTOCOL_META]: (state, payload) => {
-        let sections = [];
-        if (payload.data) {
-          sections = [...new Set(payload.data.protocoldata.map(item => item.section))]
+        if (!payload.data) {
+            return { ...state }
         }
 
-        const subSections = [...new Set(payload.data.protocoldata.map(item => item.id.split('.', 2).join('.')))].map(item => item.toUpperCase());
+        const sections = [...new Set(payload.data.protocoldata.map(item => item.section))]
+        payload.data.protocoldata = payload.data.protocoldata
+                                        .map(item => ({ ...item, subSection: item.id.split('.', 2).join('.')
+                                        .toUpperCase() }));
+
+        const subSections = [...new Set(payload.data.protocoldata.map(item => item.subSection))];
         let subSectionsByGrp = [];
         subSections.forEach((item) => {
             const section = item.split('.', 2)[0];
-            (subSectionsByGrp[section] || []).push(item.toUpperCase());
+            if (!subSectionsByGrp[section]) {
+                subSectionsByGrp[section] = [];
+            }
+            subSectionsByGrp[section].push(item.toUpperCase());
         });
 
         return ({ ...state, ...{ protocol_metas: {
@@ -41,8 +49,9 @@ export default createReducer(initialState, {
             loaded: true,
         }, sections, subSections: subSectionsByGrp, selectedSection: sections.length && sections[0] }});
     },
-    [REQUEST_PROTOCOL_META]: (state) =>
+    [REQUEST_PROTOCOL_META]: (state, payload) =>
         ({ ...state, ...{ protocol_metas: {
+            name: payload.name,
             isFetching: true,
         }}}),
     [OPEN_MENU]: (state) =>
@@ -55,5 +64,6 @@ export default createReducer(initialState, {
         }}),
     [SELECT_SECTION]: (state, payload) => ({ ...state, ...{
             selectedSection: payload.section,
+            selectedSubSection: payload.subSection,
         }}),
 });

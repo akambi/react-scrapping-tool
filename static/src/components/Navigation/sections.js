@@ -26,6 +26,11 @@ const styles = theme => ({
   },
   avatar: {
   },
+  subsection: {
+  },
+  selectedsubsection: {
+    backgroundColor: 'grey'
+  },
   selectedavatar: {
     backgroundColor: 'green'
   },
@@ -42,19 +47,22 @@ class NestedList extends React.Component {
     this.setState({ ...this.state, ...{ sections: newSections }});
   };
 
-  clickOnSection = (section, index, callBack) => {
-    this.handleClick(index)
-    callBack(section);
+  clickOnSection = (section, subSection, index, callBack) => {
+    if (!subSection) {
+      // Click on section
+      this.handleClick(index)
+    }
+    callBack(section, subSection);
   };
 
   render() {
-    const { classes, sections, subSections, selectedSection, callBack } = this.props;
+    const { classes, sections, subSections, selectedSection, selectedSubSection, callBack } = this.props;
 
     return (
       <div className={classes.root}>
         <List component="nav" subheader={<ListSubheader component="div">Sections</ListSubheader>}>
          {sections.map((section, index) => <div key={"listitem" + index}><ListItem button
-            onClick={() => this.clickOnSection(section, index, callBack)}>
+            onClick={() => this.clickOnSection(section, null, index, callBack)}>
             <Avatar classes={{
               root: (selectedSection === section) ? classes.selectedavatar : classes.avatar
             }}>{section}</Avatar>
@@ -63,8 +71,11 @@ class NestedList extends React.Component {
           </ListItem>
           {subSections[section] ? <Collapse in={this.state.sections && this.state.sections[index] && this.state.sections[index].open} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                {subSections[section].map((subSection, index) => <ListItem button className={classes.nested}>
-                  <ListItemText inset primary={subSection}/>
+                {subSections[section].map((subSection, index) => <ListItem button classes={{
+                  root: (selectedSubSection === subSection) ? classes.selectedsubsection : classes.subsection
+                  }} className={classes.nested} 
+                  onClick={() => this.clickOnSection(section, subSection, index, callBack)} key={"sublistitem" + index}>
+                  <ListItemText primary={subSection} />
                 </ListItem>)}
               </List>
             </Collapse> : <span/>}

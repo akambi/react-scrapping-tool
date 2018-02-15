@@ -13,10 +13,13 @@ import * as actionCreators from '../../actions/auth';
 import { CircularProgress } from 'material-ui/Progress';
 
 import { validateEmail } from '../../utils/misc';
+import { browserHistory } from 'react-router';
 
 function mapStateToProps(state) {
     return {
-        ...state.data.protocol_metas, section: state.data.selectedSection
+        ...state.data.protocol_metas,
+        section: state.data.selectedSection,
+        subSection: state.data.selectedSubSection
     };
 }
 
@@ -59,6 +62,12 @@ class ResultView extends Component {
             password_error_text: null,
             disabled: true,
         };
+    }
+
+    componentWillMount() {
+        if (!this.props.name) {
+            browserHistory.push('/load');
+        }
     }
 
     isDisabled() {
@@ -130,6 +139,12 @@ class ResultView extends Component {
     render() {
         const { classes } = this.props;
 
+
+        console.log(this.props.subSection, this.props.data &&
+                                this.props.data.protocoldata.filter(field => field.section === this.props.section), this.props.data &&
+                                this.props.data.protocoldata.filter(field => field.section === this.props.section)
+                                .filter(field => ((this.props.subSection === null) || (field.subSection === this.props.subSection))));
+
         return this.props.isFetching ? <CircularProgress className={classes.progress} size={50} />  : !this.props.loaded ? <span/> : (
 
             <div className={`container-fluid ${styles}`}>
@@ -141,6 +156,7 @@ class ResultView extends Component {
                             {
                                 this.props.data &&
                                 this.props.data.protocoldata.filter(field => field.section === this.props.section)
+                                .filter(field => ((this.props.subSection === null) || (field.subSection === this.props.subSection)))
                                 .map((field, index) => <div key={field.id + index} className="col-md-12">
                                   <TextInput
                                   section={field.id}

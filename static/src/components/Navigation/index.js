@@ -56,6 +56,7 @@ function mapStateToProps(state) {
         sections: state.data.sections,
         subSections: state.data.subSections,
         selectedSection: state.data.selectedSection,
+        selectedSubSection: state.data.selectedSubSection,
     };
 }
 
@@ -100,7 +101,8 @@ class Navigation extends Component {
                 <Divider />
                 <List className={classes.list}>
                   <SectionListItems sections={this.props.sections} selectedSection={this.props.selectedSection}
-                   subSections={this.props.subSections} callBack={this.props.selectSection}/>
+                   subSections={this.props.subSections} selectedSubSection={this.props.selectedSubSection}
+                   callBack={this.props.selectSection}/>
                 </List>
               </div>
           </Drawer> : <span/>

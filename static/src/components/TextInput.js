@@ -102,7 +102,7 @@ class TextInput extends React.Component {
               }}>{section.toUpperCase()} {label}</InputLabel>
 
             <Input
-              id={'field' + section} value={value}
+              id={'field' + section} defaultValue={value}
               inputRef={(input) => { this.textInput = input; }}
               disableUnderline={true}
               fullWidth={true}
