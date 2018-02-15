@@ -107,18 +107,23 @@ def getDataAnalyzedSectionA(dataframe):
     arrayStorage=[]
     
     #Find EUDRACT NUMBER
+    tempdict = {'id':'A.2','value': "",'score': 0,'raw_text': "", 'eudractlabel':'EudraCT Number', 'section':'A', 'type':'text'}
     for id,CurrentRow in dataframe.iterrows():
         #find the value of EudraCTNumber using fuzzy score
         score = fuzz.ratio("EUDRACT NUMBER",CurrentRow['RawText'].upper())
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
-            tempdict = {'id':'A.2','value': value.replace(" ", ""),'score': score,'raw_text': value, 'eudractlabel':'EudraCT Number', 'section':'A', 'type':'text'}
-            arrayStorage.append(tempdict) 
+            tempdict['value'] = value.replace(" ", "")
+            tempdict['score'] = score
+            tempdict['raw_text'] = value
+    arrayStorage.append(tempdict) 
+    
 
     #Find STUDY TITLE
+    tempdict = {'id':'A.3','value': "",'score': "",'raw_text': "", 'eudractlabel':'Full title of the trial', 'section':'A', 'type':'multiline'}
     for id,CurrentRow in dataframe.iterrows():
     #find the value of StudyTitle using fuzzy score    
-        score = fuzz.ratio("STUDY TITLE",CurrentRow['RawText'].upper())    
+        score = fuzz.token_set_ratio("STUDY TITLE",CurrentRow['RawText'].upper())    
         if (score > 90) :
             value=dataframe.at[id+1,'RawText']
             tempdict = {'id':'A.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'Full title of the trial', 'section':'A', 'type':'multiline'}
@@ -234,7 +239,7 @@ def getDataAnalyzedSectionB(dataframe):
     tempdict = {'id':'b.1.3.3','value': '92284','score': 100,'raw_text': '', 'eudractlabel':'Postal Code','section':'B', 'type':'text'}
     arrayStorage.append(tempdict)  
     #Find "Country"
-    tempdict = {'id':'b.1.3.4','value': 'France','score': 100,'raw_text': '', 'eudractlabel':'Country','section':'B', 'type':'text'}
+    tempdict = {'id':'b.1.3.4','value': 'France EUDRACTID:100000000395','score': 100,'raw_text': '100000000395', 'eudractlabel':'Country','section':'B', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #Find "Telephone number"
@@ -327,7 +332,6 @@ def getDataAnalyzedSectionB(dataframe):
     #Find "Extension"
     tempdict = {'id':'b.5.4.4','value': '','score': 100,'raw_text': '', 'eudractlabel':'Extension','section':'B', 'type':'text'}
     arrayStorage.append(tempdict)    
-    
     #Find "Fax number"
     #Find "Country Dialing Prefix" +33
     tempdict = {'id':'b.5.5.1','value': '+33','score': 100,'raw_text': '', 'eudractlabel':'Country Dialing Prefix','section':'B', 'type':'text'}
@@ -344,7 +348,7 @@ def getDataAnalyzedSectionB(dataframe):
     arrayStorage.append(tempdict)      
     
     #Find "email" "Functional email address rather than a personal one"
-    tempdict = {'id':'b.5.6','value': 'clinicaltrial@servier.com','score': 100,'raw_text': '', 'eudractlabel':'E-mail','section':'B', 'type':'text'}
+    tempdict = {'id':'b.5.6','value': 'clinicaltrials@servier.com','score': 100,'raw_text': '', 'eudractlabel':'E-mail','section':'B', 'type':'text'}
     arrayStorage.append(tempdict) 
             
     return arrayStorage
@@ -518,137 +522,137 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     
     #E.6 SCOPE OF THE TRIAL   
     #deductible field 
-    exist=search_keywords(['diagnosis'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.1','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Diagnosis','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['diagnosis'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Diagnosis','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field 
-    exist=search_keywords(['propylaxis','prophylactic','prevention','vaccine','vaccination'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.2','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Prophylaxis','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['propylaxis','prophylactic','prevention','vaccine','vaccination'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Prophylaxis','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist=search_keywords(['therapy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.3','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Therapy','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['therapy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.3','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapy','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist=search_keywords(['safety'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.4','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Safety','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['safety'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.4','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Safety','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist=search_keywords(['efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.5','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Efficacy','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.5','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Efficacy','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
      #deductible field 
-    exist=search_keywords(['pharmacokinetic','pharmacokinetics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.6','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Pharmacokinetic','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['pharmacokinetic','pharmacokinetics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.6','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharmacokinetic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field 
-    exist=search_keywords(['pharacodynamic','pharacodynamics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.7','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Pharacodynamic','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['pharacodynamic','pharacodynamics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.7','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharacodynamic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist=search_keywords(['bioequivalence', 'bioequivalences'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.8','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Bioequivalence','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['bioequivalence', 'bioequivalences'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.8','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Bioequivalence','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist=search_keywords(['dose response','dose ranging', 'controlled dose', 'dose finding'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.9','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Dose Response','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['dose response','dose ranging', 'controlled dose', 'dose finding'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.9','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Dose Response','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist=search_keywords(['pharmacogenetic','pharmacogenetics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.10','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Pharmacogenetic','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['pharmacogenetic','pharmacogenetics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.10','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharmacogenetic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist=search_keywords(['pharmacogenomic','pharmacogenomics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.11','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Pharmacogenomic','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['pharmacogenomic','pharmacogenomics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.11','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharmacogenomic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist=search_keywords(['pharmacoeconomic','pharmacoeconomics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.6.12','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Pharmacoeconomic','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['pharmacoeconomic','pharmacoeconomics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.6.12','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharmacoeconomic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist='No'
-    tempdict = {'id':'e.6.13','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Others','section':'E', 'type':'text'}
+    exist,raw_text='No'
+    tempdict = {'id':'e.6.13','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Others','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
      
     
     #E.7 TRIAL TYPE AND PHASE 
     #deductible field 
-    exist=search_keywords(['pharmacokinetics','phase i','phase 1','phase 1b','single dose'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.7.1','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Human pharmacology (Phase I)','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['pharmacokinetics','phase i','phase 1','phase 1b','single dose'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.7.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Human pharmacology (Phase I)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field if yes in e.7.1 specify
-    exist=search_keywords(['first in man','first in human'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.7.1.1','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'First Administration to Human','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['first in man','first in human'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.7.1.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'First Administration to Human','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field if yes in e.7.1 specify
-    exist=search_keywords(['bioequivalence'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.7.1.2','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Bioequivalence Study','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['bioequivalence'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.7.1.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Bioequivalence Study','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     
     #deductible field 
-    exist=search_keywords(['therapeutic exploratory','phase ii','phase 2','iia','iib','assess the efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.7.2','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Therapeutic exploratory (Phase II)','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['therapeutic exploratory','phase ii','phase 2','iia','iib','assess the efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.7.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapeutic exploratory (Phase II)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist=search_keywords(['therapeutic confirmatory','phase iii','phase 3'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.7.3','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Therapeutic confirmatory (Phase III)','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['therapeutic confirmatory','phase iii','phase 3'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.7.3','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapeutic confirmatory (Phase III)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist=search_keywords(['therapeutic use','phase vi','phase 4'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.7.4','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Therapeutic use (Phase IV)','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['therapeutic use','phase vi','phase 4'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.7.4','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapeutic use (Phase IV)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #E.8 DESIGN OF THE TRIAL 
     #deductible field 
-    exist=search_keywords(['controlled','-controlled'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.8.1','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Controlled','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['controlled','-controlled'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.8.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Controlled','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field 
-    exist=search_keywords(['randomised','randomized','placebo','compare','versus','placebo-controlled'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.8.1.1','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Randomised','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['randomised','randomized','placebo','compare','versus','placebo-controlled'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.8.1.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Randomised','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist=search_keywords(['open','label'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.8.1.2','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Open','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['open','label'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.8.1.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Open','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist=search_keywords(['single blind','single-blind'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.8.1.3','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Single blind','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['single blind','single-blind'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.8.1.3','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Single blind','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist=search_keywords(['double blind','double-blind','double blinded','double-blinded'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.8.1.4','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Double blind','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['double blind','double-blind','double blinded','double-blinded'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.8.1.4','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Double blind','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist=search_keywords(['parallel group','parallel-group'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.8.1.5','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Parallel group','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['parallel group','parallel-group'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.8.1.5','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Parallel group','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist=search_keywords(['cross over','cross-over','crossed-over','crossed over'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
-    tempdict = {'id':'e.8.1.6','value': exist,'score': 100,'raw_text': '', 'eudractlabel':'Cross Over','section':'E', 'type':'text'}
+    exist,raw_text=search_keywords(['cross over','cross-over','crossed-over','crossed over'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    tempdict = {'id':'e.8.1.6','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Cross Over','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
@@ -806,8 +810,6 @@ def search_keywords(keywords_list,dataframe):
     full_title=''
     main_objective=''
     primary_endpoint=''
-    inclusion_criteria=''
-    exclusion_criteria=''
     
     df_full_title=dataframe[dataframe['id']=='A.3']
     if not df_full_title.empty:
@@ -820,22 +822,14 @@ def search_keywords(keywords_list,dataframe):
     df_primary_endpoint=dataframe[dataframe['id']=='e.5.1']
     if not df_primary_endpoint.empty:
        primary_endpoint=df_primary_endpoint.iloc[0]['value']
-    
-    df_inclusion_criteria=dataframe[dataframe['id']=='e.3']
-    if not df_inclusion_criteria.empty:
-       inclusion_criteria=df_inclusion_criteria.iloc[0]['value']
-    
-    df_exclusion_criteria=dataframe[dataframe['id']=='e.4']
-    if not df_exclusion_criteria.empty:
-       exclusion_criteria=df_exclusion_criteria.iloc[0]['value']
-    
-    text=full_title+" "+main_objective+" "+primary_endpoint+" "+inclusion_criteria+" "+exclusion_criteria
+        
+    text=full_title+" "+main_objective+" "+primary_endpoint
     text=text.upper()
     
     for keyword in keywords_list:
         if keyword.upper() in text:
-            return 'Yes'
-    return 'No'   
+            return 'Yes',text
+    return 'No',text   
 
 # Function to load meddra PTs in memory (Warning : location is hard coded, to fix in a next release) 
 #def getMatchedPTS(StringToCode):
