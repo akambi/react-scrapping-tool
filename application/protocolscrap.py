@@ -410,6 +410,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
                  idCopy += 1
             tempdict = {'id':'e.2.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Main objective of the trial','section':'E', 'type':'multiline'}
             arrayStorage.append(tempdict)
+            break #break to stop collecting data. helps to avoid double fields
     
     #Find "SECONDARY OBJECTIVE"
     for id,CurrentRow in dataframe.iterrows():
@@ -429,6 +430,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
                  idCopy += 1
             tempdict = {'id':'e.2.2','value': value,'score': score,'raw_text': value, 'eudractlabel':'Secondary objectives of the trial','section':'E', 'type':'multiline'}
             arrayStorage.append(tempdict)
+            break #break to stop collecting data. helps to avoid double fields
             
     #deductible field 
     tempdict = {'id':'e.2.3','value':'','score': 100,'raw_text': '', 'eudractlabel':'Is there a sub-study?','section':'E', 'type':'text'}
@@ -454,6 +456,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
                  idCopy += 1
             tempdict = {'id':'e.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'Principal inclusion criteria','section':'E', 'type':'multiline'}
             arrayStorage.append(tempdict)
+            break #break to stop collecting data. helps to avoid double fields
      
     #Find "NON-INCLUSION CRITERIA"
     for id,CurrentRow in dataframe.iterrows():
@@ -472,7 +475,9 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
             tempdict = {'id':'e.4','value': value,'score': score,'raw_text': value, 'eudractlabel':'Principal exclusion criteria','section':'E', 'type':'multiline'}
-            arrayStorage.append(tempdict)       
+            arrayStorage.append(tempdict)
+            break #break to stop collecting data. helps to avoid double fields
+            
     #E.5 END POINTS(s)
     #Find "PRIMARY ENDPOINTS"
     for id,CurrentRow in dataframe.iterrows():
@@ -492,6 +497,7 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
                  idCopy += 1
             tempdict = {'id':'e.5.1','value': value,'score': score,'raw_text': value, 'eudractlabel':'Primary end point(s)','section':'E', 'type':'multiline'}
             arrayStorage.append(tempdict)
+            break #break to stop collecting data. helps to avoid double fields
     
     #deductible field 
     tempdict = {'id':'e.5.1.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'Timepoint(s) of evaluation of this end point','section':'E', 'type':'text'}
@@ -514,7 +520,8 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
                  value=value+dataframe.at[idCopy,'RawText']
                  idCopy += 1
             tempdict = {'id':'e.5.2','value': value,'score': score,'raw_text': value, 'eudractlabel':'Secondary end point(s))','section':'E', 'type':'multiline'}
-            arrayStorage.append(tempdict)     
+            arrayStorage.append(tempdict)
+            break #break to stop collecting data. helps to avoid double fields
      
     #deductible field 
     tempdict = {'id':'e.5.2.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'Timepoint(s) of evaluation of this end point','section':'E', 'type':'multiline'}
