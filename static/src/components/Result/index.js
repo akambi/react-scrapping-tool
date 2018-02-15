@@ -46,10 +46,10 @@ const cstyles = theme => ({
     top: '50%' 
   },
   bodybackground: {
-    backgroundColor: '#FFFFFF',
-    opacity: opts.opacity,
-    width: document.body.outerWidth,
-    height: document.body.outerHeight,
+    backgroundColor: '#FCFCFC',
+    opacity: 0.3,
+    width: window.innerWidth,
+    height: window.innerHeight,
     position: 'absolute',
     top: 0,
     left: 0,
