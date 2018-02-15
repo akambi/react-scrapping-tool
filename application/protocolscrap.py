@@ -866,7 +866,7 @@ def getDataAnalyzedSectionF(dataframe):
                     idCopy += 1
                     rawtext = value
                 break     
-     print value                     
+     #print value                     
      tempdict = {'id':'f.5','value':  value ,'score': 50,'raw_text': rawtext, 'eudractlabel':'Plans for treatment or care after the subject has ended the participation in the trial (if it is different from the expected normal treatment of that condition)','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
