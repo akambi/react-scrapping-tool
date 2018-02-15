@@ -999,7 +999,7 @@ def hasNumbers(inputString):
 #  
 #
 #test code
-HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
+#HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL2-95005-002_TASCO1_Amended Protocol_INT_ Final Version CLEAN_25-01-2017.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-62798-001_Amended study protocol 21_September_2017 final version.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-81694-003_Protocol final version 19JUN2017 e-ctd_.htm"
@@ -1008,6 +1008,6 @@ HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-
 
 
 
-dataframe=pd.DataFrame(getProtocolData(open(HTMLPath)))
-ps_dataframe=pd.DataFrame(getDataAnalyzedSectionF(dataframe))
+#dataframe=pd.DataFrame(getProtocolData(open(HTMLPath)))
+#ps_dataframe=pd.DataFrame(getDataAnalyzedSectionF(dataframe))
 
