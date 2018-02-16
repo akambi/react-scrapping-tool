@@ -106,6 +106,7 @@ function mapStateToProps(state) {
         isNavMenuOpened: state.data.openedMenu,
         isFetchingExport: state.data.isFetchingExport,
         sections,
+        protocolFile: state.data.protocol_metas.name.replace(/\.[^/.]+$/, ""),
         protocolData,
     };
 }
@@ -137,7 +138,7 @@ class Header extends Component {
 
     upload(e) {
         e.preventDefault();
-        this.props.exportProtocolToXML(this.props.protocolData, this.props.token);
+        this.props.exportProtocolToXML(this.props.protocolFile, this.props.protocolData, this.props.token);
     }
 
     render() {
@@ -207,6 +208,7 @@ Header.propTypes = {
     logoutAndRedirect: React.PropTypes.func,
     isAuthenticated: React.PropTypes.bool,
     isFetchingExport: React.PropTypes.bool,
+    protocolFile: React.PropTypes.object,
     userName: React.PropTypes.string,
     token: React.PropTypes.string,
     exportProtocolToXML: React.PropTypes.func,
