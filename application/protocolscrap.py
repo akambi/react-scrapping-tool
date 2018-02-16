@@ -578,14 +578,16 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     arrayStorage.append(tempdict)  
     
     #get the metholologyfield.
+    SumaryMethodologySection=''
     for id,CurrentRow in dataframe[dataframe['ParentContainer'] == 'tr'].iterrows():
     #find the value of methodology using regex in the table
-        pattern=re.compile("METHODOLOGY\s*:",re.IGNORECASE)
+        pattern=re.compile("\s*METHODOLOGY\s*:?",re.IGNORECASE)
         obj=pattern.match(CurrentRow['RawText'].upper())
         #if it matches the pattern and it's a header 
         if (obj):
             #print 'after'
             SumaryMethodologySection = CurrentRow['RawText']
+            print SumaryMethodologySection
             #get all paragraph of the header with embedded headers                 
             break #break to stop collecting data. helps to avoid double fields
 
@@ -878,14 +880,27 @@ def getDataAnalyzedSectionF(dataframe,abce_sections_array):
       
      #F3 Group of trial subjects        
      #to find 
-     exist,raw_text=search_keywords(['healthy'],pd.DataFrame(abce_sections_array).append(pd.DataFrame(arrayStorage)))
+     #get the metholologyfield.
+     SumaryMethodologySection=''
+     for id,CurrentRow in dataframe[dataframe['ParentContainer'] == 'tr'].iterrows():
+     #find the value of methodology using regex in the table
+        pattern=re.compile("\s*METHODOLOGY\s*:?",re.IGNORECASE)
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        #if it matches the pattern and it's a header 
+        if (obj):
+            #print 'after'
+            SumaryMethodologySection = CurrentRow['RawText']
+            #get all paragraph of the header with embedded headers                 
+            break #break to stop collecting data. helps to avoid double fields
+            
+     exist,raw_text=search_keywords(['healthy'],pd.DataFrame(abce_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
      tempdict = {'id':'f.3.1','value': exist ,'score': 0 ,'raw_text': '', 'eudractlabel':'Healthy volunteers','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
      #to find
      rawtext=''
      value=''
-     exist,raw_text=search_keywords(['patient', 'patients'],pd.DataFrame(abce_sections_array).append(pd.DataFrame(arrayStorage)))
+     exist,raw_text=search_keywords(['patient', 'patients'],pd.DataFrame(abce_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
      tempdict = {'id':'f.3.2','value': exist ,'score': 0 ,'raw_text': rawtext, 'eudractlabel':'Patients','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
