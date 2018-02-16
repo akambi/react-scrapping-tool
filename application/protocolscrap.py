@@ -93,7 +93,7 @@ def ConvertDataFrameToObject(dataframe):
     analyzed_array_section_b=getDataAnalyzedSectionB(dataframe)
     analyzed_array_section_c=getDataAnalyzedSectionC(dataframe)
     analyzed_array_section_e=getDataAnalyzedSectionE(dataframe,analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c)    
-    analyzed_array_section_f=getDataAnalyzedSectionF(dataframe)
+    analyzed_array_section_f=getDataAnalyzedSectionF(dataframe,analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c+analyzed_array_section_e)
         
     return analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c+analyzed_array_section_e+analyzed_array_section_f
     
@@ -124,10 +124,11 @@ def getDataAnalyzedSectionA(dataframe):
     for id,CurrentRow in dataframe.iterrows():
     #find the value of StudyTitle using fuzzy score    
         score = fuzz.token_set_ratio("STUDY TITLE",CurrentRow['RawText'].upper())    
-        if (score > 90) :
+        if (score > 90) : 
             value=dataframe.at[id+1,'RawText']
             tempdict = {'id':'A.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'Full title of the trial', 'section':'A', 'type':'multiline'}
             arrayStorage.append(tempdict) 
+            break # pour ne pas matcher avec le cas de Title of study du summary sheet
      
     #Find NA
     tempdict = {'id':'A.3.1','value': '' ,'score': 0,'raw_text': '', 'eudractlabel':'Title of the trial for lay people, in easily understood, i.e. non-technical language', 'section':'A', 'type':'multiline'}
@@ -447,11 +448,11 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
             break #break to stop collecting data. helps to avoid double fields
             
     #deductible field 
-    tempdict = {'id':'e.2.3','value':'','score': 100,'raw_text': '', 'eudractlabel':'Is there a sub-study?','section':'E', 'type':'text'}
+    tempdict = {'id':'e.2.3','value':'','score': 0,'raw_text': '', 'eudractlabel':'Is there a sub-study?','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field 
-    tempdict = {'id':'e.2.3.1','value':'','score': 100,'raw_text': '', 'eudractlabel':'If Yes give the full title, date and version of each sub-study and their related objectives','section':'E', 'type':'multiline'}
+    tempdict = {'id':'e.2.3.1','value':'','score': 0,'raw_text': '', 'eudractlabel':'If Yes give the full title, date and version of each sub-study and their related objectives','section':'E', 'type':'multiline'}
     arrayStorage.append(tempdict)
     
     #Find "INCLUSION CRITERIA"
@@ -576,64 +577,79 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     tempdict = {'id':'e.5.2.1','value':'','score': 0,'raw_text': '', 'eudractlabel':'Timepoint(s) of evaluation of this end point','section':'E', 'type':'multiline'}
     arrayStorage.append(tempdict)  
     
+    #get the metholologyfield.
+    SumaryMethodologySection=''
+    for id,CurrentRow in dataframe[dataframe['ParentContainer'] == 'tr'].iterrows():
+    #find the value of methodology using regex in the table
+        pattern=re.compile("\s*METHODOLOGY\s*:?",re.IGNORECASE)
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        #if it matches the pattern and it's a header 
+        if (obj):
+            #print 'after'
+            SumaryMethodologySection = CurrentRow['RawText']
+            print SumaryMethodologySection
+            #get all paragraph of the header with embedded headers                 
+            break #break to stop collecting data. helps to avoid double fields
+
+
     #E.6 SCOPE OF THE TRIAL   
     #deductible field 
-    exist,raw_text=search_keywords(['diagnosis'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['diagnosis'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Diagnosis','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field 
-    exist,raw_text=search_keywords(['propylaxis','prophylactic','prevention','vaccine','vaccination'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['propylaxis','prophylactic','prevention','vaccine','vaccination'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Prophylaxis','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['therapy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['therapy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.3','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapy','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['safety'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['safety'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.4','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Safety','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.5','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Efficacy','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
      #deductible field 
-    exist,raw_text=search_keywords(['pharmacokinetic','pharmacokinetics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['pharmacokinetic','pharmacokinetics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.6','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharmacokinetic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field 
-    exist,raw_text=search_keywords(['pharacodynamic','pharacodynamics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['pharacodynamic','pharacodynamics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.7','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharacodynamic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['bioequivalence', 'bioequivalences'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['bioequivalence', 'bioequivalences'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.8','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Bioequivalence','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['dose response','dose ranging', 'controlled dose', 'dose finding'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['dose response','dose ranging', 'controlled dose', 'dose finding'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.9','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Dose Response','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['pharmacogenetic','pharmacogenetics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['pharmacogenetic','pharmacogenetics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.10','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharmacogenetic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist,raw_text=search_keywords(['pharmacogenomic','pharmacogenomics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['pharmacogenomic','pharmacogenomics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.11','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharmacogenomic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['pharmacoeconomic','pharmacoeconomics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['pharmacoeconomic','pharmacoeconomics'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.6.12','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Pharmacoeconomic','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
@@ -645,68 +661,68 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     
     #E.7 TRIAL TYPE AND PHASE 
     #deductible field 
-    exist,raw_text=search_keywords(['pharmacokinetics','phase I','phase 1','phase 1b','phase Ib','single dose'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['pharmacokinetics','phase I','phase 1','phase 1b','phase Ib','single dose'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.7.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Human pharmacology (Phase I)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field if yes in e.7.1 specify
-    exist,raw_text=search_keywords(['first in man','first in human'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['first in man','first in human'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.7.1.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'First Administration to Human','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field if yes in e.7.1 specify
-    exist,raw_text=search_keywords(['bioequivalence'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['bioequivalence'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.7.1.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Bioequivalence Study','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field 
-    exist,raw_text=search_keywords(['therapeutic exploratory','phase II','phase 2','IIa','IIb','assess the efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['therapeutic exploratory','phase II','phase 2','IIa','IIb','assess the efficacy'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.7.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapeutic exploratory (Phase II)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['therapeutic confirmatory','phase III','phase 3'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['therapeutic confirmatory','phase III','phase 3'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.7.3','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapeutic confirmatory (Phase III)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist,raw_text=search_keywords(['therapeutic use','phase IV','phase 4'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['therapeutic use','phase IV','phase 4'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.7.4','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Therapeutic use (Phase IV)','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #E.8 DESIGN OF THE TRIAL 
     #deductible field 
-    exist,raw_text=search_keywords(['controlled','-controlled'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['controlled','-controlled'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.8.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Controlled','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)
     
     #deductible field 
-    exist,raw_text=search_keywords(['randomised','randomized','placebo','compare','versus','placebo-controlled'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['randomised','randomized','placebo','compare','versus','placebo-controlled'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.8.1.1','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Randomised','section':'E', 'type':'text'}
     arrayStorage.append(tempdict)  
     
     #deductible field 
-    exist,raw_text=search_keywords(['open','label'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['open','label'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.8.1.2','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Open','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist,raw_text=search_keywords(['single blind','single-blind'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['single blind','single-blind'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.8.1.3','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Single blind','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist,raw_text=search_keywords(['double blind','double-blind','double blinded','double-blinded'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['double blind','double-blind','double blinded','double-blinded'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.8.1.4','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Double blind','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist,raw_text=search_keywords(['parallel group','parallel-group'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['parallel group','parallel-group'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.8.1.5','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Parallel group','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
     #deductible field 
-    exist,raw_text=search_keywords(['cross over','cross-over','crossed-over','crossed over'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)))
+    exist,raw_text=search_keywords(['cross over','cross-over','crossed-over','crossed over'],pd.DataFrame(abc_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
     tempdict = {'id':'e.8.1.6','value': exist,'score': 100,'raw_text': raw_text, 'eudractlabel':'Cross Over','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
@@ -747,13 +763,57 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     tempdict = {'id':'e.8.6.3','value': '','score': 100,'raw_text': '', 'eudractlabel':'If E.8.6.1 or E.8.6.2 are yes, specify the countries in which trial sites are planned','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
+    #deductible field 
+    tempdict = {'id':'e.8.6.4','value': '','score': 100,'raw_text': '', 'eudractlabel':'If E.8.6.1 or E.8.6.2 are yes, specify the number of sites anticipated outside of the EEA','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field   
+    value='No'
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of PRIMARY ENDPOINTS CRITERIA using regex    
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*DATA(.|\n)*MONITORING(.|\n)*$",re.IGNORECASE)
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        #if it matches the pattern and it's a header 
+        if (obj and dataframe.at[id,'documentpart']=='Header'):
+            value='yes'
+            break
+            
+    tempdict = {'id':'e.8.7','value': value,'score': 100,'raw_text': '', 'eudractlabel':'Trial having an independent data monitoring committee?','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.8','value': '','score': 100,'raw_text': '', 'eudractlabel':'Definition of the end of the trial and justification in the case where it is not the last visit of the last subject undergoing the trial ','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.9.1','value': '','score': 100,'raw_text': '', 'eudractlabel':'In the Member State concerned','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.9.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'In all countries concerned by the trial','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.10.1','value': '','score': 100,'raw_text': '', 'eudractlabel':'In the Member State concerned','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.10.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'In any country','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    
+    
+    
+    
+    
+    
     
     
     return arrayStorage
 
  #-----------------------------------------------------------------------------------------------------------
     
-def getDataAnalyzedSectionF(dataframe):
+def getDataAnalyzedSectionF(dataframe,abce_sections_array):
      """ retrieve data from Section F """
      #array of dict to store dictionnaries
      arrayStorage=[]
@@ -820,14 +880,28 @@ def getDataAnalyzedSectionF(dataframe):
       
      #F3 Group of trial subjects        
      #to find 
-     tempdict = {'id':'f.3.1','value': '' ,'score': 0 ,'raw_text': '', 'eudractlabel':'Healthy volunteers','section':'F', 'type':'text'}
+     #get the metholologyfield.
+     SumaryMethodologySection=''
+     for id,CurrentRow in dataframe[dataframe['ParentContainer'] == 'tr'].iterrows():
+     #find the value of methodology using regex in the table
+        pattern=re.compile("\s*METHODOLOGY\s*:?",re.IGNORECASE)
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        #if it matches the pattern and it's a header 
+        if (obj):
+            #print 'after'
+            SumaryMethodologySection = CurrentRow['RawText']
+            #get all paragraph of the header with embedded headers                 
+            break #break to stop collecting data. helps to avoid double fields
+            
+     exist,raw_text=search_keywords(['healthy'],pd.DataFrame(abce_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
+     tempdict = {'id':'f.3.1','value': exist ,'score': 0 ,'raw_text': '', 'eudractlabel':'Healthy volunteers','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
      #to find
      rawtext=''
      value=''
-     
-     tempdict = {'id':'f.3.2','value': '' ,'score': 0 ,'raw_text': rawtext, 'eudractlabel':'Patients','section':'F', 'type':'text'}
+     exist,raw_text=search_keywords(['patient', 'patients'],pd.DataFrame(abce_sections_array).append(pd.DataFrame(arrayStorage)),SumaryMethodologySection)
+     tempdict = {'id':'f.3.2','value': exist ,'score': 0 ,'raw_text': rawtext, 'eudractlabel':'Patients','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
      #vide rouge 
@@ -947,11 +1021,13 @@ def getDataAnalyzedSectionF(dataframe):
 
     #-----------------------
     
-def search_keywords(keywords_list,dataframe):
+def search_keywords(keywords_list,dataframe,extrastring):
+    """ function to extract keywords in a text. Extrastring is an optional text to concatenate with (added for the methodology section not available in the dataframe) """
     
     full_title=''
     main_objective=''
     primary_endpoint=''
+    
     
     df_full_title=dataframe[dataframe['id']=='A.3']
     if not df_full_title.empty:
@@ -965,9 +1041,9 @@ def search_keywords(keywords_list,dataframe):
     if not df_primary_endpoint.empty:
        primary_endpoint=df_primary_endpoint.iloc[0]['value']
         
-    text=full_title+" "+main_objective+" "+primary_endpoint
+    text=full_title+" "+main_objective+" "+primary_endpoint+" "+extrastring
     text=text.upper()
-    #text = re.sub('[\s+]', '', text)
+    #apply regexp to keep only characters or digits and remove everything else
     text = re.sub('[^\sA-Za-z]', ' ', text)
     
     for keyword in keywords_list:
@@ -1003,7 +1079,7 @@ def hasNumbers(inputString):
 #  
 #
 #test code
-#HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
+HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL2-95005-002_TASCO1_Amended Protocol_INT_ Final Version CLEAN_25-01-2017.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-62798-001_Amended study protocol 21_September_2017 final version.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-81694-003_Protocol final version 19JUN2017 e-ctd_.htm"
@@ -1013,5 +1089,5 @@ def hasNumbers(inputString):
 
 
 #dataframe=pd.DataFrame(getProtocolData(open(HTMLPath)))
-#ps_dataframe=pd.DataFrame(getDataAnalyzedSectionF(dataframe))
+ps_dataframe=pd.DataFrame(getProtocolScrap(open(HTMLPath)))
 
