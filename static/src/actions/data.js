@@ -77,7 +77,7 @@ export function receiveExportXML(protocolFile, data) {
     return {
         type: RECEIVE_EXPORT_XML,
         payload: {
-            name: protocolFile.name,
+            name: protocolFile,
             data,
         },
     };
@@ -89,13 +89,12 @@ export function requestExportXML() {
     };
 }
 
-export function exportProtocolToXML(protocolData, token) {
+export function exportProtocolToXML(protocolFile, protocolData, token) {
     return (dispatch) => {
         dispatch(requestExportXML());
         exportProtocolData(protocolData, token)
-            .then(parseJSON)
             .then(response => {
-                dispatch(receiveExportXML(response));
+                dispatch(receiveExportXML(protocolFile, response.data));
             })
             .catch(error => {
                 dispatch(receiveExportXML({}));

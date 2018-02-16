@@ -32,3 +32,4 @@ pandas
 numpy==1.14.0
 fuzzywuzzy
 flask_bcrypt
+Jinja2

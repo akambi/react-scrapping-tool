@@ -1,9 +1,10 @@
-from flask import request, render_template, jsonify, url_for, redirect, g
+from flask import request, Response, render_template, jsonify, url_for, redirect, g
 from .models import User
 from index import app, db
 from sqlalchemy.exc import IntegrityError
 from .utils.auth import generate_token, requires_auth, verify_token
 from protocolscrap import getProtocolScrap
+import json
 
 ALLOWED_EXTENSIONS = set(['txt', 'htm', 'html'])
 
@@ -30,6 +31,17 @@ def protocol_scrapper():
         if file and allowed_file(file.filename):
             array_dict=getProtocolScrap(file)
             return jsonify({"protocoldata":array_dict})
+
+@app.route("/caps_api/xmlgenerator",  methods = ['GET', 'POST'])
+def generate_xml():
+    if request.method == 'POST':
+        data = json.loads(request.data)
+        results = {}
+        for field in data['protocoldata']:
+            results[field['id']] = field
+        xml = render_template('./protocol_template.xml', fields=results)
+        return Response(xml, mimetype='application/xml', headers={
+            "Content-disposition": "attachment; filename=export.xml"})
 
 @app.route('/<path:path>', methods=['GET'])
 def any_root_path(path):

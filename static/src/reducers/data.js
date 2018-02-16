@@ -2,6 +2,7 @@ import { RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST,
     RECEIVE_PROTOCOL_META, REQUEST_PROTOCOL_META, OPEN_MENU, CLOSE_MENU,
     SELECT_SECTION, REQUEST_EXPORT_XML, RECEIVE_EXPORT_XML, CHANGE_FIELD_VALUE } from '../constants';
 import { createReducer } from '../utils/misc';
+import fileDownload from 'js-file-download';
 
 const initialState = {
     data: null,
@@ -69,7 +70,10 @@ export default createReducer(initialState, {
         }}),
     [REQUEST_EXPORT_XML]: (state, payload) =>
         ({ ...state, ...{ isFetchingExport: true }}),
-    [RECEIVE_EXPORT_XML]: (state, payload) => ({ ...state, ...{ isFetchingExport: false } }),
+    [RECEIVE_EXPORT_XML]: (state, payload) => {
+        fileDownload(payload.data, payload.name);
+        return ({ ...state, ...{ isFetchingExport: false } });
+    },
     [CHANGE_FIELD_VALUE]: (state, payload) => {
         if (!state.protocol_metas || !state.protocol_metas.data || !state.protocol_metas.data.protocoldata) {
             return { ...state };
