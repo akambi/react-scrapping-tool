@@ -93,7 +93,7 @@ def ConvertDataFrameToObject(dataframe):
     analyzed_array_section_b=getDataAnalyzedSectionB(dataframe)
     analyzed_array_section_c=getDataAnalyzedSectionC(dataframe)
     analyzed_array_section_e=getDataAnalyzedSectionE(dataframe,analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c)    
-    analyzed_array_section_f=getDataAnalyzedSectionF(dataframe)
+    analyzed_array_section_f=getDataAnalyzedSectionF(dataframe,analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c+analyzed_array_section_e)
         
     return analyzed_array_section_a+analyzed_array_section_b+analyzed_array_section_c+analyzed_array_section_e+analyzed_array_section_f
     
@@ -124,10 +124,11 @@ def getDataAnalyzedSectionA(dataframe):
     for id,CurrentRow in dataframe.iterrows():
     #find the value of StudyTitle using fuzzy score    
         score = fuzz.token_set_ratio("STUDY TITLE",CurrentRow['RawText'].upper())    
-        if (score > 90) :
+        if (score > 90) : 
             value=dataframe.at[id+1,'RawText']
             tempdict = {'id':'A.3','value': value,'score': score,'raw_text': value, 'eudractlabel':'Full title of the trial', 'section':'A', 'type':'multiline'}
             arrayStorage.append(tempdict) 
+            break # pour ne pas matcher avec le cas de Title of study du summary sheet
      
     #Find NA
     tempdict = {'id':'A.3.1','value': '' ,'score': 0,'raw_text': '', 'eudractlabel':'Title of the trial for lay people, in easily understood, i.e. non-technical language', 'section':'A', 'type':'multiline'}
@@ -747,13 +748,57 @@ def getDataAnalyzedSectionE(dataframe,abc_sections_array):
     tempdict = {'id':'e.8.6.3','value': '','score': 100,'raw_text': '', 'eudractlabel':'If E.8.6.1 or E.8.6.2 are yes, specify the countries in which trial sites are planned','section':'E', 'type':'text'}
     arrayStorage.append(tempdict) 
     
+    #deductible field 
+    tempdict = {'id':'e.8.6.4','value': '','score': 100,'raw_text': '', 'eudractlabel':'If E.8.6.1 or E.8.6.2 are yes, specify the number of sites anticipated outside of the EEA','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field   
+    value='No'
+    for id,CurrentRow in dataframe.iterrows():
+    #find the value of PRIMARY ENDPOINTS CRITERIA using regex    
+        pattern=re.compile("^(.|\n)*[0-9](\.[0-9])*(\.)?(.|\n)*DATA(.|\n)*MONITORING(.|\n)*$",re.IGNORECASE)
+        obj=pattern.match(CurrentRow['RawText'].upper())
+        #if it matches the pattern and it's a header 
+        if (obj and dataframe.at[id,'documentpart']=='Header'):
+            value='yes'
+            break
+            
+    tempdict = {'id':'e.8.7','value': value,'score': 100,'raw_text': '', 'eudractlabel':'Trial having an independent data monitoring committee?','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.8','value': '','score': 100,'raw_text': '', 'eudractlabel':'Definition of the end of the trial and justification in the case where it is not the last visit of the last subject undergoing the trial ','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.9.1','value': '','score': 100,'raw_text': '', 'eudractlabel':'In the Member State concerned','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.9.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'In all countries concerned by the trial','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.10.1','value': '','score': 100,'raw_text': '', 'eudractlabel':'In the Member State concerned','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    #deductible field 
+    tempdict = {'id':'e.8.10.2','value': '','score': 100,'raw_text': '', 'eudractlabel':'In any country','section':'E', 'type':'text'}
+    arrayStorage.append(tempdict)
+    
+    
+    
+    
+    
+    
+    
     
     
     return arrayStorage
 
  #-----------------------------------------------------------------------------------------------------------
     
-def getDataAnalyzedSectionF(dataframe):
+def getDataAnalyzedSectionF(dataframe,abce_sections_array):
      """ retrieve data from Section F """
      #array of dict to store dictionnaries
      arrayStorage=[]
@@ -820,14 +865,15 @@ def getDataAnalyzedSectionF(dataframe):
       
      #F3 Group of trial subjects        
      #to find 
-     tempdict = {'id':'f.3.1','value': '' ,'score': 0 ,'raw_text': '', 'eudractlabel':'Healthy volunteers','section':'F', 'type':'text'}
+     exist,raw_text=search_keywords(['healthy'],pd.DataFrame(abce_sections_array).append(pd.DataFrame(arrayStorage)))
+     tempdict = {'id':'f.3.1','value': exist ,'score': 0 ,'raw_text': '', 'eudractlabel':'Healthy volunteers','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
      #to find
      rawtext=''
      value=''
-     
-     tempdict = {'id':'f.3.2','value': '' ,'score': 0 ,'raw_text': rawtext, 'eudractlabel':'Patients','section':'F', 'type':'text'}
+     exist,raw_text=search_keywords(['patient', 'patients'],pd.DataFrame(abce_sections_array).append(pd.DataFrame(arrayStorage)))
+     tempdict = {'id':'f.3.2','value': exist ,'score': 0 ,'raw_text': rawtext, 'eudractlabel':'Patients','section':'F', 'type':'text'}
      arrayStorage.append(tempdict)
      
      #vide rouge 
@@ -1003,7 +1049,7 @@ def hasNumbers(inputString):
 #  
 #
 #test code
-#HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
+HTMLPath = "C:\Users\zjaadi\Desktop\CL3-95005-004 EAP_Protocol Final version_31-05-2016.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL2-95005-002_TASCO1_Amended Protocol_INT_ Final Version CLEAN_25-01-2017.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-62798-001_Amended study protocol 21_September_2017 final version.htm"
 #HTMLPath = "C:\Users\zjaadi\Desktop\CL1-81694-003_Protocol final version 19JUN2017 e-ctd_.htm"
@@ -1013,5 +1059,5 @@ def hasNumbers(inputString):
 
 
 #dataframe=pd.DataFrame(getProtocolData(open(HTMLPath)))
-#ps_dataframe=pd.DataFrame(getDataAnalyzedSectionF(dataframe))
+ps_dataframe=pd.DataFrame(getProtocolScrap(open(HTMLPath)))
 
