@@ -100,13 +100,18 @@ function mapStateToProps(state) {
       protocolData = state.data.protocol_metas.data
     }
 
+    let name = 'export';
+    if (state.data.protocol_metas && state.data.protocol_metas.name) {
+      name = state.data.protocol_metas.name.replace(/\.[^/.]+$/, "");
+    }
+
     return {
         token: state.auth.token,
         isAuthenticated: state.auth.isAuthenticated,
         isNavMenuOpened: state.data.openedMenu,
         isFetchingExport: state.data.isFetchingExport,
         sections,
-        protocolFile: state.data.protocol_metas.name.replace(/\.[^/.]+$/, ""),
+        protocolFile: name,
         protocolData,
     };
 }
