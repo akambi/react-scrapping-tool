@@ -22,5 +22,7 @@ export const SELECT_SECTION = 'SELECT_SECTION';
 export const REQUEST_EXPORT_XML = 'REQUEST_EXPORT_XML';
 export const RECEIVE_EXPORT_XML = 'RECEIVE_EXPORT_XML';
 
+export const CHANGE_FIELD_VALUE = 'CHANGE_FIELD_VALUE';
+
 // others constants
 export const drawerWidth = 240;

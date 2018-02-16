@@ -1,6 +1,6 @@
 import { FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA,
  REQUEST_PROTOCOL_META, RECEIVE_PROTOCOL_META, OPEN_MENU, CLOSE_MENU,
- SELECT_SECTION, REQUEST_EXPORT_XML, RECEIVE_EXPORT_XML } from '../constants/index';
+ SELECT_SECTION, REQUEST_EXPORT_XML, RECEIVE_EXPORT_XML, CHANGE_FIELD_VALUE } from '../constants/index';
 import { parseJSON } from '../utils/misc';
 import { data_about_user, getProtocolMeta, exportProtocolData } from '../utils/http_functions';
 import { logoutAndRedirect } from './auth';
@@ -125,5 +125,15 @@ export function selectSection(section, subSection) {
             section,
             subSection,
         },
+    };
+}
+
+export function changeFieldValue(field, value) {
+    return {
+        type: CHANGE_FIELD_VALUE,
+        payload: {
+            field,
+            value
+        }
     };
 }

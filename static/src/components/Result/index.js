@@ -9,7 +9,10 @@ import Paper from 'material-ui/Paper';
 
 import { withStyles } from 'material-ui/styles';
 import TextInput from '../TextInput';
-import * as actionCreators from '../../actions/auth';
+
+import { changeFieldValue } from '../../actions/data';
+const actionCreators = { changeFieldValue };
+
 import LoaderView from '../Loader';
 import { browserHistory } from 'react-router';
 
@@ -63,7 +66,7 @@ class ResultView extends Component {
     }
 
     changeValue(e, type) {
-//        triggerAction(type, e.target.value);
+        this.props.changeFieldValue(type, e.target.value);
     }
 
     render() {
