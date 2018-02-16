@@ -1,0 +1,981 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:clinical_trial_application xmlns:p="http://eudract.emea.europa.eu/schema/clinical_trial" xmlns:ns3="http://eudract.emea.europa.eu/schema/clinical_trial/third_country" xmlns:ns4="http://eudract.emea.europa.eu/schema/clinical_trial/review" xmlns:ns5="http://eudract.emea.europa.eu/schema/clinical_trial/amendment" xmlns:ns6="http://eudract.emea.europa.eu/schema/clinical_trial/trial_status" xmlns:ns7="http://eudract.emea.europa.eu/schema/clinical_trial/inspection" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://eudract.emea.europa.eu/schema/clinical_trial https://eudract.ema.europa.eu/docs/technical/schemas/clinicaltrial/eea/clinical_trial.xsd">
+    <p:protocol_information>
+        <p:cta_identification>
+            <p:eudract_no>{{ fields['A.2'].value }}</p:eudract_no>
+            <p:nca xsi:nil="true"/>
+        </p:cta_identification>
+        <p:full_title_localized>
+            <p:full_title locale="en">An open-label early access phase IIIb study of trifluridine / tipiracil (S 95005/TAS-102) in patients with a pretreated metastatic colorectal cancer.</p:full_title>
+        </p:full_title_localized>
+        <p:lay_people_title_localized>
+            <p:lay_people_title locale="en">An  early access study of trifluridine / tipiracil (S 95005/TAS-102) in patients with a pretreated metastatic colorectal cancer.</p:lay_people_title>
+        </p:lay_people_title_localized>
+        <p:abbreviated_title_localized/>
+        <p:sponsor_protocol_no>CL3-95005-004</p:sponsor_protocol_no>
+        <p:sponsor_protocol_version>Final</p:sponsor_protocol_version>
+        <p:sponsor_protocol_version_date>2016-05-31</p:sponsor_protocol_version_date>
+        <p:intern_ct_ident_isrctn xsi:nil="true"/>
+        <p:intern_ct_ident_usnct xsi:nil="true"/>
+        <p:intern_ct_ident_utrn xsi:nil="true"/>
+        <p:international_ct_identifiers/>
+        <p:is_resubmission>0</p:is_resubmission>
+        <p:resubmission_letter>
+            <p:eutct_id>100000075938</p:eutct_id>
+            <p:eutct_version>2</p:eutct_version>
+        </p:resubmission_letter>
+        <p:is_part_pip>0</p:is_part_pip>
+        <p:pip_decision_no xsi:nil="true"/>
+    </p:protocol_information>
+    <p:sponsor_information>
+        <p:sponsor>
+            <p:sponsor_type>
+                <p:eutct_id>999999000410</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:sponsor_type>
+            <p:sponsor_info>
+                <p:name>Institut de Recherches Internationales Servier</p:name>
+                <p:address>
+                    <p:street_address>50 rue Carnot</p:street_address>
+                    <p:city>Suresnes</p:city>
+                    <p:post_code>92284</p:post_code>
+                    <p:country>
+                        <p:eutct_id>100000000395</p:eutct_id>
+                        <p:eutct_version>11</p:eutct_version>
+                    </p:country>
+                </p:address>
+                <p:email>valerie.fautrier@servier.com</p:email>
+                <p:phones>
+                    <p:phone type="PHONE">
+                        <p:international_dialing_prefix xsi:nil="true"/>
+                        <p:country_dialing_prefix>+33</p:country_dialing_prefix>
+                        <p:local_area_code xsi:nil="true"/>
+                        <p:phone_number>155727063</p:phone_number>
+                        <p:extension xsi:nil="true"/>
+                    </p:phone>
+                    <p:phone type="FAX">
+                        <p:international_dialing_prefix xsi:nil="true"/>
+                        <p:country_dialing_prefix>+33</p:country_dialing_prefix>
+                        <p:local_area_code xsi:nil="true"/>
+                        <p:phone_number>155725412</p:phone_number>
+                        <p:extension xsi:nil="true"/>
+                    </p:phone>
+                </p:phones>
+            </p:sponsor_info>
+            <p:sponsor_contact_info>
+                <p:first_name>Valérie</p:first_name>
+                <p:middle_name xsi:nil="true"/>
+                <p:family_name>Fautrier</p:family_name>
+            </p:sponsor_contact_info>
+            <p:legal_rep_info>
+                <p:name xsi:nil="true"/>
+                <p:address xsi:nil="true"/>
+                <p:email xsi:nil="true"/>
+                <p:phones xsi:nil="true"/>
+            </p:legal_rep_info>
+            <p:legal_rep_contact_info xsi:nil="true"/>
+            <p:further_info>
+                <p:name>Institut de Recherches Internationales Servier</p:name>
+                <p:address>
+                    <p:street_address>50 rue Carnot</p:street_address>
+                    <p:city>Suresnes</p:city>
+                    <p:post_code>92284</p:post_code>
+                    <p:country>
+                        <p:eutct_id>100000000395</p:eutct_id>
+                        <p:eutct_version>11</p:eutct_version>
+                    </p:country>
+                </p:address>
+                <p:email>clinicaltrials@servier.com</p:email>
+                <p:phones>
+                    <p:phone type="PHONE">
+                        <p:international_dialing_prefix xsi:nil="true"/>
+                        <p:country_dialing_prefix>+33</p:country_dialing_prefix>
+                        <p:local_area_code xsi:nil="true"/>
+                        <p:phone_number>1.55.72.43.66</p:phone_number>
+                        <p:extension xsi:nil="true"/>
+                    </p:phone>
+                    <p:phone type="FAX">
+                        <p:international_dialing_prefix xsi:nil="true"/>
+                        <p:country_dialing_prefix>+33</p:country_dialing_prefix>
+                        <p:local_area_code xsi:nil="true"/>
+                        <p:phone_number>1.55.72.54.12</p:phone_number>
+                        <p:extension xsi:nil="true"/>
+                    </p:phone>
+                </p:phones>
+            </p:further_info>
+            <p:contact_point_name>Clinical Studies Department</p:contact_point_name>
+            <p:monetary_supports>
+                <p:monetary_support>
+                    <p:monetary_support_org>
+                        <p:name>ADIR</p:name>
+                    </p:monetary_support_org>
+                    <p:monetary_support_country>
+                        <p:eutct_id>100000000395</p:eutct_id>
+                        <p:eutct_version>11</p:eutct_version>
+                    </p:monetary_support_country>
+                </p:monetary_support>
+            </p:monetary_supports>
+        </p:sponsor>
+    </p:sponsor_information>
+    <p:applicant_information>
+        <p:ca_request>
+            <p:applicant_type>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:applicant_type>
+            <p:applicant_info>
+                <p:name xsi:nil="true"/>
+                <p:address xsi:nil="true"/>
+                <p:email xsi:nil="true"/>
+                <p:phones xsi:nil="true"/>
+            </p:applicant_info>
+            <p:applicant_contact_info>
+                <p:first_name xsi:nil="true"/>
+                <p:middle_name xsi:nil="true"/>
+                <p:family_name xsi:nil="true"/>
+            </p:applicant_contact_info>
+            <p:is_xml_copy_sent>1</p:is_xml_copy_sent>
+            <p:email_contact_info_list>
+                <p:email_contact_info>clinicaltrials@servier.com</p:email_contact_info>
+                <p:email_contact_info>anna.sarao.aixial@servier.com</p:email_contact_info>
+            </p:email_contact_info_list>
+            <p:is_xml_copy_secure>1</p:is_xml_copy_secure>
+        </p:ca_request>
+        <p:iec_request>
+            <p:applicant_type>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:applicant_type>
+            <p:applicant_info>
+                <p:name xsi:nil="true"/>
+                <p:address xsi:nil="true"/>
+                <p:email xsi:nil="true"/>
+                <p:phones xsi:nil="true"/>
+            </p:applicant_info>
+            <p:applicant_contact_info>
+                <p:first_name xsi:nil="true"/>
+                <p:middle_name xsi:nil="true"/>
+                <p:family_name xsi:nil="true"/>
+            </p:applicant_contact_info>
+        </p:iec_request>
+    </p:applicant_information>
+    <p:medicinal_product_information>
+        <p:medicinal_product id="PR1">
+            <p:imp_category>
+                <p:eutct_id>100000075981</p:eutct_id>
+                <p:eutct_version>4</p:eutct_version>
+            </p:imp_category>
+            <p:has_ma>1</p:has_ma>
+            <p:imp_member_state>
+                <p:trade_name_in_ms>Lonsurf</p:trade_name_in_ms>
+                <p:ev_identifiable_product_code>PRD4021653</p:ev_identifiable_product_code>
+                <p:ma_holder>Les Laboratoires Servier</p:ma_holder>
+                <p:ma_number>EU/1/16/1096/001-003</p:ma_number>
+                <p:is_imp_modified>1</p:is_imp_modified>
+                <p:imp_modified_specification>Packaging and labelling</p:imp_modified_specification>
+                <p:granted_ma_country>
+                    <p:eutct_id>100000000390</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:granted_ma_country>
+                <p:is_granting_ma_concerned_ms>-1</p:is_granting_ma_concerned_ms>
+            </p:imp_member_state>
+            <p:imp_identification_not_possible>
+                <p:has_any_auth_active_substance>-1</p:has_any_auth_active_substance>
+                <p:has_local_site_products>-1</p:has_local_site_products>
+                <p:is_atc_group_used>-1</p:is_atc_group_used>
+                <p:has_imp_other_identification>-1</p:has_imp_other_identification>
+                <p:other_description xsi:nil="true"/>
+            </p:imp_identification_not_possible>
+            <p:has_full_impd>1</p:has_full_impd>
+            <p:has_simplified_impd>0</p:has_simplified_impd>
+            <p:has_summary_of_prod_character>0</p:has_summary_of_prod_character>
+            <p:is_prev_auth_in_community>1</p:is_prev_auth_in_community>
+            <p:member_states>
+                <p:country>
+                    <p:eutct_id>100000000337</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000377</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000395</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000403</p:eutct_id>
+                    <p:eutct_version>12</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000430</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000478</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000529</p:eutct_id>
+                    <p:eutct_version>12</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000556</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+            </p:member_states>
+            <p:is_orphan_drug_in_community>0</p:is_orphan_drug_in_community>
+            <p:orphan_drug_designation_no xsi:nil="true"/>
+            <p:has_scientific_advice>0</p:has_scientific_advice>
+            <p:has_scientific_advice_chmp>0</p:has_scientific_advice_chmp>
+            <p:has_scientific_advice_nca>0</p:has_scientific_advice_nca>
+            <p:name>S95005</p:name>
+            <p:code>S95005</p:code>
+            <p:atc_codes/>
+            <p:pharmaceutical_form>
+                <p:eutct_id>100000073665</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:pharmaceutical_form>
+            <p:is_paediatric_formulation>0</p:is_paediatric_formulation>
+            <p:max_duration_imp>Until disease progression, unacceptable toxicity, investigator or sponsor decision, patient refusal, or until market authorization or reimbursement has been granted or until availability by a doctor’s prescription or from another source</p:max_duration_imp>
+            <p:first_dose_fih_allowed xsi:nil="true"/>
+            <p:first_dose_fih_per_day_total>-1</p:first_dose_fih_per_day_total>
+            <p:first_dose_fih_total_dose_num xsi:nil="true"/>
+            <p:first_dose_fih_total_dose_unit>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:first_dose_fih_total_dose_unit>
+            <p:first_dose_fih_roa>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:first_dose_fih_roa>
+            <p:max_dose_imp xsi:nil="true"/>
+            <p:max_dose_perday_total_imp>1</p:max_dose_perday_total_imp>
+            <p:total_dose_number>70</p:total_dose_number>
+            <p:total_dose_unit>
+                <p:eutct_id>999999000174</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:total_dose_unit>
+            <p:max_dose_route_of_administration>
+                <p:eutct_id>100000073619</p:eutct_id>
+                <p:eutct_version>4</p:eutct_version>
+            </p:max_dose_route_of_administration>
+            <p:routes_of_administration>
+                <p:route_of_administration>
+                    <p:eutct_id>100000073619</p:eutct_id>
+                    <p:eutct_version>4</p:eutct_version>
+                </p:route_of_administration>
+            </p:routes_of_administration>
+            <p:has_chemical_origin>1</p:has_chemical_origin>
+            <p:has_biological_origin>0</p:has_biological_origin>
+            <p:is_advanced_therapy_mp>0</p:is_advanced_therapy_mp>
+            <p:is_somatic_therapy_mp>0</p:is_somatic_therapy_mp>
+            <p:is_gene_therapy_mp>0</p:is_gene_therapy_mp>
+            <p:is_tissue_engineered_mp>0</p:is_tissue_engineered_mp>
+            <p:is_combination_atimp>0</p:is_combination_atimp>
+            <p:is_cat_classification_isued>0</p:is_cat_classification_isued>
+            <p:cat_classification xsi:nil="true"/>
+            <p:is_device_included>0</p:is_device_included>
+            <p:is_radiopharmaceutical_mp>0</p:is_radiopharmaceutical_mp>
+            <p:is_immunological_mp>0</p:is_immunological_mp>
+            <p:is_plasma_derived_mp>0</p:is_plasma_derived_mp>
+            <p:is_other_extractive>0</p:is_other_extractive>
+            <p:is_recombinant_mp>0</p:is_recombinant_mp>
+            <p:is_gmo_mp>0</p:is_gmo_mp>
+            <p:is_genetically_mod_auth_accord>0</p:is_genetically_mod_auth_accord>
+            <p:is_genetically_mod_auth_pend>0</p:is_genetically_mod_auth_pend>
+            <p:is_herbal_mp>0</p:is_herbal_mp>
+            <p:is_homeopathetic_mp>0</p:is_homeopathetic_mp>
+            <p:is_other_mp>0</p:is_other_mp>
+            <p:other_mp_specification xsi:nil="true"/>
+            <p:mode_of_action>S95005 is an orally available combination drug of an antineoplastic thymidine-based nucleoside analogue, trifluridine (FTD), and an inhibitor of thymidine phosphorylase, tipiracil hydrochloride (TPI).</p:mode_of_action>
+            <p:is_first_in_human>0</p:is_first_in_human>
+            <p:first_in_human_risk_factors xsi:nil="true"/>
+            <p:somatic_cell>
+                <p:somatic_cell_autologous>0</p:somatic_cell_autologous>
+                <p:somatic_cell_allogeneic>0</p:somatic_cell_allogeneic>
+                <p:somatic_cell_xenogeneic>0</p:somatic_cell_xenogeneic>
+                <p:somatic_cell_xen_sp_origin xsi:nil="true"/>
+                <p:somatic_cell_stem>0</p:somatic_cell_stem>
+                <p:somatic_cell_differenciated>0</p:somatic_cell_differenciated>
+                <p:somatic_cell_diff_type xsi:nil="true"/>
+                <p:somatic_cell_others>0</p:somatic_cell_others>
+                <p:somatic_cell_others_specify xsi:nil="true"/>
+            </p:somatic_cell>
+            <p:gene_therapy>
+                <p:gene_ther_genes_of_interest xsi:nil="true"/>
+                <p:gene_ther_in_vivo>0</p:gene_ther_in_vivo>
+                <p:gene_ther_ex_vivo>0</p:gene_ther_ex_vivo>
+                <p:gene_ther_nucleic_acid>0</p:gene_ther_nucleic_acid>
+                <p:gene_ther_nucleic_acid_naked>0</p:gene_ther_nucleic_acid_naked>
+                <p:gene_ther_nucleic_acid_complex>0</p:gene_ther_nucleic_acid_complex>
+                <p:gene_ther_viral>0</p:gene_ther_viral>
+                <p:gene_ther_viral_specify xsi:nil="true"/>
+                <p:gene_ther_others>0</p:gene_ther_others>
+                <p:gene_ther_others_specify xsi:nil="true"/>
+                <p:gene_ther_genetically_modified>0</p:gene_ther_genetically_modified>
+                <p:gene_ther_autologous>0</p:gene_ther_autologous>
+                <p:gene_ther_allogeneic>0</p:gene_ther_allogeneic>
+                <p:gene_ther_xenogeneic>0</p:gene_ther_xenogeneic>
+                <p:gene_ther_xeno_species_origin xsi:nil="true"/>
+                <p:gene_ther_type_cells_dtls xsi:nil="true"/>
+            </p:gene_therapy>
+            <p:cell_origin>
+                <p:tissue_eng_origin_autologous>0</p:tissue_eng_origin_autologous>
+                <p:tissue_eng_origin_allogeneic>0</p:tissue_eng_origin_allogeneic>
+                <p:tissue_eng_origin_xenogeneic>0</p:tissue_eng_origin_xenogeneic>
+                <p:tissue_eng_xenogeneic_species xsi:nil="true"/>
+            </p:cell_origin>
+            <p:cell_type>
+                <p:tissue_eng_type_stem>0</p:tissue_eng_type_stem>
+                <p:tissue_eng_type_differentiated>0</p:tissue_eng_type_differentiated>
+                <p:tissue_eng_diff_spec xsi:nil="true"/>
+                <p:tissue_eng_other>0</p:tissue_eng_other>
+                <p:tissue_eng_other_spec xsi:nil="true"/>
+            </p:cell_type>
+            <p:imp_device>
+                <p:device_description xsi:nil="true"/>
+                <p:device_name xsi:nil="true"/>
+                <p:device_implantable>0</p:device_implantable>
+                <p:is_medical_device>0</p:is_medical_device>
+                <p:has_device_ce_mark>0</p:has_device_ce_mark>
+                <p:device_notified_body xsi:nil="true"/>
+                <p:has_biomedical_material>0</p:has_biomedical_material>
+                <p:has_scaffolds>0</p:has_scaffolds>
+                <p:has_matrices>0</p:has_matrices>
+                <p:has_other_device>0</p:has_other_device>
+                <p:other_device_spec xsi:nil="true"/>
+            </p:imp_device>
+            <p:active_substances>
+                <p:active_substance>
+                    <p:inn>TRIFLURIDINE</p:inn>
+                    <p:cas_number xsi:nil="true"/>
+                    <p:current_sponsor_code xsi:nil="true"/>
+                    <p:other_descriptive_name>TRIFLURIDINE</p:other_descriptive_name>
+                    <p:substance_code>SUB11291MIG</p:substance_code>
+                    <p:molecular_formula xsi:nil="true"/>
+                    <p:description xsi:nil="true"/>
+                    <p:concentration_unit>
+                        <p:eutct_id>999999000170</p:eutct_id>
+                        <p:eutct_version>1</p:eutct_version>
+                    </p:concentration_unit>
+                    <p:concentration_type>
+                        <p:eutct_id>999999000116</p:eutct_id>
+                        <p:eutct_version>1</p:eutct_version>
+                    </p:concentration_type>
+                    <p:concentration_num_part1>15</p:concentration_num_part1>
+                    <p:concentration_num_part2 xsi:nil="true"/>
+                </p:active_substance>
+                <p:active_substance>
+                    <p:inn>TIPIRACIL HYDROCHLORIDE</p:inn>
+                    <p:cas_number xsi:nil="true"/>
+                    <p:current_sponsor_code xsi:nil="true"/>
+                    <p:other_descriptive_name>TIPIRACIL HYDROCHLORIDE</p:other_descriptive_name>
+                    <p:substance_code>SUB174132</p:substance_code>
+                    <p:molecular_formula xsi:nil="true"/>
+                    <p:description xsi:nil="true"/>
+                    <p:concentration_unit>
+                        <p:eutct_id>999999000170</p:eutct_id>
+                        <p:eutct_version>1</p:eutct_version>
+                    </p:concentration_unit>
+                    <p:concentration_type>
+                        <p:eutct_id>999999000116</p:eutct_id>
+                        <p:eutct_version>1</p:eutct_version>
+                    </p:concentration_type>
+                    <p:concentration_num_part1>7.065</p:concentration_num_part1>
+                    <p:concentration_num_part2 xsi:nil="true"/>
+                </p:active_substance>
+            </p:active_substances>
+        </p:medicinal_product>
+        <p:medicinal_product id="PR2">
+            <p:imp_category>
+                <p:eutct_id>100000075981</p:eutct_id>
+                <p:eutct_version>4</p:eutct_version>
+            </p:imp_category>
+            <p:has_ma>1</p:has_ma>
+            <p:imp_member_state>
+                <p:trade_name_in_ms>Lonsurf</p:trade_name_in_ms>
+                <p:ev_identifiable_product_code>PRD4021877</p:ev_identifiable_product_code>
+                <p:ma_holder>Les Laboratoires Servier</p:ma_holder>
+                <p:ma_number>EU/1/16/1096/004-006</p:ma_number>
+                <p:is_imp_modified>1</p:is_imp_modified>
+                <p:imp_modified_specification>Packaging and labelling</p:imp_modified_specification>
+                <p:granted_ma_country>
+                    <p:eutct_id>100000000390</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:granted_ma_country>
+                <p:is_granting_ma_concerned_ms>-1</p:is_granting_ma_concerned_ms>
+            </p:imp_member_state>
+            <p:imp_identification_not_possible>
+                <p:has_any_auth_active_substance>-1</p:has_any_auth_active_substance>
+                <p:has_local_site_products>-1</p:has_local_site_products>
+                <p:is_atc_group_used>-1</p:is_atc_group_used>
+                <p:has_imp_other_identification>-1</p:has_imp_other_identification>
+                <p:other_description xsi:nil="true"/>
+            </p:imp_identification_not_possible>
+            <p:has_full_impd>1</p:has_full_impd>
+            <p:has_simplified_impd>0</p:has_simplified_impd>
+            <p:has_summary_of_prod_character>0</p:has_summary_of_prod_character>
+            <p:is_prev_auth_in_community>0</p:is_prev_auth_in_community>
+            <p:member_states>
+                <p:country>
+                    <p:eutct_id>100000000337</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000377</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000395</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000403</p:eutct_id>
+                    <p:eutct_version>12</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000430</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000478</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000529</p:eutct_id>
+                    <p:eutct_version>12</p:eutct_version>
+                </p:country>
+                <p:country>
+                    <p:eutct_id>100000000556</p:eutct_id>
+                    <p:eutct_version>11</p:eutct_version>
+                </p:country>
+            </p:member_states>
+            <p:is_orphan_drug_in_community>0</p:is_orphan_drug_in_community>
+            <p:orphan_drug_designation_no xsi:nil="true"/>
+            <p:has_scientific_advice>0</p:has_scientific_advice>
+            <p:has_scientific_advice_chmp>0</p:has_scientific_advice_chmp>
+            <p:has_scientific_advice_nca>0</p:has_scientific_advice_nca>
+            <p:name>S95005</p:name>
+            <p:code>S95005</p:code>
+            <p:atc_codes/>
+            <p:pharmaceutical_form>
+                <p:eutct_id>100000073665</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:pharmaceutical_form>
+            <p:is_paediatric_formulation>0</p:is_paediatric_formulation>
+            <p:max_duration_imp>Until disease progression, unacceptable toxicity, investigator or sponsor decision, patient refusal, or until market authorization or reimbursement has been granted or until availability by a doctor’s prescription or from another source</p:max_duration_imp>
+            <p:first_dose_fih_allowed xsi:nil="true"/>
+            <p:first_dose_fih_per_day_total>-1</p:first_dose_fih_per_day_total>
+            <p:first_dose_fih_total_dose_num xsi:nil="true"/>
+            <p:first_dose_fih_total_dose_unit>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:first_dose_fih_total_dose_unit>
+            <p:first_dose_fih_roa>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:first_dose_fih_roa>
+            <p:max_dose_imp xsi:nil="true"/>
+            <p:max_dose_perday_total_imp>1</p:max_dose_perday_total_imp>
+            <p:total_dose_number>70</p:total_dose_number>
+            <p:total_dose_unit>
+                <p:eutct_id>999999000174</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:total_dose_unit>
+            <p:max_dose_route_of_administration>
+                <p:eutct_id>100000073619</p:eutct_id>
+                <p:eutct_version>4</p:eutct_version>
+            </p:max_dose_route_of_administration>
+            <p:routes_of_administration>
+                <p:route_of_administration>
+                    <p:eutct_id>100000073619</p:eutct_id>
+                    <p:eutct_version>4</p:eutct_version>
+                </p:route_of_administration>
+            </p:routes_of_administration>
+            <p:has_chemical_origin>1</p:has_chemical_origin>
+            <p:has_biological_origin>0</p:has_biological_origin>
+            <p:is_advanced_therapy_mp>0</p:is_advanced_therapy_mp>
+            <p:is_somatic_therapy_mp>0</p:is_somatic_therapy_mp>
+            <p:is_gene_therapy_mp>0</p:is_gene_therapy_mp>
+            <p:is_tissue_engineered_mp>0</p:is_tissue_engineered_mp>
+            <p:is_combination_atimp>0</p:is_combination_atimp>
+            <p:is_cat_classification_isued>0</p:is_cat_classification_isued>
+            <p:cat_classification xsi:nil="true"/>
+            <p:is_device_included>0</p:is_device_included>
+            <p:is_radiopharmaceutical_mp>0</p:is_radiopharmaceutical_mp>
+            <p:is_immunological_mp>0</p:is_immunological_mp>
+            <p:is_plasma_derived_mp>0</p:is_plasma_derived_mp>
+            <p:is_other_extractive>0</p:is_other_extractive>
+            <p:is_recombinant_mp>0</p:is_recombinant_mp>
+            <p:is_gmo_mp>0</p:is_gmo_mp>
+            <p:is_genetically_mod_auth_accord>0</p:is_genetically_mod_auth_accord>
+            <p:is_genetically_mod_auth_pend>0</p:is_genetically_mod_auth_pend>
+            <p:is_herbal_mp>0</p:is_herbal_mp>
+            <p:is_homeopathetic_mp>0</p:is_homeopathetic_mp>
+            <p:is_other_mp>0</p:is_other_mp>
+            <p:other_mp_specification xsi:nil="true"/>
+            <p:mode_of_action>S95005 is an orally available combination drug of an antineoplastic thymidine-based nucleoside analogue, trifluridine (FTD), and an inhibitor of thymidine phosphorylase, tipiracil hydrochloride (TPI).</p:mode_of_action>
+            <p:is_first_in_human>0</p:is_first_in_human>
+            <p:first_in_human_risk_factors xsi:nil="true"/>
+            <p:somatic_cell>
+                <p:somatic_cell_autologous>0</p:somatic_cell_autologous>
+                <p:somatic_cell_allogeneic>0</p:somatic_cell_allogeneic>
+                <p:somatic_cell_xenogeneic>0</p:somatic_cell_xenogeneic>
+                <p:somatic_cell_xen_sp_origin xsi:nil="true"/>
+                <p:somatic_cell_stem>0</p:somatic_cell_stem>
+                <p:somatic_cell_differenciated>0</p:somatic_cell_differenciated>
+                <p:somatic_cell_diff_type xsi:nil="true"/>
+                <p:somatic_cell_others>0</p:somatic_cell_others>
+                <p:somatic_cell_others_specify xsi:nil="true"/>
+            </p:somatic_cell>
+            <p:gene_therapy>
+                <p:gene_ther_genes_of_interest xsi:nil="true"/>
+                <p:gene_ther_in_vivo>0</p:gene_ther_in_vivo>
+                <p:gene_ther_ex_vivo>0</p:gene_ther_ex_vivo>
+                <p:gene_ther_nucleic_acid>0</p:gene_ther_nucleic_acid>
+                <p:gene_ther_nucleic_acid_naked>0</p:gene_ther_nucleic_acid_naked>
+                <p:gene_ther_nucleic_acid_complex>0</p:gene_ther_nucleic_acid_complex>
+                <p:gene_ther_viral>0</p:gene_ther_viral>
+                <p:gene_ther_viral_specify xsi:nil="true"/>
+                <p:gene_ther_others>0</p:gene_ther_others>
+                <p:gene_ther_others_specify xsi:nil="true"/>
+                <p:gene_ther_genetically_modified>0</p:gene_ther_genetically_modified>
+                <p:gene_ther_autologous>0</p:gene_ther_autologous>
+                <p:gene_ther_allogeneic>0</p:gene_ther_allogeneic>
+                <p:gene_ther_xenogeneic>0</p:gene_ther_xenogeneic>
+                <p:gene_ther_xeno_species_origin xsi:nil="true"/>
+                <p:gene_ther_type_cells_dtls xsi:nil="true"/>
+            </p:gene_therapy>
+            <p:cell_origin>
+                <p:tissue_eng_origin_autologous>0</p:tissue_eng_origin_autologous>
+                <p:tissue_eng_origin_allogeneic>0</p:tissue_eng_origin_allogeneic>
+                <p:tissue_eng_origin_xenogeneic>0</p:tissue_eng_origin_xenogeneic>
+                <p:tissue_eng_xenogeneic_species xsi:nil="true"/>
+            </p:cell_origin>
+            <p:cell_type>
+                <p:tissue_eng_type_stem>0</p:tissue_eng_type_stem>
+                <p:tissue_eng_type_differentiated>0</p:tissue_eng_type_differentiated>
+                <p:tissue_eng_diff_spec xsi:nil="true"/>
+                <p:tissue_eng_other>0</p:tissue_eng_other>
+                <p:tissue_eng_other_spec xsi:nil="true"/>
+            </p:cell_type>
+            <p:imp_device>
+                <p:device_description xsi:nil="true"/>
+                <p:device_name xsi:nil="true"/>
+                <p:device_implantable>0</p:device_implantable>
+                <p:is_medical_device>0</p:is_medical_device>
+                <p:has_device_ce_mark>0</p:has_device_ce_mark>
+                <p:device_notified_body xsi:nil="true"/>
+                <p:has_biomedical_material>0</p:has_biomedical_material>
+                <p:has_scaffolds>0</p:has_scaffolds>
+                <p:has_matrices>0</p:has_matrices>
+                <p:has_other_device>0</p:has_other_device>
+                <p:other_device_spec xsi:nil="true"/>
+            </p:imp_device>
+            <p:active_substances>
+                <p:active_substance>
+                    <p:inn>TRIFLURIDINE</p:inn>
+                    <p:cas_number xsi:nil="true"/>
+                    <p:current_sponsor_code xsi:nil="true"/>
+                    <p:other_descriptive_name>TRIFLURIDINE</p:other_descriptive_name>
+                    <p:substance_code>SUB11291MIG</p:substance_code>
+                    <p:molecular_formula xsi:nil="true"/>
+                    <p:description xsi:nil="true"/>
+                    <p:concentration_unit>
+                        <p:eutct_id>999999000170</p:eutct_id>
+                        <p:eutct_version>1</p:eutct_version>
+                    </p:concentration_unit>
+                    <p:concentration_type>
+                        <p:eutct_id>999999000116</p:eutct_id>
+                        <p:eutct_version>1</p:eutct_version>
+                    </p:concentration_type>
+                    <p:concentration_num_part1>20</p:concentration_num_part1>
+                    <p:concentration_num_part2 xsi:nil="true"/>
+                </p:active_substance>
+                <p:active_substance>
+                    <p:inn>TIPIRACIL HYDROCHLORIDE</p:inn>
+                    <p:cas_number xsi:nil="true"/>
+                    <p:current_sponsor_code xsi:nil="true"/>
+                    <p:other_descriptive_name>TIPIRACIL HYDROCHLORIDE</p:other_descriptive_name>
+                    <p:substance_code>SUB174132</p:substance_code>
+                    <p:molecular_formula xsi:nil="true"/>
+                    <p:description xsi:nil="true"/>
+                    <p:concentration_unit>
+                        <p:eutct_id>999999000170</p:eutct_id>
+                        <p:eutct_version>1</p:eutct_version>
+                    </p:concentration_unit>
+                    <p:concentration_type>
+                        <p:eutct_id>999999000116</p:eutct_id>
+                        <p:eutct_version>1</p:eutct_version>
+                    </p:concentration_type>
+                    <p:concentration_num_part1>9.42</p:concentration_num_part1>
+                    <p:concentration_num_part2 xsi:nil="true"/>
+                </p:active_substance>
+            </p:active_substances>
+        </p:medicinal_product>
+    </p:medicinal_product_information>
+    <p:placebo_information/>
+    <p:site_information>
+        <p:no_responsible_site>
+            <p:conditionsMet>0</p:conditionsMet>
+            <p:ctaImps xsi:nil="true"/>
+            <p:ctaPlacebos xsi:nil="true"/>
+        </p:no_responsible_site>
+        <p:responsible_site_information>
+            <p:responsible_site>
+                <p:ctaImps>
+                    <p:imp_id>PR1</p:imp_id>
+                    <p:imp_id>PR2</p:imp_id>
+                </p:ctaImps>
+                <p:ctaPlacebos/>
+                <p:responsible_site_org_info>
+                    <p:name>Les Laboratoires Servier Industrie</p:name>
+                    <p:address>
+                        <p:street_address>905, route de Saran</p:street_address>
+                        <p:city>Gidy</p:city>
+                        <p:post_code>45520</p:post_code>
+                        <p:country>
+                            <p:eutct_id>100000000395</p:eutct_id>
+                            <p:eutct_version>11</p:eutct_version>
+                        </p:country>
+                    </p:address>
+                </p:responsible_site_org_info>
+                <p:authorisation_type>
+                    <p:eutct_id>999999000394</p:eutct_id>
+                    <p:eutct_version>1</p:eutct_version>
+                </p:authorisation_type>
+                <p:manufacturer_auth_no>MM 16/075</p:manufacturer_auth_no>
+                <p:auth_no_omission_reason xsi:nil="true"/>
+            </p:responsible_site>
+        </p:responsible_site_information>
+    </p:site_information>
+    <p:general_information>
+        <p:med_conditions_localized>
+            <p:med_conditions locale="en">Metastatic colorectal cancer</p:med_conditions>
+        </p:med_conditions_localized>
+        <p:med_condition_in_lay_langs_localized>
+            <p:med_condition_in_lay_langs locale="en">Colorectal cancer</p:med_condition_in_lay_langs>
+        </p:med_condition_in_lay_langs_localized>
+        <p:therapeutic_area>
+            <p:eutct_id>999999000425</p:eutct_id>
+            <p:eutct_version>1</p:eutct_version>
+        </p:therapeutic_area>
+        <p:is_rare_disease>0</p:is_rare_disease>
+        <p:meddra_information>
+            <p:meddra>
+                <p:meddra_version>19.1</p:meddra_version>
+                <p:meddra_level>PT</p:meddra_level>
+                <p:meddra_classification_code>10052358</p:meddra_classification_code>
+                <p:meddra_term>Colorectal cancer metastatic</p:meddra_term>
+                <p:meddra_soc_term>10029104 - Neoplasms benign, malignant and unspecified (incl cysts and polyps)</p:meddra_soc_term>
+            </p:meddra>
+        </p:meddra_information>
+        <p:main_objective_of_trial_localized>
+            <p:main_objective_of_trial locale="en">The primary objective of this study is to collect additional safety data during treatment with trifluridine / tipiracil in patients with a pretreated mCRC.</p:main_objective_of_trial>
+        </p:main_objective_of_trial_localized>
+        <p:sec_objectives_of_trial_localized>
+            <p:sec_objectives_of_trial locale="en">- Progression free survival (PFS) based on Investigator assessment&#xD;
+- Quality of life (QoL) using the questionnaires EQ-5D and EORTC QLQ-C30</p:sec_objectives_of_trial>
+        </p:sec_objectives_of_trial_localized>
+        <p:is_sub_study>0</p:is_sub_study>
+        <p:sub_story_details_localized/>
+        <p:principal_inclusion_criteria_localized>
+            <p:principal_inclusion_criteria locale="en">- Male or Female participant aged ≥18 years old&#xD;
+- Has definitive histologically confirmed adenocarcinoma of the colon or rectum &#xD;
+- Has metastatic lesion(s).&#xD;
+- Has received at least 2 prior regimens of standard chemotherapies (including fluoropyrimidines, irinotecan, oxaliplatin, an anti-VEGF monoclonal antibody and at least one of the anti-EGFR monoclonal antibodies for RAS wild-type patients) for mCRC and is refractory or intolerant to those chemotherapies or is not candidate for those chemotherapies&#xD;
+- Has Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1 during the screening period&#xD;
+- Is able to take medications orally (i.e., no feeding tube).&#xD;
+- Has adequate organ function&#xD;
+- Women of childbearing potential must have been tested negative in a serum pregnancy test within 7 days prior to first day of test drug administration. Female participants of childbearing potential and male participants with partners of childbearing potential must agree to use a highly effective method of birth control during the study and for 6 months after the discontinuation of study medication. Women and female partners using hormonal contraceptive must also&#xD;
+use a barrier method.</p:principal_inclusion_criteria>
+        </p:principal_inclusion_criteria_localized>
+        <p:principal_exclusion_criteria_localized>
+            <p:principal_exclusion_criteria locale="en">- Pregnancy, breastfeeding or possibility of becoming pregnant during the study&#xD;
+- Eligible for enrolment into another available ongoing clinical study of trifluridine / tipiracil&#xD;
+- Has previously received trifluridine / tipiracil or hypersensitivity to the active substances or to any of the excipients of trifluridine / tipiracil&#xD;
+- Has rare hereditary problems of galactose intolerance, the Lapp lactase deficiency, or glucose-galactose malabsorption&#xD;
+- Has certain serious illness or medical condition(s) described in the protocol&#xD;
+- Has had certain other recent treatment e.g. major surgery, anticancer therapy, radiation therapy, participation in another interventional study, within the specified time frames prior to  first day of study drug administration&#xD;
+- Has unresolved toxicity of greater than or equal to Common Terminology Criteria for Adverse Events (CTCAE) Grade 2 attributed to any prior therapies (excluding anemia, alopecia, skin pigmentation, and platinum-induced neurotoxicity).</p:principal_exclusion_criteria>
+        </p:principal_exclusion_criteria_localized>
+        <p:primary_endpoints_localized>
+            <p:primary_endpoints locale="en">Safety and tolerability assessed by:&#xD;
+- Incidence of Adverse Events &#xD;
+- Laboratory tests: haematology, blood biochemistry, urinalysis&#xD;
+- Physical examination and performance status (ECOG)&#xD;
+- Vital signs: blood pressure, heart rate, body temperature, body weight</p:primary_endpoints>
+        </p:primary_endpoints_localized>
+        <p:primary_endpoints_eval_localized>
+            <p:primary_endpoints_eval locale="en">Incidence of Adverse Events: all over the study&#xD;
+Laboratory tests, physical examination, performance status, vital signs: at baseline, every 4 weeks during study treatment from cycle 2, at withdrawal visit.</p:primary_endpoints_eval>
+        </p:primary_endpoints_eval_localized>
+        <p:secondary_endpoints_localized>
+            <p:secondary_endpoints locale="en">- Progression free survival (PFS) &#xD;
+- Quality of life (QoL) using the questionnaires EQ-5D and EORTC QLQ-C30</p:secondary_endpoints>
+        </p:secondary_endpoints_localized>
+        <p:secondary_endpoints_eval_localized>
+            <p:secondary_endpoints_eval locale="en">- Tumour assessment based on general practices and standard of care of the site.&#xD;
+- Quality of Life: at baseline, every 4 weeks during study treatment from cycle 2, at withdrawal visit (if not performed within the previous 4 weeks).</p:secondary_endpoints_eval>
+        </p:secondary_endpoints_eval_localized>
+        <p:has_scope_diagnosis>0</p:has_scope_diagnosis>
+        <p:has_scope_prophylaxis>0</p:has_scope_prophylaxis>
+        <p:has_scope_therapy>0</p:has_scope_therapy>
+        <p:has_scope_safety>1</p:has_scope_safety>
+        <p:has_scope_efficacy>1</p:has_scope_efficacy>
+        <p:has_scope_pharmacokinetic>0</p:has_scope_pharmacokinetic>
+        <p:has_scope_pharmacodynamic>0</p:has_scope_pharmacodynamic>
+        <p:has_scope_bioequivalence>0</p:has_scope_bioequivalence>
+        <p:has_scope_dose_response>0</p:has_scope_dose_response>
+        <p:has_scope_pharmacogenetic>0</p:has_scope_pharmacogenetic>
+        <p:has_scope_pharmacogenomic>0</p:has_scope_pharmacogenomic>
+        <p:has_scope_pharmacoeconomic>0</p:has_scope_pharmacoeconomic>
+        <p:has_others>1</p:has_others>
+        <p:has_other_details_localized>
+            <p:has_other_details locale="en">Quality of life measurements and Medical Resource Utilization (MRU) data</p:has_other_details>
+        </p:has_other_details_localized>
+        <p:is_in_phase_one>0</p:is_in_phase_one>
+        <p:is_first_human_administration>0</p:is_first_human_administration>
+        <p:is_in_bioequivalence_study>0</p:is_in_bioequivalence_study>
+        <p:is_in_other_phase>0</p:is_in_other_phase>
+        <p:other_phase_details_localized/>
+        <p:is_in_phase_two>0</p:is_in_phase_two>
+        <p:is_in_phase_three>1</p:is_in_phase_three>
+        <p:is_in_phase_four>0</p:is_in_phase_four>
+        <p:is_controlled>0</p:is_controlled>
+        <p:is_randomised>0</p:is_randomised>
+        <p:is_open>1</p:is_open>
+        <p:is_single_blind>0</p:is_single_blind>
+        <p:is_double_blind>0</p:is_double_blind>
+        <p:is_parallel_group>0</p:is_parallel_group>
+        <p:is_cross_over>0</p:is_cross_over>
+        <p:is_other_type>0</p:is_other_type>
+        <p:other_type_details_localized/>
+        <p:is_comparator_medical_product>-1</p:is_comparator_medical_product>
+        <p:is_comparator_placebo>-1</p:is_comparator_placebo>
+        <p:is_comparator_other>-1</p:is_comparator_other>
+        <p:comparator_other_details_localized/>
+        <p:number_treatment_arms>1</p:number_treatment_arms>
+        <p:is_single_site>-1</p:is_single_site>
+        <p:is_multiple_site>-1</p:is_multiple_site>
+        <p:no_sites_in_ms xsi:nil="true"/>
+        <p:is_in_multiple_ms>1</p:is_in_multiple_ms>
+        <p:no_sites_in_community>100</p:no_sites_in_community>
+        <p:is_third_country_involved>1</p:is_third_country_involved>
+        <p:is_conducted_complete_out_eea>0</p:is_conducted_complete_out_eea>
+        <p:planned_regions>
+            <p:planned_region>
+                <p:eutct_id>100000000325</p:eutct_id>
+                <p:eutct_version>13</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000329</p:eutct_id>
+                <p:eutct_version>14</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000337</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000346</p:eutct_id>
+                <p:eutct_version>12</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000349</p:eutct_id>
+                <p:eutct_version>12</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000373</p:eutct_id>
+                <p:eutct_version>15</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000395</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000427</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000430</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000500</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000501</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000505</p:eutct_id>
+                <p:eutct_version>13</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000523</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000524</p:eutct_id>
+                <p:eutct_version>11</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000529</p:eutct_id>
+                <p:eutct_version>12</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000536</p:eutct_id>
+                <p:eutct_version>12</p:eutct_version>
+            </p:planned_region>
+            <p:planned_region>
+                <p:eutct_id>100000000549</p:eutct_id>
+                <p:eutct_version>12</p:eutct_version>
+            </p:planned_region>
+        </p:planned_regions>
+        <p:no_sites_anticipated_world>30</p:no_sites_anticipated_world>
+        <p:has_data_monitoring_commitee>0</p:has_data_monitoring_commitee>
+        <p:end_of_trial_definition_localized>
+            <p:end_of_trial_definition locale="en">LVLS</p:end_of_trial_definition>
+        </p:end_of_trial_definition_localized>
+        <p:est_trial_duration_ms_years xsi:nil="true"/>
+        <p:est_trial_duration_ms_months xsi:nil="true"/>
+        <p:est_trial_duration_ms_days xsi:nil="true"/>
+        <p:est_trial_duration_world_years>2</p:est_trial_duration_world_years>
+        <p:est_trial_duration_world_month>6</p:est_trial_duration_world_month>
+        <p:est_trial_duration_world_days xsi:nil="true"/>
+        <p:recruitment_start_date_ms xsi:nil="true"/>
+        <p:recruitment_start_date_world>2016-10-19</p:recruitment_start_date_world>
+    </p:general_information>
+    <p:population_information>
+        <p:has_under_18>0</p:has_under_18>
+        <p:under_18_subjects_no xsi:nil="true"/>
+        <p:has_in_utero>0</p:has_in_utero>
+        <p:in_utero_no xsi:nil="true"/>
+        <p:has_preterm_newborn_infants>0</p:has_preterm_newborn_infants>
+        <p:preterm_newborn_infants_no xsi:nil="true"/>
+        <p:has_newborns>0</p:has_newborns>
+        <p:newborns_no xsi:nil="true"/>
+        <p:has_infants_and_toddlers>0</p:has_infants_and_toddlers>
+        <p:infants_and_toddlers_no xsi:nil="true"/>
+        <p:has_childen>0</p:has_childen>
+        <p:childen_no xsi:nil="true"/>
+        <p:has_adolescents>0</p:has_adolescents>
+        <p:adolescents_no xsi:nil="true"/>
+        <p:has_adults>1</p:has_adults>
+        <p:adults_no>550</p:adults_no>
+        <p:has_elderly>1</p:has_elderly>
+        <p:elderly_no>450</p:elderly_no>
+        <p:is_gender_male>1</p:is_gender_male>
+        <p:is_gender_female>1</p:is_gender_female>
+        <p:has_healthy_volunteers>0</p:has_healthy_volunteers>
+        <p:has_patients>1</p:has_patients>
+        <p:has_specific_vunerable_popul>1</p:has_specific_vunerable_popul>
+        <p:has_women_child_bear_contra>1</p:has_women_child_bear_contra>
+        <p:has_women_child_bear_potent>0</p:has_women_child_bear_potent>
+        <p:has_pregnant_women>0</p:has_pregnant_women>
+        <p:has_nursing_women>0</p:has_nursing_women>
+        <p:has_emergency_situation>0</p:has_emergency_situation>
+        <p:has_incapable_consent>0</p:has_incapable_consent>
+        <p:has_incapable_consent_details_localized/>
+        <p:has_other_patient>0</p:has_other_patient>
+        <p:other_patient_details_localized/>
+        <p:in_ms_no xsi:nil="true"/>
+        <p:in_eea_no>700</p:in_eea_no>
+        <p:in_whole_trial>1000</p:in_whole_trial>
+        <p:post_trial_treatment_details_localized>
+            <p:post_trial_treatment_details locale="en">After the discontinuation of the IMP, the participant will access to an appropriate medical care by his doctor; who will provide the best support care.&#xD;
+Specific rules may be followed in some countries according to local regulation.&#xD;
+</p:post_trial_treatment_details>
+        </p:post_trial_treatment_details_localized>
+    </p:population_information>
+    <p:proposed_clinical_trial_sites_information>
+        <p:investigators/>
+        <p:central_technical_facilities/>
+        <p:trial_networks/>
+        <p:trial_monitoring_facilities>
+            <p:trial_monitoring_facility>
+                <p:trial_monitoring_facility_org_info>
+                    <p:name>Venn Life Sciences</p:name>
+                    <p:department xsi:nil="true"/>
+                    <p:address>
+                        <p:street_address>63 boulevard Haussmann</p:street_address>
+                        <p:city>Paris</p:city>
+                        <p:post_code>75008</p:post_code>
+                        <p:country>
+                            <p:eutct_id>100000000395</p:eutct_id>
+                            <p:eutct_version>11</p:eutct_version>
+                        </p:country>
+                    </p:address>
+                    <p:email xsi:nil="true"/>
+                    <p:phones>
+                        <p:phone type="PHONE">
+                            <p:international_dialing_prefix xsi:nil="true"/>
+                            <p:country_dialing_prefix>+33</p:country_dialing_prefix>
+                            <p:local_area_code xsi:nil="true"/>
+                            <p:phone_number>1 40 21 19 71</p:phone_number>
+                            <p:extension xsi:nil="true"/>
+                        </p:phone>
+                    </p:phones>
+                </p:trial_monitoring_facility_org_info>
+                <p:trial_monitoring_facility_contact_info>
+                    <p:first_name xsi:nil="true"/>
+                    <p:middle_name xsi:nil="true"/>
+                    <p:family_name xsi:nil="true"/>
+                </p:trial_monitoring_facility_contact_info>
+                <p:has_duty_sponsor_tasks>0</p:has_duty_sponsor_tasks>
+                <p:has_duty_monitoring>0</p:has_duty_monitoring>
+                <p:has_duty_regulatory_aid>0</p:has_duty_regulatory_aid>
+                <p:has_duty_investigator_recruit>0</p:has_duty_investigator_recruit>
+                <p:has_duty_ivrs_treatment>1</p:has_duty_ivrs_treatment>
+                <p:has_duty_data_management>0</p:has_duty_data_management>
+                <p:has_duty_e_data_capture>0</p:has_duty_e_data_capture>
+                <p:has_duty_susar_reporting>0</p:has_duty_susar_reporting>
+                <p:has_duty_qa_auditing>0</p:has_duty_qa_auditing>
+                <p:has_statistical_analysis>0</p:has_statistical_analysis>
+                <p:has_duty_medical_writing>0</p:has_duty_medical_writing>
+                <p:has_duty_other_duties>0</p:has_duty_other_duties>
+                <p:duty_other_duties_description xsi:nil="true"/>
+            </p:trial_monitoring_facility>
+        </p:trial_monitoring_facilities>
+    </p:proposed_clinical_trial_sites_information>
+    <p:comittee_decision_information>
+        <p:competent_authority>
+            <p:ca_contact_information>
+                <p:name xsi:nil="true"/>
+                <p:address xsi:nil="true"/>
+            </p:ca_contact_information>
+            <p:submission_date xsi:nil="true"/>
+            <p:decision>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:decision>
+            <p:authorisation_status>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:authorisation_status>
+            <p:date_of_decision xsi:nil="true"/>
+            <p:not_accepted_reason xsi:nil="true"/>
+            <p:anticipated_date_resubmission xsi:nil="true"/>
+        </p:competent_authority>
+        <p:ethics_committee>
+            <p:iec_contact_information>
+                <p:name xsi:nil="true"/>
+                <p:address xsi:nil="true"/>
+            </p:iec_contact_information>
+            <p:submission_date xsi:nil="true"/>
+            <p:opinion>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:opinion>
+            <p:opinion_status>
+                <p:eutct_id>999999000000</p:eutct_id>
+                <p:eutct_version>1</p:eutct_version>
+            </p:opinion_status>
+            <p:date_of_decision xsi:nil="true"/>
+            <p:not_accepted_reason xsi:nil="true"/>
+            <p:anticipated_date_resubmission xsi:nil="true"/>
+        </p:ethics_committee>
+    </p:comittee_decision_information>
+</p:clinical_trial_application>

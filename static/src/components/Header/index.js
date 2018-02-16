@@ -158,7 +158,7 @@ class Header extends Component {
 
                         <Typography variant="title" color="inherit" className={classes.flex} style={{ lineHeight: 'normal' }}>
                             <div>
-                                <div style={{ marginTop: 10 }}>CAPS vj10.1</div>
+                                <div style={{ marginTop: 10 }}>CAPS vj10.2</div>
                                 <div style={{ fontSize: 'small', fontWeight: 300 }}>Clinical protocol Scrapper</div>
                             </div>
                         </Typography>
